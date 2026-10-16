@@ -26,6 +26,7 @@ export SPENDWISE_SEED_PASSWORD="..."
 npm install
 npx playwright install chromium
 npm test
+npm run test:mutation
 ```
 
 Las credenciales se reciben por variables de entorno y no se guardan en el repositorio ni en las evidencias. Los tokens y cookies se enmascaran en la salida.
@@ -47,10 +48,11 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 - `playwright-report/`: reporte HTML generado por la última ejecución integral.
 - `openapi/spendwise-openapi.json`: contrato de la API suministrada por el entorno.
 - `docs/06-observacion-no-funcional.md`: medición serial segura y límites de rendimiento.
+- `docs/07-pruebas-mutantes.md`: operadores y mutation score de solicitudes black-box.
 
 ## Resultado final verificado
 
-- Playwright: regresión integral de 119 pruebas en 23 archivos: 86 aprobadas y 33 fallidas por incumplimientos documentados (4,1 min).
+- Playwright: 137 pruebas disponibles en 25 archivos. Última regresión base: 119, con 86 aprobadas y 33 fallidas. Campaña mutante adicional: 16 mutantes, 6 muertos, 10 sobrevivientes y score 37,5%; catálogo 2/2 aprobado.
 - Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
 - Hallazgos: 21 defectos confirmados; la última ampliación agregó BUG-14 a BUG-21.
 - Recomendación: **NO GO condicionado**.

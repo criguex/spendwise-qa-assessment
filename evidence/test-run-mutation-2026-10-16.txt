@@ -1,0 +1,27 @@
+EJECUCIÓN DE ESCENARIOS MUTANTES — 2026-10-16
+
+Comando: npm run test:mutation -- --reporter=line
+Duración: 33.8 s
+Infraestructura: 0 errores
+
+Catálogo
+========
+Pruebas de componente: 2
+Aprobadas: 2
+
+Mutación API
+============
+Mutantes ejecutados: 16
+Muertos: 6
+Sobrevivientes: 10
+Mutation score: 37.5%
+
+Muertos: MUT-EXP-01, MUT-EXP-03, MUT-EXP-04, MUT-EXP-12, MUT-EXP-13, MUT-EXP-14
+Sobrevivientes: MUT-EXP-02, MUT-EXP-05, MUT-EXP-06, MUT-EXP-07, MUT-EXP-08,
+MUT-EXP-09, MUT-EXP-10, MUT-EXP-11, MUT-EXP-15, MUT-EXP-16
+
+Trazabilidad
+============
+Los sobrevivientes consolidan BUG-02, BUG-03, BUG-11, BUG-14 y BUG-15.
+No se contabilizan como diez defectos distintos: se agrupan por causa raíz y regla de negocio.
+No se ejecutó fuzzing aleatorio, carga, estrés ni combinaciones destructivas.

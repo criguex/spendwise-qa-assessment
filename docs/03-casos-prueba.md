@@ -44,6 +44,7 @@
 | EXPA-01..08 | P0-P1 | Exploratoria / límites | Obligatorios, fecha inválida, campos del servidor, comprobante y filtros | Sí |
 | APR-CON-01 | P0 | Contrato de consumidor | La cola identifica al solicitante requerido para decidir | Sí |
 | EXPUI-01..06 | P0-P1 | Exploratoria UI | RBAC visual, umbral, solicitante, Delete y etiquetas accesibles | Sí |
+| MUT-EXP-01..16 | P0-P1 | Mutación black-box | Delete, replace, boundary, type, reference y trust-boundary | Sí |
 
-Total automatizado disponible: **119 pruebas en 23 archivos**. Todas se descubren con `npx playwright test --list`.
+Total automatizado disponible: **137 pruebas en 25 archivos**. Todas se descubren con `npx playwright test --list`.
 

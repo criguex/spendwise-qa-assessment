@@ -15,6 +15,7 @@
     "test:smoke": "playwright test --grep @smoke",
     "test:negative": "playwright test --grep @negative",
     "test:boundary": "playwright test --grep @boundary",
+    "test:mutation": "playwright test tests/component/expense-mutants.spec.ts tests/api/mutation-scenarios.spec.ts --workers=1",
     "test:postman": "node scripts/run-postman.mjs",
     "typecheck": "tsc --noEmit",
     "report": "playwright show-report",

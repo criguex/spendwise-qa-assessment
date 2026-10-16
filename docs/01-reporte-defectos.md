@@ -184,16 +184,16 @@
 - Reproducibilidad: confirmada por `E2E-M12` con descarga real.
 - Evidencia: `evidence/selected/BUG-13/` y reporte Playwright.
 
-## BUG-14 — API acepta campos obligatorios vacíos o ausentes
+## BUG-14 — API acepta campos obligatorios inválidos y coerciona tipos
 
 - Reglas: RN-01 y RN-06; descripción, monto y fecha son obligatorios y una entrada inválida debe devolver 400.
 - Rol: Employee (`employee2@spendwise.test`).
-- Pasos: crear un gasto con descripción formada solo por espacios; repetir omitiendo `date`.
+- Pasos: crear un gasto con descripción formada solo por espacios; repetir omitiendo `amount`, omitiendo `date` y enviando `amount: "10.00"` como string JSON.
 - Esperado: HTTP 400 y ningún registro persistido.
-- Obtenido: HTTP 201. La descripción queda como tres espacios y la fecha omitida se persiste como `0001-01-01`; ambos quedan `AutoApproved`.
+- Obtenido: HTTP 201. La descripción queda como espacios, amount ausente se vuelve `0`, la fecha ausente se vuelve `0001-01-01` y el string numérico se coerciona a `10.00`; quedan `AutoApproved`.
 - Impacto: datos sin significado y fechas fuera del dominio contaminan reportes, auditoría y ordenamiento.
 - Severidad / prioridad: Alta / Alta. Reproducido dos veces por variante.
-- Evidencia: `EXPA-01`, `EXPA-02` y trazas de Playwright.
+- Evidencia: `EXPA-01`, `EXPA-02`, `MUT-EXP-02`, `MUT-EXP-06`, `MUT-EXP-10`, `MUT-EXP-11` y trazas de Playwright.
 
 ## BUG-15 — API confía en una URL arbitraria como comprobante cargado
 
