@@ -2,11 +2,13 @@
 
 ## Estado de calidad
 
-Evaluación ampliada el 16 de octubre de 2026. La automatización creció de 46 a 119 pruebas (+159%) en 23 archivos. La regresión integral obtuvo 86 aprobadas y 33 fallidas en 4,1 minutos; los fallos corresponden a incumplimientos reproducibles agrupados en 21 defectos confirmados. La campaña exploratoria añadió 15 controles dirigidos y consolidó ocho defectos nuevos. Postman/Newman conserva 15 solicitudes y 25 aserciones. E2E-06 fue corregido como falso positivo de sincronización: la pantalla de acceso denegado sí funciona.
+Evaluación ampliada el 16 de octubre de 2026. La automatización creció de 46 a 184 pruebas en 28 archivos. La regresión base de 119 obtuvo 86 aprobadas y 33 fallidas en 4,1 minutos. Las campañas exploratorias y mutantes posteriores añadieron 65 controles especializados y elevaron la trazabilidad a 34 defectos confirmados y 8 oportunidades de mejora. Postman/Newman conserva 15 solicitudes y 25 aserciones. E2E-06 fue corregido como falso positivo de sincronización: la pantalla de acceso denegado sí funciona.
 
 Como extensión adicional se incorporaron 18 pruebas de mutación black-box. El catálogo ejecutó 16
 mutantes de solicitudes: 6 fueron rechazados correctamente y 10 sobrevivieron, para un mutation score
-de 37,5%. La suite completa disponible asciende a 137 pruebas en 25 archivos. Los sobrevivientes se
+de 37,5%. La suite completa disponible asciende a 184 pruebas en 28 archivos. La expansión cruzada
+añadió 47 escenarios API/E2E y confirmó 13 defectos adicionales después de doble o triple reproducción.
+El total asciende a 34 defectos y 8 oportunidades de mejora separadas. Los sobrevivientes se
 consolidaron con defectos existentes para no duplicar hallazgos por la misma causa raíz.
 
 ## Riesgos principales

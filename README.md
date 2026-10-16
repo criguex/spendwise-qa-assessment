@@ -49,12 +49,14 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 - `openapi/spendwise-openapi.json`: contrato de la API suministrada por el entorno.
 - `docs/06-observacion-no-funcional.md`: medición serial segura y límites de rendimiento.
 - `docs/07-pruebas-mutantes.md`: operadores y mutation score de solicitudes black-box.
+- `docs/08-informe-mutacion-ampliada.html`: BUG-22 a BUG-34 con cURL, videos, capturas y traces.
+- `docs/09-oportunidades-mejora.md`: recomendaciones IMP-01 a IMP-08 separadas de los defectos.
 
 ## Resultado final verificado
 
-- Playwright: 137 pruebas disponibles en 25 archivos. Última regresión base: 119, con 86 aprobadas y 33 fallidas. Campaña mutante adicional: 16 mutantes, 6 muertos, 10 sobrevivientes y score 37,5%; catálogo 2/2 aprobado.
+- Playwright: 184 pruebas disponibles en 28 archivos. Última regresión base: 119, con 86 aprobadas y 33 fallidas. La expansión agregó 47 escenarios API/E2E y confirmó 13 defectos adicionales tras doble/triple reproducción.
 - Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
-- Hallazgos: 21 defectos confirmados; la última ampliación agregó BUG-14 a BUG-21.
+- Hallazgos: 34 defectos confirmados y 8 oportunidades de mejora; la última ampliación agregó BUG-22 a BUG-34.
 - Recomendación: **NO GO condicionado**.
 
 ## Uso de IA

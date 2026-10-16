@@ -36,9 +36,9 @@
   <section>
     <h2>Resumen ejecutivo</h2>
     <div class="cards">
-      <div class="card"><div class="metric">21</div><div class="label">defectos confirmados</div></div>
-      <div class="card"><div class="metric">11</div><div class="label">severidad alta</div></div>
-      <div class="card"><div class="metric">10</div><div class="label">severidad media</div></div>
+      <div class="card"><div class="metric">34</div><div class="label">defectos confirmados</div></div>
+      <div class="card"><div class="metric">13</div><div class="label">severidad alta</div></div>
+      <div class="card"><div class="metric">21</div><div class="label">severidad media</div></div>
       <div class="card"><div class="metric">4</div><div class="label">capas de prueba afectadas</div></div>
     </div>
     <div class="decision"><strong>Recomendación: NO GO condicionado.</strong> No se recomienda liberar hasta corregir o aceptar formalmente los defectos de severidad alta relacionados con integridad financiera, validación del motor de políticas y eliminación de registros en estado final.</div>
@@ -209,6 +209,8 @@ curl -sk -i -X POST "${API_URL}/api/v1/expenses" -H "Authorization: Bearer ${EMP
   </section>
 
   <section><h2>Criterios y próximos pasos</h2><div class="risk-grid">
+    <div class="note"><b>Ampliación mutante</b><br>Los defectos BUG-22 a BUG-34, con cURL, doble/triple reproducción, videos, capturas y traces, están detallados en <a href="08-informe-mutacion-ampliada.html">el informe HTML de mutación ampliada</a>.</div>
+    <div class="note"><b>Mejoras separadas</b><br>Las recomendaciones que no cumplen el umbral de defecto se registran como IMP-01 a IMP-08 en <a href="09-oportunidades-mejora.md">Oportunidades de mejora</a>.</div>
     <div class="note"><b>Severidad</b><br>Representa el impacto técnico y de negocio. Alta implica integridad financiera, pérdida de trazabilidad, configuración crítica inválida o error interno provocado por datos de usuario.</div>
     <div class="note"><b>Prioridad</b><br>Representa la urgencia de corrección. Los hallazgos alta/alta deben resolverse antes de recomendar liberación.</div>
     <div class="note"><b>Retest</b><br>Reejecutar casos individuales, luego regresión API/contrato/integración y finalmente los flujos E2E afectados.</div>

@@ -45,6 +45,9 @@
 | APR-CON-01 | P0 | Contrato de consumidor | La cola identifica al solicitante requerido para decidir | Sí |
 | EXPUI-01..06 | P0-P1 | Exploratoria UI | RBAC visual, umbral, solicitante, Delete y etiquetas accesibles | Sí |
 | MUT-EXP-01..16 | P0-P1 | Mutación black-box | Delete, replace, boundary, type, reference y trust-boundary | Sí |
+| MUT-AUTH/EXPQ/APR/POL/REP/REC | P0-P1 | Mutación cruzada API | 24 mutantes sobre seis módulos; 14 candidatos estables antes de depuración | Sí |
+| MUT-STATE-01..10 | P0-P1 | Mutación E2E de estado | Refresh, Back, cancelación, doble submit, paginación, deep links y logout | Sí |
+| MUT-UI-01..13 | P1 | UI mutante | Teclado, filtros, labels, errores, búsqueda y viewport móvil | Sí |
 
-Total automatizado disponible: **137 pruebas en 25 archivos**. Todas se descubren con `npx playwright test --list`.
+Total automatizado disponible: **184 pruebas en 28 archivos**. Todas se descubren con `npx playwright test --list`.
 

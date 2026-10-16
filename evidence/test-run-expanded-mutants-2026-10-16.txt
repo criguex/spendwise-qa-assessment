@@ -1,0 +1,38 @@
+EXPANSIÓN MUTANTE MULTIAGENTE — 2026-10-16
+
+Suite disponible final: 184 pruebas / 28 archivos
+Escenarios agregados en esta expansión: 47
+
+API cross-module
+================
+Mutantes: 24
+Reproducciones: corrida inicial, confirmación completa y corrida focalizada
+Candidatos estables antes de depuración: 14
+Descartados por requisito insuficiente: pageSize=101 y caracteres de control en search
+Consolidados con defectos existentes: page 0/-1 y status inválido de Reports
+Defectos nuevos promovidos: BUG-22 a BUG-29
+
+E2E navegación y estado
+=======================
+Escenarios: 10
+Defectos nuevos: 0
+Controles conformes: refresh/back sin borrador, doble submit, filtros, paginación,
+browser back, 404 seguro, logout persistente y refresh de Reports.
+
+UI, errores y accesibilidad
+===========================
+Escenarios: 13
+Hallazgos reproducidos dos veces: 6
+Consolidado con defecto existente: Notes sin label (BUG-21)
+Defectos nuevos promovidos: BUG-30 a BUG-34
+
+Resultado
+=========
+Defectos confirmados acumulados: 34
+Oportunidades de mejora: 8
+Fallos de infraestructura del producto: 0
+Hallazgos sin clasificar: 0
+
+Todos los videos UI seleccionados incluyen cursor visible. Cada candidato UI conserva dos videos,
+dos capturas, dos traces y dos contextos. Cada candidato API conserva cURL sanitizado y trace de
+la tercera reproducción. No se incluyen contraseñas ni tokens.

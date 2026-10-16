@@ -26,6 +26,19 @@
 | BUG-19 | Cola de aprobación omite quién presentó el gasto | RN-43 | Alta | Alta | Confirmado |
 | BUG-20 | UI ofrece eliminar gastos en estados finales | RN-51, RN-52 | Media | Alta | Confirmado |
 | BUG-21 | Campo Notes no está asociado a su etiqueta | RN-72 | Media | Media | Confirmado |
+| BUG-22 | `pageSize=0` se acepta en listado de gastos | RN-06 | Media | Alta | Confirmado 3/3 |
+| BUG-23 | Estado inexistente se ignora en listado de gastos | RN-06, RN-60 | Media | Media | Confirmado 3/3 |
+| BUG-24 | Categoría inexistente se ignora en listado de gastos | RN-05, RN-06 | Media | Media | Confirmado 3/3 |
+| BUG-25 | ID de aprobación malformado devuelve 404 vacío | RN-06 | Media | Media | Confirmado 3/3 |
+| BUG-26 | API de reportes acepta rango de fechas invertido | RN-06, RN-61 | Media | Alta | Confirmado 3/3 |
+| BUG-27 | Reportes acepta categoría inexistente como resultado vacío | RN-05, RN-06 | Media | Media | Confirmado 3/3 |
+| BUG-28 | Archivo ejecutable disfrazado de PDF provoca HTTP 500 | RN-21, RN-22 | Alta | Alta | Confirmado 3/3 |
+| BUG-29 | Rechazo sin motivo o con espacios cambia el estado | RN-41, RN-50 | Alta | Alta | Confirmado 3/3 |
+| BUG-30 | Login vacío no presenta error persistente accesible | RN-70, RN-72 | Media | Media | Confirmado 2/2 |
+| BUG-31 | Filtro activo no expone su estado accesible | RN-60, RN-72 | Media | Media | Confirmado 2/2 |
+| BUG-32 | Filtros de Reports no están asociados a sus etiquetas | RN-72 | Media | Media | Confirmado 2/2 |
+| BUG-33 | UI de Reports envía rangos de fecha invertidos | RN-70, RN-71 | Media | Alta | Confirmado 2/2 |
+| BUG-34 | My Expenses desborda 102 px en viewport móvil | Interfaz | Media | Media | Confirmado 2/2 |
 
 ## BUG-01 — La API crea gastos con monto igual a cero
 
@@ -268,6 +281,129 @@
 - Impacto: lectores de pantalla no reciben la misma etiqueta visible y la automatización semántica se degrada.
 - Severidad / prioridad: Media / Media.
 - Evidencia: `EXPUI-06` y `evidence/selected/BUG-21/`.
+
+## BUG-22 — `pageSize=0` se acepta en Expenses
+
+- Endpoint: `GET /api/v1/expenses?pageSize=0`; regla RN-06.
+- Esperado: 400 con validación del mínimo 1.
+- Actual: 200 con `items: []`, un `totalCount` positivo y `pageSize: 0`.
+- Impacto: contrato paginado incoherente; clientes pueden interpretar un listado vacío como ausencia de datos.
+- Severidad / prioridad: Media / Alta. Reproducido 3/3.
+- Evidencia: `MUT-EXPQ-04`, `evidence/selected/CAND-API-EXPQ-04/`.
+
+## BUG-23 — Estado inexistente se ignora en Expenses
+
+- Endpoint: `GET /api/v1/expenses?status=Deleted`; reglas RN-06/RN-60.
+- Esperado: 400 por estado fuera del ciclo de vida.
+- Actual: 200 y registros de estados distintos; el filtro se ignora silenciosamente.
+- Impacto: un consumidor cree haber filtrado datos cuando recibe el universo completo.
+- Severidad / prioridad: Media / Media. Reproducido 3/3.
+- Evidencia: `MUT-EXPQ-06`, `evidence/selected/CAND-API-EXPQ-06/`.
+
+## BUG-24 — Categoría inexistente se ignora en Expenses
+
+- Endpoint: `GET /api/v1/expenses?categoryId=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa`; RN-05/RN-06.
+- Esperado: 400 indicando referencia de catálogo inválida.
+- Actual: 200 y listado sin filtrar.
+- Impacto: resultados incorrectos con apariencia válida y comportamiento distinto al alta de gastos.
+- Severidad / prioridad: Media / Media. Reproducido 3/3.
+- Evidencia: `MUT-EXPQ-07`, `evidence/selected/CAND-API-EXPQ-07/`.
+
+## BUG-25 — ID de aprobación malformado devuelve 404 vacío
+
+- Endpoint: `PUT /api/v1/approvals/not-a-uuid/approve`; RN-06.
+- Esperado: 400 comprensible antes de consultar el recurso.
+- Actual: 404 con cuerpo vacío, indistinguible de un UUID válido inexistente.
+- Impacto: contrato de errores inconsistente y diagnóstico insuficiente para integradores.
+- Severidad / prioridad: Media / Media. Reproducido 3/3.
+- Evidencia: `MUT-APR-01`, `evidence/selected/CAND-API-APR-01/`.
+
+## BUG-26 — Reports API acepta rango invertido
+
+- Endpoint: `GET /api/v1/reports?dateFrom=2026-10-31&dateTo=2026-10-01`; RN-06/RN-61.
+- Esperado: 400 explicando que From debe ser anterior o igual a To.
+- Actual: 200 con métricas cero y colecciones vacías.
+- Impacto: un error de entrada se confunde con un periodo sin actividad financiera.
+- Severidad / prioridad: Media / Alta. Reproducido 3/3.
+- Evidencia: `MUT-REP-01`, `evidence/selected/CAND-API-REP-01/`.
+
+## BUG-27 — Reports acepta categoría inexistente
+
+- Endpoint: `GET /api/v1/reports?categoryId=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa`; RN-05/RN-06.
+- Esperado: 400 por referencia inexistente.
+- Actual: 200 con reporte vacío.
+- Impacto: oculta errores de integración como ausencia legítima de gastos.
+- Severidad / prioridad: Media / Media. Reproducido 3/3.
+- Evidencia: `MUT-REP-02`, `evidence/selected/CAND-API-REP-02/`.
+
+## BUG-28 — Falso PDF provoca error interno
+
+- Endpoint: `POST /api/v1/receipts/extract`; RN-21/RN-22.
+- Entrada: archivo `disguised.pdf`, MIME `application/pdf`, bytes con cabecera ejecutable `MZ`.
+- Esperado: 400/415 claro por contenido que no corresponde al tipo declarado.
+- Actual: 500 con `An unexpected error occurred.`.
+- Impacto: contenido controlado por usuario alcanza una ruta no controlada del procesador de recibos.
+- Severidad / prioridad: Alta / Alta. Reproducido 3/3 sin ejecutar el contenido.
+- Evidencia: `MUT-REC-02`, `evidence/selected/CAND-API-REC-02/`.
+
+## BUG-29 — Rechazo sin motivo cambia el estado
+
+- Endpoint: `PUT /api/v1/approvals/{id}/reject`; RN-41/RN-50.
+- Variantes: cuerpo `{}` y `{"reason":"   "}` sobre gastos controlados PendingApproval.
+- Esperado: 400; gasto permanece pendiente y no se agrega transición.
+- Actual: 200; gasto cambia a Rejected con `notes: null`.
+- Impacto: decisión financiera irreversible sin justificación obligatoria y auditoría incompleta.
+- Severidad / prioridad: Alta / Alta. Ambas variantes reproducidas 3/3.
+- Evidencia: `MUT-APR-02/03`, `evidence/selected/CAND-API-APR-02/` y `CAND-API-APR-03/`.
+
+## BUG-30 — Login vacío no comunica el error de forma persistente
+
+- Pantalla: `/login`; RN-70/RN-72.
+- Pasos: dejar email y contraseña vacíos y activar Sign in.
+- Esperado: error visible/programático y foco en el primer campo inválido.
+- Actual: no aparece `login-error`, alert persistente ni foco correctivo.
+- Impacto: el usuario no sabe por qué no avanzó; barrera para teclado y lector de pantalla.
+- Severidad / prioridad: Media / Media. Reproducido 2/2.
+- Evidencia: `MUT-UI-01`, `evidence/selected/CAND-UI-01/run-{1,2}/`.
+
+## BUG-31 — Filtro activo no anuncia selección
+
+- Pantalla: `/expenses`; RN-60/RN-72.
+- Pasos: activar el filtro Approved.
+- Esperado: `aria-pressed=true` o patrón accesible equivalente.
+- Actual: selección expresada únicamente mediante clases/color.
+- Impacto: tecnologías de asistencia no pueden determinar el filtro vigente.
+- Severidad / prioridad: Media / Media. Reproducido 2/2.
+- Evidencia: `MUT-UI-05`, `evidence/selected/CAND-UI-02/run-{1,2}/`.
+
+## BUG-32 — Filtros de Reports carecen de etiquetas asociadas
+
+- Pantalla: `/reports`; RN-72.
+- Controles: From, To, Category y Status.
+- Esperado: cada texto visible nombra programáticamente su control.
+- Actual: `getByLabel('From')` devuelve cero; inspección DOM confirma ausencia de asociación/aria-label.
+- Impacto: navegación por lector de pantalla ambigua y automatización semántica frágil.
+- Severidad / prioridad: Media / Media. Reproducido 2/2.
+- Evidencia: `MUT-UI-09`, `evidence/selected/CAND-UI-03/run-{1,2}/`.
+
+## BUG-33 — UI envía rangos de fecha invertidos
+
+- Pantalla: `/reports`; RN-70/RN-71.
+- Pasos: From `2026-10-20`, To `2026-10-01`.
+- Esperado: validación visible y ninguna consulta incoherente.
+- Actual: se envía la petición con ambos parámetros invertidos; combinada con BUG-26 muestra un reporte vacío.
+- Impacto: el usuario interpreta un error de rango como ausencia de actividad.
+- Severidad / prioridad: Media / Alta. Reproducido 2/2.
+- Evidencia: `MUT-UI-10`, `evidence/selected/CAND-UI-04/run-{1,2}/`.
+
+## BUG-34 — My Expenses desborda horizontalmente en móvil
+
+- Pantalla: `/expenses`, viewport 320×568.
+- Esperado: contenido dentro del viewport o tabla contenida sin desplazar toda la página.
+- Actual: `scrollWidth - clientWidth = 102 px` de forma estable.
+- Impacto: contenido/acciones pueden quedar fuera de vista y requieren desplazamiento lateral global.
+- Severidad / prioridad: Media / Media. Reproducido 2/2.
+- Evidencia: `MUT-UI-13`, `evidence/selected/CAND-UI-06/run-{1,2}/`.
 
 ## Control descartado — E2E-06 acceso directo de Employee a Policy Engine
 
