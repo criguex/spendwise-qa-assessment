@@ -1,0 +1,28 @@
+{
+  "name": "spendwise-quality-suite",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Confidential acceptance and automation suite for the assigned QA environment",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:contract": "playwright test --project=contract",
+    "test:integration": "playwright test --project=integration",
+    "test:e2e": "playwright test --project=e2e",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:negative": "playwright test --grep @negative",
+    "test:boundary": "playwright test --grep @boundary",
+    "typecheck": "tsc --noEmit",
+    "report": "playwright show-report",
+    "quality": "npm run typecheck && npm test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.7.2",
+    "dotenv": "^17.2.3",
+    "typescript": "^5.9.3",
+    "zod": "^4.1.12"
+  }
+}

@@ -1,0 +1,20 @@
+Ejecución inicial automatizada — 2026-10-16
+
+Total: 10
+Pasaron: 9
+Fallaron: 1
+
+PASS AUTH-01
+PASS AUTH-02
+PASS AUTH-03
+PASS AUTH-04
+PASS SEC-01
+PASS CAT-01
+PASS RBAC-01
+PASS RBAC-02
+FAIL VAL-01 — actual 201, esperado 400 (ver BUG-01-api-response.txt)
+PASS POL-01
+
+Duración reportada: 4.32 s.
+No se almacenaron contraseñas, cookies ni tokens.
+

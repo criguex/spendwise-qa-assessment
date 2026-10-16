@@ -1,0 +1,18 @@
+Resultados sanitizados — 2026-10-16
+
+Contract: 2 pass / 4 fail
+- Swagger omite seguridad y 401.
+- Identificadores no cumplen UUID/GUID.
+- Categorías omiten icon.
+
+Integration: 2 pass / 1 fail
+- Auditoría automática y ocultamiento 404 pasaron.
+- Un gasto AutoApproved se eliminó con 204.
+
+E2E inicial: 2 pass / 2 fail.
+- Login válido y mensaje inválido pasaron.
+- Deep link /expenses terminó en /dashboard.
+- El control de botón Atrás se ajustó para verificar ausencia de datos protegidos; pantalla en blanco es aceptable.
+
+E2E ampliado: resultados incluyen navegación por rol y acceso directo a Policy Engine.
+No se incluyen credenciales, cookies, tokens ni trazas sin sanitizar.

@@ -1,0 +1,17 @@
+Suite API Playwright — 2026-10-16
+
+Total: 25 | Pass: 15 | Fail: 10
+
+Fallos confirmados:
+- amount 0: 201 (esperado 400)
+- amount -0.01: 201 (esperado 400)
+- amount 1.001: 201 (esperado 400)
+- description 501: 500 (esperado 400)
+- vendor 201: 500 (esperado 400)
+- notes 1001: 500 (esperado 400)
+- page=0: 500 (esperado 400)
+- policy name vacío: 201 (esperado 400; regla inactiva eliminada luego)
+- policy maxAmount -1: 201 (esperado 400; regla inactiva eliminada luego)
+- policy name 201 caracteres: 500 (esperado 400)
+
+Credenciales, cookies y tokens omitidos.

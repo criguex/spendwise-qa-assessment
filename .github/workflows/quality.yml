@@ -1,0 +1,46 @@
+name: Quality suite
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  static-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+
+  acceptance:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: assessment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+        env:
+          SPENDWISE_WEB_URL: ${{ secrets.SPENDWISE_WEB_URL }}
+          SPENDWISE_API_URL: ${{ secrets.SPENDWISE_API_URL }}
+          SPENDWISE_PROXY_USER: ${{ secrets.SPENDWISE_PROXY_USER }}
+          SPENDWISE_PROXY_PASSWORD: ${{ secrets.SPENDWISE_PROXY_PASSWORD }}
+          SPENDWISE_SEED_PASSWORD: ${{ secrets.SPENDWISE_SEED_PASSWORD }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sanitized-test-results
+          path: |
+            playwright-report/
+            test-results/junit.xml
+          retention-days: 7

@@ -1,0 +1,36 @@
+BUG-01 — Reproducción API (2026-10-16)
+
+Request:
+POST /api/v1/expenses
+Authorization: Bearer [REDACTED]
+Content-Type: application/json
+
+{
+  "description": "QA zero amount 1792170680039",
+  "amount": 0,
+  "date": "2026-10-16"
+}
+
+Expected:
+HTTP 400 con error de validación para amount; ningún gasto creado.
+
+Actual:
+HTTP 201
+
+{
+  "id": "bb3799cb-0607-4a45-a61a-b548180222dd",
+  "expenseNumber": "EXP-2026-0024",
+  "description": "QA zero amount 1792170680039",
+  "vendor": null,
+  "amount": 0,
+  "date": "2026-10-16",
+  "categoryId": null,
+  "categoryName": null,
+  "status": "AutoApproved",
+  "notes": null,
+  "receiptUrl": null,
+  "createdAt": "2026-10-16T17:11:20.2802689Z"
+}
+
+Credenciales, cookie de acceso y token omitidos.
+
