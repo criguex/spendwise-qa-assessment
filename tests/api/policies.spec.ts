@@ -20,7 +20,16 @@ test.describe('Policy validation', () => {
       const response = await policies.create(session.accessToken, {
         ...scenario, requiresReceipt: false, isActive: false,
       });
-      expect(response.status(), await response.text()).toBe(400);
+      const text = await response.text();
+      let createdId: string | undefined;
+      if (response.status() === 201) {
+        try { createdId = JSON.parse(text).id; } catch { /* response evidence remains in assertion */ }
+      }
+      try {
+        expect(response.status(), text).toBe(400);
+      } finally {
+        if (createdId) await policies.remove(session.accessToken, createdId);
+      }
     });
   }
 });

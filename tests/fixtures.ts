@@ -4,6 +4,8 @@ import { AuthService } from '../src/api/auth-service.js';
 import { ExpenseService } from '../src/api/expense-service.js';
 import { HttpClient } from '../src/api/http-client.js';
 import { PolicyService } from '../src/api/policy-service.js';
+import { AnalyticsService } from '../src/api/analytics-service.js';
+import { ReceiptService } from '../src/api/receipt-service.js';
 
 type Services = {
   http: HttpClient;
@@ -11,6 +13,8 @@ type Services = {
   expenses: ExpenseService;
   approvals: ApprovalService;
   policies: PolicyService;
+  analytics: AnalyticsService;
+  receipts: ReceiptService;
 };
 
 export const test = base.extend<Services>({
@@ -24,6 +28,8 @@ export const test = base.extend<Services>({
   expenses: async ({ http }, use) => use(new ExpenseService(http)),
   approvals: async ({ http }, use) => use(new ApprovalService(http)),
   policies: async ({ http }, use) => use(new PolicyService(http)),
+  analytics: async ({ http }, use) => use(new AnalyticsService(http)),
+  receipts: async ({ http }, use) => use(new ReceiptService(http)),
 });
 
 export { expect } from '@playwright/test';

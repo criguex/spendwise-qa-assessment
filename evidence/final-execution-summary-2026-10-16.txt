@@ -2,18 +2,19 @@ EJECUCIÓN FINAL — 2026-10-16
 
 Playwright
 ==========
-Total: 46
-Aprobadas: 29
-Fallidas: 17
+Suite disponible: 104 pruebas / 20 archivos
+Regresión integral: 103
+Aprobadas: 81
+Fallidas: 22
+Caso adicional E2E-M12: 1 fallo confirmado aislado
 Errores de infraestructura: 0
 Fallos sin clasificar: 0
 
-Por capa:
-- Component: 5 pass / 0 fail
-- Contract: 2 pass / 4 fail
-- API: 15 pass / 10 fail
-- Integration: 2 pass / 1 fail
-- E2E: 5 pass / 2 fail
+Cobertura ampliada:
+- Componentes y contrato de consumidor
+- API: autenticación, sesión, gastos, filtros, políticas, recibos, aprobaciones, dashboard, reportes y RBAC
+- Integración: ciclo de vida, visibilidad, políticas y consistencia analítica
+- E2E: cuatro roles, todos los módulos, accesibilidad, rutas protegidas y CSV
 
 Postman/Newman
 ==============
@@ -23,7 +24,8 @@ Assertions: 25 total / 20 pass / 5 fail
 
 Interpretación
 ==============
-Los fallos son evidencia reproducible de los defectos BUG-01 a BUG-10.
+Los fallos son evidencia reproducible de los defectos BUG-01 a BUG-13.
+BUG-11, BUG-12 y BUG-13 fueron descubiertos por la ampliación; BUG-10 se extendió con acceso directo al formulario.
 E2E-06 fue descartado como defecto tras corregir sincronización y locator; el producto sí muestra access-denied.
 La suite conserva las expectativas del requisito y no se modificó para ocultar
 el comportamiento defectuoso del producto.

@@ -16,4 +16,6 @@ export class AuthService {
     if (response.status() !== 200) throw new Error(`Login failed for ${role}: ${response.status()}`);
     return response.json() as Promise<Session>;
   }
+  me(token: string) { return this.http.get('/api/v1/auth/me', token); }
+  logout(token: string) { return this.http.post('/api/v1/auth/logout', undefined, token); }
 }

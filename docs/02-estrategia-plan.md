@@ -104,4 +104,5 @@ Rendimiento, carga, DoS, acceso a otros entornos, ingeniería social y las funci
 - Caja negra, sin código fuente ni observabilidad interna.
 - Entorno exclusivo pero efímero; la evidencia relevante se conserva localmente.
 - La sesión expira en 60 minutos; la automatización obtiene una sesión nueva por escenario lógico.
+- El enunciado excluye expresamente rendimiento y carga. No se ejecutaron concurrencia, estrés, volumen ni endurance. Solo se registró una observación serial de una llamada por endpoint crítico, sin SLA ni conclusión estadística, en `docs/06-observacion-no-funcional.md`.
 

@@ -46,11 +46,13 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 - `evidence/`: evidencias sanitizadas, sin secretos.
 - `playwright-report/`: reporte HTML generado por la última ejecución integral.
 - `openapi/spendwise-openapi.json`: contrato de la API suministrada por el entorno.
+- `docs/06-observacion-no-funcional.md`: medición serial segura y límites de rendimiento.
 
 ## Resultado final verificado
 
-- Playwright: 46 pruebas, 29 aprobadas y 17 fallidas por defectos confirmados.
+- Playwright: 104 pruebas en 20 archivos; regresión integral de 103 con 81 aprobadas y 22 fallidas, más `E2E-M12` ejecutada aisladamente y fallida por BUG-13.
 - Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
+- Hallazgos: 13 defectos confirmados; la ampliación agregó BUG-11 a BUG-13 y extendió BUG-10.
 - Recomendación: **NO GO condicionado**.
 
 ## Uso de IA

@@ -1,0 +1,25 @@
+Regresión Playwright ampliada — 2026-10-16
+
+Suite disponible: 104 pruebas en 20 archivos.
+Regresión integral ejecutada: 103 pruebas, 81 pass, 22 fail, duración 2.8 min.
+Caso adicional E2E-M12 ejecutado de forma aislada: fail confirmado por BUG-13.
+
+Nuevos defectos confirmados:
+- BUG-11: categoría inexistente devuelve 500, esperado 400 (QUERY-08).
+- BUG-12: reportes incluyen rechazados en totalAmount, totalCount y byCategory (INT-ANA-01..03).
+- BUG-13: CSV exporta descripción con prefijo '=' sin neutralización (E2E-M12).
+- BUG-10 ampliado: Administrator puede abrir /expenses/new además de ver acciones no autorizadas (E2E-M09).
+
+Cobertura nueva aprobada:
+- /auth/me para cuatro roles; token alterado y logout.
+- Dashboard y reportes por cuatro roles; filtros de fecha y autenticación.
+- Colas de aprobación para Manager1, Manager2 y FinanceController; 401/403/404.
+- Búsqueda, filtros de cuatro estados, paginación, recibos inválidos y aislamiento.
+- CRUD de políticas inactivas con cleanup y control de escritura Finance.
+- Navegación E2E de gastos, aprobaciones, políticas y reportes.
+- Controles accesibles críticos y descarga CSV real.
+
+Observación no funcional serial, sin carga ni concurrencia:
+- login 118 ms; dashboard 83 ms; reports 246 ms; expenses 83 ms; approvals 79 ms.
+
+Credenciales, tokens, cookies y secretos omitidos.

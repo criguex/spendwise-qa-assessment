@@ -28,3 +28,19 @@
 | UI-02 | P1 | Recuperación | Error de envío conserva el formulario y muestra un mensaje visible | No |
 | SESS-01 | P0 | Sesión | Sign out elimina cookie; Atrás no revela información protegida | No |
 
+## Ampliación ejecutada
+
+| ID / familia | Prioridad | Técnica | Cobertura agregada | Automatizado |
+|---|---:|---|---|---|
+| AUTHX-01..06 | P0 | Particiones / sesión | `/auth/me` por cuatro roles, token alterado y logout | Sí |
+| ANA-01..12 | P0-P1 | Contrato / invariantes | Dashboard y reportes por rol, aritmética, fechas y autenticación | Sí |
+| APR-01..08 | P0 | Matriz RBAC | Cola de aprobación por rol, 401 y recursos inexistentes | Sí |
+| QUERY-01..08 | P0-P1 | Filtros / particiones | Búsqueda, cuatro estados, paginación, 404 y categoría inexistente | Sí |
+| REC-01..03 | P0 | Seguridad negativa | Autenticación, tipo no permitido y rol Administrator | Sí |
+| INT-POL-01..03 | P0 | Ciclo CRUD / RBAC | Crear, actualizar y eliminar regla inactiva con cleanup; Finance no escribe | Sí |
+| INT-ANA-01..03 | P0 | Consistencia cruzada | Exclusión de rechazados en total, conteo y categorías | Sí |
+| E2E-M01..12 | P0-P1 | E2E por módulo | Gastos, aprobaciones, políticas, reportes, ruta prohibida y CSV | Sí |
+| E2E-A11..13 | P1 | Accesibilidad / roles | Nombres accesibles y navegación Manager/Finance | Sí |
+
+Total automatizado disponible: **104 pruebas en 20 archivos**. Todas se descubren con `npx playwright test --list`.
+

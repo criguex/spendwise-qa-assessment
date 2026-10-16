@@ -15,6 +15,9 @@
 | BUG-08 | Se puede eliminar un gasto AutoApproved | RN-51, RN-52; Anexo F | Alta | Alta | Confirmado |
 | BUG-09 | Login desde ruta protegida no regresa a la ruta original | Anexo G, web-10 | Media | Media | Confirmado |
 | BUG-10 | Administrator ve acción New expense que no puede utilizar | Anexo G, web-14 | Media | Media | Confirmado |
+| BUG-11 | Categoría inexistente produce HTTP 500 | RN-05, RN-06 | Alta | Alta | Confirmado |
+| BUG-12 | Reportes incluyen gastos rechazados en totales y agregados | RN-61 | Alta | Alta | Confirmado |
+| BUG-13 | CSV no neutraliza valores con prefijo de fórmula | RN-63 | Alta | Alta | Confirmado |
 
 ## BUG-01 — La API crea gastos con monto igual a cero
 
@@ -129,16 +132,49 @@
 - Reproducibilidad: confirmada por `E2E-03`.
 - Evidencia: `evidence/selected/BUG-09/` contiene PNG y MP4 seleccionados.
 
-## BUG-10 — Administrator ve una acción New expense no autorizada
+## BUG-10 — Administrator ve y abre una acción New expense no autorizada
 
 - Rol y usuario: Administrator, `admin@spendwise.test`.
 - Precondición: sesión válida de administrador.
-- La API rechaza crear gastos como Administrator, pero Dashboard muestra el botón `New expense`.
-- Esperado: la navegación solo ofrece opciones utilizables por el rol.
-- Resultado obtenido: enlace lateral y botón `New expense` visibles.
+- La API rechaza crear gastos como Administrator, pero Dashboard muestra el botón `New expense`, `Scan receipt` y `Manual entry`.
+- Esperado: la navegación solo ofrece opciones utilizables por el rol y el acceso directo a `/expenses/new` muestra acceso denegado.
+- Resultado obtenido: las acciones rápidas son visibles y la ruta directa abre el formulario completo de creación.
 - Severidad / prioridad: Media / Media; contradicción de permisos y experiencia confusa.
-- Reproducibilidad: confirmada por `E2E-07`.
+- Reproducibilidad: confirmada por `E2E-07` y `E2E-M09`.
 - Evidencia: `evidence/selected/BUG-10/` contiene PNG y MP4 seleccionados.
+
+## BUG-11 — Categoría inexistente produce HTTP 500
+
+- Reglas: RN-05 exige rechazar una categoría inexistente; RN-06 prohíbe 5xx ante entradas inválidas.
+- Rol y usuario: Employee, `employee3@spendwise.test`.
+- Pasos: crear un gasto válido salvo por `categoryId`, usando un UUID aleatorio inexistente.
+- Esperado: HTTP 400 con un mensaje que identifique la categoría inválida; ningún gasto creado.
+- Obtenido: HTTP 500 con `An unexpected error occurred.`.
+- Severidad / prioridad: Alta / Alta; una referencia controlada por el cliente provoca un fallo interno y oculta la causa corregible.
+- Reproducibilidad: confirmada por `QUERY-08` en dos ejecuciones.
+- Evidencia: `evidence/test-run-expanded-2026-10-16.txt` y reporte Playwright.
+
+## BUG-12 — Reportes incluyen gastos rechazados en totales y agregados
+
+- Regla: RN-61 exige excluir gastos rechazados de los totales.
+- Rol y usuario: FinanceController, `finance@spendwise.test`.
+- Pasos: consultar `GET /api/v1/reports`; calcular en el cliente la suma y conteo de `expenses` excluyendo `Rejected`; comparar con `totalAmount`, `totalCount` y `byCategory`.
+- Esperado: métricas y agregados calculados únicamente con gastos no rechazados.
+- Obtenido: `totalAmount` y `byCategory` incluyen USD 1.090 rechazados; `totalCount` incluye dos registros rechazados.
+- Severidad / prioridad: Alta / Alta; presenta información financiera inflada a Finanzas y Administración.
+- Reproducibilidad: 3/3 comprobaciones (`INT-ANA-01` a `INT-ANA-03`).
+- Evidencia: `evidence/test-run-expanded-2026-10-16.txt` y reporte Playwright.
+
+## BUG-13 — CSV no neutraliza valores con prefijo de fórmula
+
+- Regla: RN-63 exige neutralizar valores que empiecen por `=`, `+`, `-` o `@`.
+- Rol y usuario: Employee, `employee3@spendwise.test`.
+- Pasos: crear un gasto cuya descripción comienza por `=2+2`; abrir Reportes; exportar CSV; inspeccionar el campo Description.
+- Esperado: valor neutralizado, por ejemplo con apóstrofo inicial, para impedir evaluación por la hoja de cálculo.
+- Obtenido: el CSV contiene literalmente `"=2+2 QA-..."`.
+- Severidad / prioridad: Alta / Alta; habilita CSV/formula injection al abrir una exportación confiable en Excel o herramientas compatibles.
+- Reproducibilidad: confirmada por `E2E-M12` con descarga real.
+- Evidencia: `evidence/selected/BUG-13/` y reporte Playwright.
 
 ## Control descartado — E2E-06 acceso directo de Employee a Policy Engine
 
