@@ -1,0 +1,20 @@
+Newman — SpendWise QA - Contract, Data and Behavior
+Fecha: 2026-10-16
+
+Requests: 15
+Assertions: 25
+Assertions passed: 20
+Assertions failed: 5 (defectos ya confirmados)
+Duración: 3.1 s
+
+Fallos esperados por comportamiento del producto:
+- Categorías no incluye icon.
+- Monto cero devuelve 201, esperado 400.
+- Monto negativo devuelve 201, esperado 400.
+- Descripción de 501 caracteres devuelve 500, esperado 400.
+- page=0 devuelve 500, esperado 400.
+
+Gate, login positivo/negativo, estructura de login, catálogo de nueve elementos,
+orden alfabético, paginación, monto mínimo, 401 y controles RBAC pasaron.
+
+Credenciales, cookies y tokens omitidos.

@@ -41,6 +41,7 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 - `tests/integration/`: flujos entre servicios y ciclo de vida.
 - `tests/e2e/`: flujos de navegador con POM.
 - `src/`: clientes, servicios, builders, contratos y Page Objects.
+- `postman/`: colección Postman/Newman con validación de estructura, datos y comportamiento.
 - `evidence/`: evidencias sanitizadas, sin secretos.
 - `openapi/spendwise-openapi.json`: contrato de la API suministrada por el entorno.
 

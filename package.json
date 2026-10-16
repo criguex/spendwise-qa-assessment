@@ -15,6 +15,7 @@
     "test:smoke": "playwright test --grep @smoke",
     "test:negative": "playwright test --grep @negative",
     "test:boundary": "playwright test --grep @boundary",
+    "test:postman": "newman run postman/SpendWise-QA.postman_collection.json -e postman/SpendWise-QA.postman_environment.json --insecure",
     "typecheck": "tsc --noEmit",
     "report": "playwright show-report",
     "quality": "npm run typecheck && npm test"
@@ -23,6 +24,7 @@
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.7.2",
     "dotenv": "^17.2.3",
+    "newman": "^6.2.1",
     "typescript": "^5.9.3",
     "zod": "^4.1.12"
   }

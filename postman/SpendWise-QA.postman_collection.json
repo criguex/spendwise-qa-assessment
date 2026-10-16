@@ -1,0 +1,158 @@
+{
+  "info": {
+    "_postman_id": "85c16ee1-70f9-42e5-a00b-584cf071c5f4",
+    "name": "SpendWise QA - Contract, Data and Behavior",
+    "description": "Acceptance collection. Requires local secret variables; never export populated credentials or tokens.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [{ "key": "unique", "value": "" }],
+  "event": [{
+    "listen": "prerequest",
+    "script": { "type": "text/javascript", "exec": [
+      "pm.collectionVariables.set('unique', Date.now() + '-' + Math.random().toString(16).slice(2, 8));"
+    ] }
+  }],
+  "item": [
+    {
+      "name": "00 - Environment Gate",
+      "item": [{
+        "name": "GATE-01 Assigned credentials open API gate",
+        "request": {
+          "method": "GET",
+          "auth": { "type": "basic", "basic": [
+            { "key": "username", "value": "{{proxyUser}}", "type": "string" },
+            { "key": "password", "value": "{{proxyPassword}}", "type": "string" }
+          ]},
+          "url": "{{apiUrl}}/__gate"
+        },
+        "event": [{ "listen": "test", "script": { "exec": [
+          "pm.test('Gate redirects to Swagger or resolves successfully', () => pm.expect([200, 302]).to.include(pm.response.code));",
+          "pm.test('No server error', () => pm.expect(pm.response.code).to.be.below(500));"
+        ]}}]
+      }]
+    },
+    {
+      "name": "01 - Authentication",
+      "item": [
+        {
+          "name": "AUTH-01 Employee login - positive",
+          "request": {
+            "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{employeeEmail}}\",\n  \"password\": \"{{seedPassword}}\"\n}" },
+            "url": "{{apiUrl}}/api/v1/auth/login"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+            "const json = pm.response.json();",
+            "pm.test('Login structure', () => { pm.expect(json).to.have.keys('accessToken','expiresAt','user'); pm.expect(json.accessToken).to.be.a('string').and.not.empty; pm.expect(json.user.email).to.eql(pm.environment.get('employeeEmail')); pm.expect(json.user.roles).to.include('Employee'); });",
+            "pm.environment.set('employeeToken', json.accessToken);"
+          ]}}]
+        },
+        {
+          "name": "AUTH-02 Invalid credentials - negative",
+          "request": {
+            "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"email\":\"unknown-{{unique}}@spendwise.test\",\"password\":\"WrongPass1\"}" },
+            "url": "{{apiUrl}}/api/v1/auth/login"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+            "const json = pm.response.json();",
+            "pm.test('Does not disclose account existence', () => { pm.expect(json.code).to.eql('invalid_credentials'); pm.expect(json.message).to.eql('Invalid email or password.'); });"
+          ]}}]
+        },
+        {
+          "name": "AUTH-03 Empty login - validation",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"\",\"password\":\"\"}" }, "url": "{{apiUrl}}/api/v1/auth/login" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('HTTP 400', () => pm.response.to.have.status(400));"]}}]
+        },
+        {
+          "name": "AUTH-04 Admin login",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"{{adminEmail}}\",\"password\":\"{{seedPassword}}\"}" }, "url": "{{apiUrl}}/api/v1/auth/login" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+            "const json = pm.response.json(); pm.environment.set('adminToken', json.accessToken);",
+            "pm.test('Administrator role', () => pm.expect(json.user.roles).to.include('Administrator'));"
+          ]}}]
+        }
+      ]
+    },
+    {
+      "name": "02 - Contract and Catalog",
+      "item": [
+        {
+          "name": "CAT-01 Categories structure and order",
+          "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "url": "{{apiUrl}}/api/v1/categories" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+            "const json = pm.response.json();",
+            "pm.test('Exactly nine categories', () => pm.expect(json).to.have.lengthOf(9));",
+            "pm.test('Required structure', () => json.forEach(c => { pm.expect(c).to.have.property('id'); pm.expect(c).to.have.property('name'); pm.expect(c).to.have.property('icon'); pm.expect(c).to.have.property('description'); }));",
+            "pm.test('Alphabetical order', () => { const names=json.map(c=>c.name); pm.expect(names).to.eql([...names].sort((a,b)=>a.localeCompare(b))); });"
+          ]}}]
+        },
+        {
+          "name": "CON-01 Expense list pagination structure",
+          "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "url": "{{apiUrl}}/api/v1/expenses?page=1&pageSize=20" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('HTTP 200', () => pm.response.to.have.status(200)); const j=pm.response.json();",
+            "pm.test('Pagination envelope', () => { pm.expect(j).to.have.all.keys('items','totalCount','page','pageSize'); pm.expect(j.items).to.be.an('array'); pm.expect(j.totalCount).to.be.a('number'); pm.expect(j.page).to.eql(1); pm.expect(j.pageSize).to.eql(20); });"
+          ]}}]
+        }
+      ]
+    },
+    {
+      "name": "03 - Expense Behavior and Boundaries",
+      "item": [
+        {
+          "name": "EXP-01 Minimum positive amount - positive",
+          "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"description\":\"Postman minimum {{unique}}\",\"amount\":0.01,\"date\":\"2026-10-16\"}" }, "url": "{{apiUrl}}/api/v1/expenses" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('HTTP 201', () => pm.response.to.have.status(201)); const j=pm.response.json();",
+            "pm.test('Data preserved', () => { pm.expect(j.amount).to.eql(0.01); pm.expect(j.description).to.include('Postman minimum'); pm.expect(j.status).to.eql('AutoApproved'); });"
+          ]}}]
+        },
+        {
+          "name": "EXP-02 Zero amount - negative boundary",
+          "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"description\":\"Postman zero {{unique}}\",\"amount\":0,\"date\":\"2026-10-16\"}" }, "url": "{{apiUrl}}/api/v1/expenses" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Rejected with HTTP 400', () => pm.response.to.have.status(400));", "pm.test('Error names amount', () => pm.expect(pm.response.text().toLowerCase()).to.include('amount'));"]}}]
+        },
+        {
+          "name": "EXP-03 Negative amount - negative boundary",
+          "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"description\":\"Postman negative {{unique}}\",\"amount\":-0.01,\"date\":\"2026-10-16\"}" }, "url": "{{apiUrl}}/api/v1/expenses" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('Rejected with HTTP 400', () => pm.response.to.have.status(400));"]}}]
+        },
+        {
+          "name": "EXP-04 Description max plus one",
+          "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"description\":\"{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}{{$randomLoremText}}\",\"amount\":1,\"date\":\"2026-10-16\"}" }, "url": "{{apiUrl}}/api/v1/expenses" },
+          "event": [{ "listen": "prerequest", "script": { "exec": ["pm.variables.set('longDescription', 'x'.repeat(501));", "pm.request.body.raw = JSON.stringify({description: pm.variables.get('longDescription'), amount: 1, date: '2026-10-16'});"]}}, { "listen": "test", "script": { "exec": ["pm.test('Validation error, never 5xx', () => pm.response.to.have.status(400));"]}}]
+        },
+        {
+          "name": "EXP-05 Invalid page zero",
+          "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "url": "{{apiUrl}}/api/v1/expenses?page=0" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('HTTP 400, never 5xx', () => pm.response.to.have.status(400));"]}}]
+        }
+      ]
+    },
+    {
+      "name": "04 - Authorization",
+      "item": [
+        {
+          "name": "RBAC-01 Protected endpoint without token",
+          "request": { "method": "GET", "url": "{{apiUrl}}/api/v1/expenses" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('HTTP 401', () => pm.response.to.have.status(401));"]}}]
+        },
+        {
+          "name": "RBAC-02 Employee cannot read policies",
+          "request": { "method": "GET", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{employeeToken}}", "type": "string" }]}, "url": "{{apiUrl}}/api/v1/policies" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('HTTP 403', () => pm.response.to.have.status(403));"]}}]
+        },
+        {
+          "name": "RBAC-03 Administrator cannot create expense",
+          "request": { "method": "POST", "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}", "type": "string" }]}, "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"description\":\"Forbidden admin {{unique}}\",\"amount\":1,\"date\":\"2026-10-16\"}" }, "url": "{{apiUrl}}/api/v1/expenses" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('HTTP 403', () => pm.response.to.have.status(403));"]}}]
+        }
+      ]
+    }
+  ]
+}
