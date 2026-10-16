@@ -20,6 +20,7 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
   },
   projects: [
+    { name: 'component', testDir: './tests/component' },
     { name: 'contract', testDir: './tests/contract' },
     { name: 'api', testDir: './tests/api' },
     { name: 'integration', testDir: './tests/integration', workers: 1 },
