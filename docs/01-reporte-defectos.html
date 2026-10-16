@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>E1 — Informe de defectos | SpendWise</title>
+  <style>
+    :root{--ink:#172033;--muted:#64748b;--line:#dce3ed;--paper:#fff;--bg:#eef2f7;--navy:#102a43;--blue:#2563eb;--high:#b42318;--high-bg:#fff0ee;--medium:#9a6700;--medium-bg:#fff8db;--ok:#027a48;--ok-bg:#ecfdf3}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+    main{max-width:1120px;margin:32px auto;background:var(--paper);box-shadow:0 14px 45px #102a4322;border-radius:18px;overflow:hidden}
+    header{padding:48px 56px;background:linear-gradient(135deg,#0b1f33,#164e63);color:#fff}
+    header p{max-width:820px;color:#d7e5ef;margin:8px 0 0}.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:#67e8f9}
+    h1{font-size:38px;line-height:1.1;margin:10px 0}.meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:24px;font-size:13px}
+    section{padding:34px 56px;border-bottom:1px solid var(--line)} h2{font-size:23px;color:var(--navy);margin:0 0 18px} h3{margin:0;color:var(--navy);font-size:19px}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{border:1px solid var(--line);border-radius:12px;padding:18px}.metric{font-size:31px;font-weight:800;color:var(--navy)}.label{color:var(--muted);font-size:13px}
+    .decision{margin-top:18px;border-left:5px solid var(--high);background:var(--high-bg);padding:16px 18px;border-radius:8px}.decision strong{color:var(--high)}
+    table{width:100%;border-collapse:collapse;font-size:13px}th{background:#f4f7fb;text-align:left;color:#334155}th,td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}tr:hover td{background:#fafcff}
+    .badge{display:inline-block;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:800;white-space:nowrap}.high{background:var(--high-bg);color:var(--high)}.medium{background:var(--medium-bg);color:var(--medium)}.confirmed{background:var(--ok-bg);color:var(--ok)}
+    .defect{border:1px solid var(--line);border-radius:14px;margin:18px 0;overflow:hidden;break-inside:avoid}.defect-head{display:flex;justify-content:space-between;gap:18px;padding:18px 20px;background:#f8fafc;border-bottom:1px solid var(--line)}.defect-body{padding:18px 20px}.tags{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+    dl{display:grid;grid-template-columns:175px 1fr;gap:7px 16px;margin:0}dt{font-weight:750;color:#334155}dd{margin:0}ol{margin:5px 0;padding-left:20px}.evidence{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#334155;background:#f1f5f9;border-radius:6px;padding:3px 7px}
+    .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.note{padding:15px;border:1px solid var(--line);border-radius:10px;background:#f8fafc}.footer{padding:26px 56px;color:var(--muted);font-size:12px;background:#f8fafc}
+    @media(max-width:760px){main{margin:0;border-radius:0}header,section,.footer{padding:28px 22px}.cards,.risk-grid{grid-template-columns:1fr 1fr}dl{grid-template-columns:1fr;gap:2px}.defect-head{display:block}.tags{margin-top:10px}table{display:block;overflow:auto}}
+    @media print{body{background:#fff}main{margin:0;max-width:none;box-shadow:none}.defect{break-inside:avoid}header{print-color-adjust:exact;-webkit-print-color-adjust:exact}.footer{display:none}}
+  </style>
+</head>
+<body><main>
+  <header>
+    <div class="eyebrow">Entregable E1 · Quality Assurance</div>
+    <h1>Informe de defectos</h1>
+    <p>Hallazgos reproducidos durante las pruebas de API, contrato, integración y extremo a extremo. El informe separa impacto técnico de urgencia y conserva trazabilidad hacia reglas, casos y evidencia automatizada.</p>
+    <div class="meta"><span><b>Fecha:</b> 16 de octubre de 2026</span><span><b>Ambiente:</b> entorno exclusivo de evaluación</span><span><b>Estado:</b> ejecución final</span></div>
+  </header>
+
+  <section>
+    <h2>Resumen ejecutivo</h2>
+    <div class="cards">
+      <div class="card"><div class="metric">11</div><div class="label">defectos confirmados</div></div>
+      <div class="card"><div class="metric">5</div><div class="label">severidad alta</div></div>
+      <div class="card"><div class="metric">6</div><div class="label">severidad media</div></div>
+      <div class="card"><div class="metric">4</div><div class="label">capas de prueba afectadas</div></div>
+    </div>
+    <div class="decision"><strong>Recomendación: NO GO condicionado.</strong> No se recomienda liberar hasta corregir o aceptar formalmente los defectos de severidad alta relacionados con integridad financiera, validación del motor de políticas y eliminación de registros en estado final.</div>
+  </section>
+
+  <section>
+    <h2>Matriz de hallazgos</h2>
+    <table><thead><tr><th>ID</th><th>Título orientado al impacto</th><th>Regla</th><th>Severidad</th><th>Prioridad</th><th>Estado</th></tr></thead><tbody>
+      <tr><td><b>BUG-01</b></td><td>La API crea gastos con monto igual a cero</td><td>RN-02, RN-06</td><td><span class="badge high">Alta</span></td><td>Alta</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-02</b></td><td>La API acepta montos negativos y más de dos decimales</td><td>RN-02</td><td><span class="badge high">Alta</span></td><td>Alta</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-03</b></td><td>Longitudes inválidas producen HTTP 500</td><td>RN-04, RN-06</td><td><span class="badge high">Alta</span></td><td>Alta</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-04</b></td><td>Paginación inválida produce HTTP 500</td><td>RN-06</td><td><span class="badge medium">Media</span></td><td>Alta</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-05</b></td><td>El motor acepta reglas inválidas</td><td>RN-32</td><td><span class="badge high">Alta</span></td><td>Alta</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-06</b></td><td>Swagger omite seguridad, errores y esquemas</td><td>Contrato API</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-07</b></td><td>IDs incumplen GUID y categoría omite icono</td><td>Anexos C/D</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-08</b></td><td>Es posible eliminar un gasto AutoApproved</td><td>RN-51, RN-52</td><td><span class="badge high">Alta</span></td><td>Alta</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-09</b></td><td>El login pierde la ruta protegida original</td><td>WEB-10</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-10</b></td><td>Administrator ve una acción que no puede usar</td><td>WEB-14</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+      <tr><td><b>BUG-11</b></td><td>Employee no recibe la pantalla access-denied</td><td>WEB-15</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
+    </tbody></table>
+  </section>
+
+  <section><h2>Detalle reproducible</h2>
+    <article class="defect"><div class="defect-head"><h3>BUG-01 · Creación de gasto con monto cero</h3><div class="tags"><span class="badge high">Alta / Alta</span><span class="badge confirmed">2/2</span></div></div><div class="defect-body"><dl>
+      <dt>Precondiciones</dt><dd>Sesión válida con rol Employee.</dd><dt>Pasos</dt><dd><ol><li>Autenticarse por API.</li><li>Enviar <code>POST /api/v1/expenses</code> con fecha vigente, descripción única y <code>amount: 0</code>.</li></ol></dd><dt>Esperado</dt><dd>HTTP 400, mensaje que identifique <code>amount</code> y ningún recurso creado.</dd><dt>Actual</dt><dd>HTTP 201; el gasto queda persistido.</dd><dt>Impacto</dt><dd>Contamina información contable, listados, métricas y auditoría con una transacción inválida.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/BUG-01-api-response.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-02 · Montos negativos y precisión inválida</h3><div class="tags"><span class="badge high">Alta / Alta</span><span class="badge confirmed">Confirmado</span></div></div><div class="defect-body"><dl>
+      <dt>Datos de prueba</dt><dd><code>-0.01</code> y <code>1.001</code>.</dd><dt>Pasos</dt><dd>Enviar cada valor como <code>amount</code> al crear un gasto con sesión Employee.</dd><dt>Esperado</dt><dd>HTTP 400 y ausencia del recurso.</dd><dt>Actual</dt><dd>HTTP 201; ambos recursos quedan creados con estado <code>AutoApproved</code>.</dd><dt>Impacto</dt><dd>Permite importes financieros inválidos y altera reportes, tablero y auditoría.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-03 · Límites de texto generan error interno</h3><div class="tags"><span class="badge high">Alta / Alta</span></div></div><div class="defect-body"><dl>
+      <dt>Datos de prueba</dt><dd>Descripción 501, proveedor 201 y notas 1001 caracteres.</dd><dt>Pasos</dt><dd>Crear un gasto variando un campo por solicitud por encima de su límite.</dd><dt>Esperado</dt><dd>HTTP 400 con campo y restricción infringida.</dd><dt>Actual</dt><dd>HTTP 500 con <code>An unexpected error occurred.</code> en los tres casos.</dd><dt>Impacto</dt><dd>Una entrada controlada por el usuario causa un fallo interno y oculta la corrección necesaria.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-04 · Paginación inválida genera HTTP 500</h3><div class="tags"><span class="badge medium">Media / Alta</span></div></div><div class="defect-body"><dl>
+      <dt>Pasos</dt><dd>Ejecutar <code>GET /api/v1/expenses?page=0</code> con sesión válida. La suite también prueba tamaño negativo y texto no numérico.</dd><dt>Esperado</dt><dd>HTTP 400 con mensaje de validación comprensible.</dd><dt>Actual</dt><dd>HTTP 500.</dd><dt>Impacto</dt><dd>Parámetros de cliente inválidos se procesan como fallos del servidor, afectando estabilidad y observabilidad.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-05 · El motor permite reglas inválidas</h3><div class="tags"><span class="badge high">Alta / Alta</span></div></div><div class="defect-body"><dl>
+      <dt>Datos de prueba</dt><dd>Regla con nombre vacío y regla con límite negativo.</dd><dt>Pasos</dt><dd>Crear cada regla mediante el endpoint de políticas con un usuario autorizado.</dd><dt>Esperado</dt><dd>HTTP 400; configuración no persistida.</dd><dt>Actual</dt><dd>HTTP 201; se crean reglas inactivas. Fueron eliminadas después de obtener evidencia.</dd><dt>Impacto</dt><dd>Configuración sensible queda inconsistente y podría alterar decisiones si se activa.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-06 · Contrato Swagger incompleto</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
+      <dt>Pasos</dt><dd>Inspeccionar la especificación OpenAPI y sus operaciones protegidas.</dd><dt>Esperado</dt><dd><code>securitySchemes</code>, seguridad por operación, respuestas 400/401/403/404 y esquemas de respuesta.</dd><dt>Actual</dt><dd>No se define el esquema de seguridad; predominan respuestas exitosas genéricas sin modelos ni errores.</dd><dt>Impacto</dt><dd>Dificulta la integración, la generación de clientes y la automatización contractual segura.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-07 · Identificadores e icono incumplen el modelo</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
+      <dt>Pasos</dt><dd>Validar respuestas de login, gastos y categorías contra el modelo declarado.</dd><dt>Esperado</dt><dd>Identificadores con formato GUID y propiedad <code>icon</code> en categoría.</dd><dt>Actual</dt><dd>Se reciben identificadores no válidos como UUID; categorías omiten <code>icon</code>.</dd><dt>Impacto</dt><dd>Rompe consumidores tipados, validadores de contrato y expectativas de interoperabilidad.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-08 · Eliminación de gasto en estado final</h3><div class="tags"><span class="badge high">Alta / Alta</span></div></div><div class="defect-body"><dl>
+      <dt>Pasos</dt><dd><ol><li>Crear un gasto de USD 10.</li><li>Confirmar estado <code>AutoApproved</code>.</li><li>Enviar <code>DELETE /expenses/{id}</code>.</li></ol></dd><dt>Esperado</dt><dd>Operación rechazada; gasto e historial conservados.</dd><dt>Actual</dt><dd>HTTP 204 y recurso eliminado.</dd><dt>Impacto</dt><dd>Pérdida de una decisión final y de su trazabilidad; riesgo de auditoría e integridad.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-09 · El login pierde el deep link</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
+      <dt>Pasos</dt><dd>Abrir <code>/expenses</code> sin sesión y autenticarse después de la redirección.</dd><dt>Esperado</dt><dd>Retorno a <code>/expenses</code>.</dd><dt>Actual</dt><dd>Redirección a <code>/dashboard</code>.</dd><dt>Impacto</dt><dd>Rompe la continuidad, los favoritos y enlaces compartidos hacia funciones protegidas.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-10 · Acción no autorizada visible para Administrator</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
+      <dt>Pasos</dt><dd>Iniciar sesión como Administrator y revisar el Dashboard.</dd><dt>Esperado</dt><dd>La navegación solo muestra acciones permitidas al rol.</dd><dt>Actual</dt><dd>Se muestra <code>New expense</code>, aunque la API rechaza crear gastos para Administrator.</dd><dt>Impacto</dt><dd>Experiencia contradictoria, intentos fallidos y percepción incorrecta de permisos.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span></dd>
+    </dl></div></article>
+
+    <article class="defect"><div class="defect-head"><h3>BUG-11 · Employee no recibe access-denied</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
+      <dt>Pasos</dt><dd>Con sesión Employee, navegar directamente a <code>/policies</code>.</dd><dt>Esperado</dt><dd>Pantalla de acceso denegado asociada al 403.</dd><dt>Actual</dt><dd>La aplicación conduce al login.</dd><dt>Impacto</dt><dd>Confunde autorización con autenticación y no comunica correctamente el estado de la sesión.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span></dd>
+    </dl></div></article>
+  </section>
+
+  <section><h2>Criterios y próximos pasos</h2><div class="risk-grid">
+    <div class="note"><b>Severidad</b><br>Representa el impacto técnico y de negocio. Alta implica integridad financiera, pérdida de trazabilidad, configuración crítica inválida o error interno provocado por datos de usuario.</div>
+    <div class="note"><b>Prioridad</b><br>Representa la urgencia de corrección. Los hallazgos alta/alta deben resolverse antes de recomendar liberación.</div>
+    <div class="note"><b>Retest</b><br>Reejecutar casos individuales, luego regresión API/contrato/integración y finalmente los flujos E2E afectados.</div>
+    <div class="note"><b>Condición de cierre</b><br>Resultado esperado comprobado, ausencia de regresión, evidencia actualizada y trazabilidad del arreglo registrada.</div>
+  </div></section>
+  <div class="footer">Documento generado para la evaluación técnica QA. No contiene contraseñas ni tokens. La evidencia detallada permanece en el paquete privado de entrega.</div>
+</main></body></html>
