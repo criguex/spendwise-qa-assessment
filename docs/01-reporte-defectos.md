@@ -18,6 +18,14 @@
 | BUG-11 | Categoría inexistente produce HTTP 500 | RN-05, RN-06 | Alta | Alta | Confirmado |
 | BUG-12 | Reportes incluyen gastos rechazados en totales y agregados | RN-61 | Alta | Alta | Confirmado |
 | BUG-13 | CSV no neutraliza valores con prefijo de fórmula | RN-63 | Alta | Alta | Confirmado |
+| BUG-14 | API acepta campos obligatorios vacíos o ausentes | RN-01, RN-06 | Alta | Alta | Confirmado |
+| BUG-15 | API confía en una URL arbitraria como comprobante cargado | RN-23 | Alta | Alta | Confirmado |
+| BUG-16 | Filtro de estado inválido se ignora y devuelve todos los reportes | RN-62 | Media | Media | Confirmado |
+| BUG-17 | Finance puede ver controles de escritura del motor de políticas | Anexo G | Media | Media | Confirmado |
+| BUG-18 | UI comunica `≤ 50` aunque la regla es estrictamente `< 50` | RN-21 | Media | Alta | Confirmado |
+| BUG-19 | Cola de aprobación omite quién presentó el gasto | RN-43 | Alta | Alta | Confirmado |
+| BUG-20 | UI ofrece eliminar gastos en estados finales | RN-51, RN-52 | Media | Alta | Confirmado |
+| BUG-21 | Campo Notes no está asociado a su etiqueta | RN-72 | Media | Media | Confirmado |
 
 ## BUG-01 — La API crea gastos con monto igual a cero
 
@@ -175,6 +183,91 @@
 - Severidad / prioridad: Alta / Alta; habilita CSV/formula injection al abrir una exportación confiable en Excel o herramientas compatibles.
 - Reproducibilidad: confirmada por `E2E-M12` con descarga real.
 - Evidencia: `evidence/selected/BUG-13/` y reporte Playwright.
+
+## BUG-14 — API acepta campos obligatorios vacíos o ausentes
+
+- Reglas: RN-01 y RN-06; descripción, monto y fecha son obligatorios y una entrada inválida debe devolver 400.
+- Rol: Employee (`employee2@spendwise.test`).
+- Pasos: crear un gasto con descripción formada solo por espacios; repetir omitiendo `date`.
+- Esperado: HTTP 400 y ningún registro persistido.
+- Obtenido: HTTP 201. La descripción queda como tres espacios y la fecha omitida se persiste como `0001-01-01`; ambos quedan `AutoApproved`.
+- Impacto: datos sin significado y fechas fuera del dominio contaminan reportes, auditoría y ordenamiento.
+- Severidad / prioridad: Alta / Alta. Reproducido dos veces por variante.
+- Evidencia: `EXPA-01`, `EXPA-02` y trazas de Playwright.
+
+## BUG-15 — API confía en una URL arbitraria como comprobante cargado
+
+- Regla: RN-23 exige comprobante para montos desde USD 25 y el producto ofrece un endpoint de carga/extracción.
+- Rol: Employee (`employee2@spendwise.test`).
+- Pasos: crear un gasto de USD 30 enviando `receiptUrl: https://example.invalid/not-an-uploaded-receipt.pdf`, sin cargar archivo.
+- Esperado: HTTP 400 porque no existe un comprobante gestionado por SpendWise.
+- Obtenido: HTTP 201, `AutoApproved`; la URL externa se conserva como si fuera evidencia válida.
+- Impacto: permite eludir una política financiera con un enlace falso o no verificable.
+- Severidad / prioridad: Alta / Alta. Reproducido 2/2.
+- Evidencia: `EXPA-05` y traza API.
+
+## BUG-16 — Filtro de estado inválido se ignora silenciosamente
+
+- Regla: RN-62 define filtros por estados del ciclo de vida.
+- Rol: FinanceController.
+- Pasos: consultar `GET /api/v1/reports?status=MadeUpStatus`.
+- Esperado: HTTP 400 indicando valor fuera del catálogo.
+- Obtenido: HTTP 200 con el reporte completo de todos los estados; el filtro es ignorado.
+- Impacto: un error tipográfico produce cifras plausibles pero equivocadas, sin advertencia al consumidor.
+- Severidad / prioridad: Media / Media.
+- Evidencia: `EXPA-08` y traza API.
+
+## BUG-17 — Finance ve controles de escritura del motor de políticas
+
+- Regla: Anexo G concede a FinanceController lectura de políticas, no administración.
+- Pasos: iniciar sesión como Finance y abrir `/policies`.
+- Esperado: vista de solo lectura.
+- Obtenido: aparecen `New rule`, `Deactivate`, `Edit` y `Delete`, aunque la API posteriormente protege la escritura.
+- Impacto: autorización visual inconsistente e intentos de operación que el rol no puede completar.
+- Severidad / prioridad: Media / Media.
+- Evidencia: `EXPUI-01` y `evidence/selected/BUG-17/`.
+
+## BUG-18 — UI comunica incorrectamente el límite de autoaprobación
+
+- Regla: RN-21 define autoaprobación solo cuando el monto es estrictamente menor que USD 50.
+- Pasos: abrir Policy Engine o Approval queue.
+- Esperado: texto `< $50` o “menor que $50”.
+- Obtenido: la UI muestra “at or below $50” y `≤ $50`.
+- Impacto: usuarios y administradores esperan que USD 50 sea autoaprobado, contradiciendo la regla de negocio.
+- Severidad / prioridad: Media / Alta.
+- Evidencia: `EXPUI-02` y `evidence/selected/BUG-18/`.
+
+## BUG-19 — Cola de aprobación omite al solicitante
+
+- Regla: RN-43 exige que quien decide vea quién presentó el gasto.
+- Rol: FinanceController.
+- Pasos: consultar `GET /api/v1/approvals/pending` y abrir `/approvals`.
+- Esperado: nombre o identificador inequívoco del solicitante en contrato y UI.
+- Obtenido: el contrato solo contiene gasto, proveedor, categoría, estado y fechas; la UI tampoco muestra nombre/correo del solicitante.
+- Impacto: se decide sin contexto de autoría y se debilita la trazabilidad de aprobación.
+- Severidad / prioridad: Alta / Alta.
+- Evidencia: `APR-CON-01`, `EXPUI-03` y `evidence/selected/BUG-19/`.
+
+## BUG-20 — UI ofrece eliminar gastos finalizados
+
+- Reglas: RN-51/RN-52 permiten eliminar únicamente un gasto propio pendiente.
+- Rol: Employee.
+- Pasos: abrir `/expenses` y revisar el gasto aprobado `EXP-2026-0004`.
+- Esperado: ninguna acción Delete en estados `AutoApproved`, `Approved` o `Rejected`.
+- Obtenido: aparece `Delete expense` incluso en el gasto aprobado; el mismo patrón aparece en filas autoaprobadas y rechazadas.
+- Impacto: induce una operación prohibida y amplifica BUG-08, donde al menos un estado final sí puede borrarse por API.
+- Severidad / prioridad: Media / Alta.
+- Evidencia: `EXPUI-04` y `evidence/selected/BUG-20/`.
+
+## BUG-21 — Notes carece de asociación accesible con su etiqueta
+
+- Regla: RN-72 exige etiquetas accesibles en controles de formulario.
+- Pasos: abrir `/expenses/new`, omitir OCR y consultar el control por su etiqueta visible `Notes`.
+- Esperado: la etiqueta `Notes` identifica programáticamente el textarea.
+- Obtenido: el nombre accesible es el placeholder `Any additional notes...`; `getByLabel(/Notes/)` no encuentra el control.
+- Impacto: lectores de pantalla no reciben la misma etiqueta visible y la automatización semántica se degrada.
+- Severidad / prioridad: Media / Media.
+- Evidencia: `EXPUI-06` y `evidence/selected/BUG-21/`.
 
 ## Control descartado — E2E-06 acceso directo de Employee a Policy Engine
 

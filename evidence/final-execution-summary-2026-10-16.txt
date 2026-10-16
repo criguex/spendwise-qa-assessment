@@ -2,11 +2,11 @@ EJECUCIÓN FINAL — 2026-10-16
 
 Playwright
 ==========
-Suite disponible: 104 pruebas / 20 archivos
-Regresión integral: 103
-Aprobadas: 81
-Fallidas: 22
-Caso adicional E2E-M12: 1 fallo confirmado aislado
+Suite disponible: 119 pruebas / 23 archivos
+Regresión integral: 119
+Aprobadas: 86
+Fallidas: 33
+Duración: 4.1 min
 Errores de infraestructura: 0
 Fallos sin clasificar: 0
 
@@ -24,8 +24,9 @@ Assertions: 25 total / 20 pass / 5 fail
 
 Interpretación
 ==============
-Los fallos son evidencia reproducible de los defectos BUG-01 a BUG-13.
-BUG-11, BUG-12 y BUG-13 fueron descubiertos por la ampliación; BUG-10 se extendió con acceso directo al formulario.
+Campaña exploratoria adicional: 15 pruebas; 5 aprobadas y 10 fallidas.
+Los fallos son evidencia reproducible de los defectos BUG-01 a BUG-21.
+BUG-14 a BUG-21 fueron descubiertos por la exploración dirigida de límites, contratos, RBAC visual, trazabilidad y accesibilidad.
 E2E-06 fue descartado como defecto tras corregir sincronización y locator; el producto sí muestra access-denied.
 La suite conserva las expectativas del requisito y no se modificó para ocultar
 el comportamiento defectuoso del producto.

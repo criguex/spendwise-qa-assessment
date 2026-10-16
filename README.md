@@ -50,9 +50,9 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 
 ## Resultado final verificado
 
-- Playwright: 104 pruebas en 20 archivos; regresión integral de 103 con 81 aprobadas y 22 fallidas, más `E2E-M12` ejecutada aisladamente y fallida por BUG-13.
+- Playwright: regresión integral de 119 pruebas en 23 archivos: 86 aprobadas y 33 fallidas por incumplimientos documentados (4,1 min).
 - Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
-- Hallazgos: 13 defectos confirmados; la ampliación agregó BUG-11 a BUG-13 y extendió BUG-10.
+- Hallazgos: 21 defectos confirmados; la última ampliación agregó BUG-14 a BUG-21.
 - Recomendación: **NO GO condicionado**.
 
 ## Uso de IA
