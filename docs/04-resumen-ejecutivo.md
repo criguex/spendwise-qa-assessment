@@ -2,16 +2,27 @@
 
 ## Estado de calidad
 
-Evaluación en curso. En la primera ejecución automatizada pasaron 9 de 10 controles y se confirmó un defecto alto: la API permite crear un gasto con monto igual a cero, contrario a una regla básica de integridad financiera. La recomendación definitiva se emitirá después de cubrir autorización, motor de políticas, estados, auditoría y reportes.
+Evaluación finalizada el 16 de octubre de 2026. La suite Playwright ejecutó 46 pruebas: 28 aprobadas y 18 fallidas, todas trazables a 11 defectos confirmados. La colección Postman/Newman ejecutó 15 solicitudes y 25 aserciones: 20 aprobadas y 5 fallidas por defectos ya registrados. No se observaron errores de infraestructura, scripts rotos ni fallos sin clasificar en la ejecución final.
 
 ## Riesgos principales
 
-- Acceso o decisiones fuera del alcance del rol.
-- Aplicación incorrecta de límites monetarios y requisito de recibo.
-- Alteración o pérdida de trazabilidad de una decisión.
-- Totales o exportaciones que presenten datos incorrectos o inseguros.
+- La API persiste gastos con monto cero, negativo o precisión inválida.
+- Entradas fuera de longitud y paginación inválida producen HTTP 500.
+- El motor permite crear reglas con datos inválidos.
+- Un gasto `AutoApproved`, considerado final, puede eliminarse y perder trazabilidad.
+- Existen divergencias de contrato en identificadores, categorías y Swagger.
+- La navegación presenta inconsistencias de deep link y permisos visibles por rol.
 
-## Recomendación preliminar
+## Recomendación final
 
-**Preliminar: no liberar todavía.** Antes de una decisión de producción debe corregirse o aceptarse explícitamente el riesgo del monto cero, completar los escenarios P0 y evaluar cualquier otro defecto crítico o alto. La recomendación final se actualizará con el riesgo residual y los resultados completos.
+**NO GO condicionado.** No se recomienda liberar mientras permanezcan abiertos los cinco defectos de severidad alta relacionados con integridad financiera, validación de políticas, tratamiento de entradas y eliminación de estados finales. Después de corregirlos debe ejecutarse retest dirigido y regresión completa. Los hallazgos medios pueden priorizarse por iteración, pero requieren aceptación explícita del riesgo si no se corrigen antes de producción.
+
+## Cobertura y evidencia
+
+- Componentes: 5/5 aprobadas.
+- Contrato: 2/6 aprobadas; 4 fallos por incumplimiento documentado.
+- API: 15/25 aprobadas; 10 fallos asociados a validaciones y errores internos.
+- Integración: 2/3 aprobadas; 1 fallo de ciclo de vida final.
+- E2E: 4/7 aprobadas; 3 inconsistencias de navegación y permisos.
+- Postman/Newman: 20/25 aserciones aprobadas; 5 defectos reproducidos.
 

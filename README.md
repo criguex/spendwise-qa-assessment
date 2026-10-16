@@ -33,6 +33,7 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 ## Estructura
 
 - `docs/01-reporte-defectos.md`: hallazgos con evidencia y trazabilidad.
+- `docs/01-reporte-defectos.html`: informe visual listo para entregar o imprimir.
 - `docs/02-estrategia-plan.md`: estrategia basada en riesgos.
 - `docs/03-casos-prueba.md`: diseño y priorización de casos.
 - `docs/04-resumen-ejecutivo.md`: recomendación para negocio.
@@ -43,7 +44,14 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 - `src/`: clientes, servicios, builders, contratos y Page Objects.
 - `postman/`: colección Postman/Newman con validación de estructura, datos y comportamiento.
 - `evidence/`: evidencias sanitizadas, sin secretos.
+- `playwright-report/`: reporte HTML generado por la última ejecución integral.
 - `openapi/spendwise-openapi.json`: contrato de la API suministrada por el entorno.
+
+## Resultado final verificado
+
+- Playwright: 46 pruebas, 28 aprobadas y 18 fallidas por defectos confirmados.
+- Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
+- Recomendación: **NO GO condicionado**.
 
 ## Uso de IA
 

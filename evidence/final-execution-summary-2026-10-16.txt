@@ -1,0 +1,31 @@
+EJECUCIÓN FINAL — 2026-10-16
+
+Playwright
+==========
+Total: 46
+Aprobadas: 28
+Fallidas: 18
+Errores de infraestructura: 0
+Fallos sin clasificar: 0
+
+Por capa:
+- Component: 5 pass / 0 fail
+- Contract: 2 pass / 4 fail
+- API: 15 pass / 10 fail
+- Integration: 2 pass / 1 fail
+- E2E: 4 pass / 3 fail
+
+Postman/Newman
+==============
+Requests: 15 / 0 request errors
+Test scripts: 15 / 0 script errors
+Assertions: 25 total / 20 pass / 5 fail
+
+Interpretación
+==============
+Los fallos son evidencia reproducible de los defectos BUG-01 a BUG-11.
+La suite conserva las expectativas del requisito y no se modificó para ocultar
+el comportamiento defectuoso del producto.
+
+Recomendación: NO GO condicionado hasta corregir o aceptar formalmente los
+riesgos de severidad alta y completar su retest y regresión.
