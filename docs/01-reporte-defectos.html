@@ -35,7 +35,7 @@
   <section>
     <h2>Resumen ejecutivo</h2>
     <div class="cards">
-      <div class="card"><div class="metric">11</div><div class="label">defectos confirmados</div></div>
+      <div class="card"><div class="metric">10</div><div class="label">defectos confirmados</div></div>
       <div class="card"><div class="metric">5</div><div class="label">severidad alta</div></div>
       <div class="card"><div class="metric">6</div><div class="label">severidad media</div></div>
       <div class="card"><div class="metric">4</div><div class="label">capas de prueba afectadas</div></div>
@@ -56,7 +56,6 @@
       <tr><td><b>BUG-08</b></td><td>Es posible eliminar un gasto AutoApproved</td><td>RN-51, RN-52</td><td><span class="badge high">Alta</span></td><td>Alta</td><td><span class="badge confirmed">Confirmado</span></td></tr>
       <tr><td><b>BUG-09</b></td><td>El login pierde la ruta protegida original</td><td>WEB-10</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
       <tr><td><b>BUG-10</b></td><td>Administrator ve una acción que no puede usar</td><td>WEB-14</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
-      <tr><td><b>BUG-11</b></td><td>Employee no recibe la pantalla access-denied</td><td>WEB-15</td><td><span class="badge medium">Media</span></td><td>Media</td><td><span class="badge confirmed">Confirmado</span></td></tr>
     </tbody></table>
   </section>
 
@@ -101,9 +100,9 @@
       <dt>Usuario / rol</dt><dd><code>admin@spendwise.test</code> · Administrator.</dd><dt>Pasos</dt><dd>Iniciar sesión como Administrator y revisar el Dashboard.</dd><dt>Esperado</dt><dd>La navegación solo muestra acciones permitidas al rol.</dd><dt>Actual</dt><dd>Se muestra <code>New expense</code>, aunque la API rechaza crear gastos para Administrator.</dd><dt>Impacto</dt><dd>Experiencia contradictoria, intentos fallidos y percepción incorrecta de permisos.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/selected/BUG-10</span></dd>
     </dl><div class="media"><figure><img src="../evidence/selected/BUG-10/BUG-10-admin-new-expense-visible.png" alt="Administrador con acción New expense visible"><figcaption>Captura seleccionada: acción no autorizada visible para Administrator.</figcaption></figure><figure><video controls preload="metadata" src="../evidence/selected/BUG-10/BUG-10-reproduction.mp4"></video><figcaption>Video completo de reproducción E2E-07.</figcaption></figure></div></div></article>
 
-    <article class="defect"><div class="defect-head"><h3>BUG-11 · Employee no recibe access-denied</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
-      <dt>Usuario / rol</dt><dd><code>employee1@spendwise.test</code> · Employee.</dd><dt>Pasos</dt><dd>Con sesión Employee, navegar directamente a <code>/policies</code>.</dd><dt>Esperado</dt><dd>Pantalla de acceso denegado asociada al 403.</dd><dt>Actual</dt><dd>La aplicación conduce al login.</dd><dt>Impacto</dt><dd>Confunde autorización con autenticación y no comunica correctamente el estado de la sesión.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/selected/BUG-11</span></dd>
-    </dl><div class="media"><figure><img src="../evidence/selected/BUG-11/BUG-11-login-instead-of-access-denied.png" alt="Login mostrado en vez de acceso denegado"><figcaption>Captura seleccionada: login en lugar de pantalla access-denied.</figcaption></figure><figure><video controls preload="metadata" src="../evidence/selected/BUG-11/BUG-11-reproduction.mp4"></video><figcaption>Video completo de reproducción E2E-06.</figcaption></figure></div></div></article>
+    <article class="defect"><div class="defect-head"><h3>Control E2E-06 · Access denied funciona correctamente</h3><div class="tags"><span class="badge confirmed">Falso positivo descartado</span></div></div><div class="defect-body"><dl>
+      <dt>Usuario / rol</dt><dd><code>employee1@spendwise.test</code> · Employee.</dd><dt>Comprobación</dt><dd>Navegar directamente a <code>/policies</code> después de confirmar que la sesión terminó de establecerse.</dd><dt>Resultado</dt><dd>La pantalla “You don't have access to this page” aparece correctamente.</dd><dt>Causa del fallo inicial</dt><dd>Condición de carrera en la prueba y dependencia de un <code>data-testid</code> no requerido. Se corrigieron sincronización y locator.</dd><dt>Decisión</dt><dd>No se reporta como defecto de producto.</dd>
+    </dl><div class="media"><figure><img src="../evidence/selected/E2E-06-ACCESS-DENIED-PASS/E2E-06-access-denied.png" alt="Pantalla de acceso denegado correcta"><figcaption>Captura seleccionada del control aprobado.</figcaption></figure><figure><video controls preload="metadata" src="../evidence/selected/E2E-06-ACCESS-DENIED-PASS/E2E-06-access-denied.mp4"></video><figcaption>Video con puntero y pasos del control E2E-06.</figcaption></figure></div></div></article>
   </section>
 
   <section><h2>Criterios y próximos pasos</h2><div class="risk-grid">

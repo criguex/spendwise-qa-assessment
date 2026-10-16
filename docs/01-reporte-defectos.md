@@ -15,7 +15,6 @@
 | BUG-08 | Se puede eliminar un gasto AutoApproved | RN-51, RN-52; Anexo F | Alta | Alta | Confirmado |
 | BUG-09 | Login desde ruta protegida no regresa a la ruta original | Anexo G, web-10 | Media | Media | Confirmado |
 | BUG-10 | Administrator ve acción New expense que no puede utilizar | Anexo G, web-14 | Media | Media | Confirmado |
-| BUG-11 | Acceso directo de Employee a Policy Engine no muestra access-denied | Anexo G, web-15 | Media | Media | Confirmado |
 
 ## BUG-01 — La API crea gastos con monto igual a cero
 
@@ -141,16 +140,13 @@
 - Reproducibilidad: confirmada por `E2E-07`.
 - Evidencia: `evidence/selected/BUG-10/` contiene PNG y MP4 seleccionados.
 
-## BUG-11 — Employee no recibe pantalla access-denied al abrir Policy Engine
+## Control descartado — E2E-06 acceso directo de Employee a Policy Engine
 
-- Rol y usuario: Employee, `employee1@spendwise.test`.
-- Precondición: sesión válida antes de navegar directamente.
-- Con sesión Employee, navegar directamente a `/policies` lleva al login en vez de mostrar el componente `access-denied`.
-- Esperado: pantalla de acceso denegado para respuesta 403.
-- Resultado obtenido: formulario de login, confundiendo autorización con autenticación.
-- Severidad / prioridad: Media / Media.
-- Reproducibilidad: confirmada por `E2E-06`.
-- Evidencia: `evidence/selected/BUG-11/` contiene PNG y MP4 seleccionados.
+La revisión cuadro por cuadro demostró que la aplicación sí presenta “You don't have access to
+this page”. El fallo original provenía de navegar antes de que la sesión terminara de establecerse
+y de buscar un `data-testid` no exigido por el requisito. Se corrigió la sincronización y el locator;
+el caso pasa. Se conserva evidencia en `evidence/selected/E2E-06-ACCESS-DENIED-PASS/` para demostrar
+la depuración y evitar reportar un falso positivo.
 
 ## Plantilla de hallazgo
 

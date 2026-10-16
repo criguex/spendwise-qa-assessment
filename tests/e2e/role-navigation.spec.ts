@@ -19,8 +19,9 @@ test.describe('Role navigation E2E with reusable components', () => {
     const login = new LoginPage(page);
     await login.goto();
     await login.login(environment.email('employee1'), environment.seedPassword());
+    await expect(page.getByTestId('user-menu')).toBeVisible();
     await page.goto('/policies');
-    await expect(page.getByTestId('access-denied')).toBeVisible();
+    await expect(page.getByText(/don't have access to this page/i)).toBeVisible();
   });
 
   test('E2E-07 Administrator cannot see expense creation or approval navigation', async ({ page }) => {

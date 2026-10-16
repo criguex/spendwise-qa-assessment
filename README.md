@@ -49,7 +49,7 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 
 ## Resultado final verificado
 
-- Playwright: 46 pruebas, 28 aprobadas y 18 fallidas por defectos confirmados.
+- Playwright: 46 pruebas, 29 aprobadas y 17 fallidas por defectos confirmados.
 - Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
 - Recomendación: **NO GO condicionado**.
 

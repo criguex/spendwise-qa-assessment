@@ -3,8 +3,8 @@ EJECUCIÓN FINAL — 2026-10-16
 Playwright
 ==========
 Total: 46
-Aprobadas: 28
-Fallidas: 18
+Aprobadas: 29
+Fallidas: 17
 Errores de infraestructura: 0
 Fallos sin clasificar: 0
 
@@ -13,7 +13,7 @@ Por capa:
 - Contract: 2 pass / 4 fail
 - API: 15 pass / 10 fail
 - Integration: 2 pass / 1 fail
-- E2E: 4 pass / 3 fail
+- E2E: 5 pass / 2 fail
 
 Postman/Newman
 ==============
@@ -23,7 +23,8 @@ Assertions: 25 total / 20 pass / 5 fail
 
 Interpretación
 ==============
-Los fallos son evidencia reproducible de los defectos BUG-01 a BUG-11.
+Los fallos son evidencia reproducible de los defectos BUG-01 a BUG-10.
+E2E-06 fue descartado como defecto tras corregir sincronización y locator; el producto sí muestra access-denied.
 La suite conserva las expectativas del requisito y no se modificó para ocultar
 el comportamiento defectuoso del producto.
 

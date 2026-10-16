@@ -2,7 +2,7 @@
 
 ## Estado de calidad
 
-Evaluación finalizada el 16 de octubre de 2026. La suite Playwright ejecutó 46 pruebas: 28 aprobadas y 18 fallidas, todas trazables a 11 defectos confirmados. La colección Postman/Newman ejecutó 15 solicitudes y 25 aserciones: 20 aprobadas y 5 fallidas por defectos ya registrados. No se observaron errores de infraestructura, scripts rotos ni fallos sin clasificar en la ejecución final.
+Evaluación finalizada el 16 de octubre de 2026. La suite Playwright ejecutó 46 pruebas: 29 aprobadas y 17 fallidas, todas trazables a 10 defectos confirmados. La colección Postman/Newman ejecutó 15 solicitudes y 25 aserciones: 20 aprobadas y 5 fallidas por defectos ya registrados. No se observaron errores de infraestructura ni fallos sin clasificar. E2E-06 fue corregido como falso positivo de sincronización: la pantalla de acceso denegado sí funciona.
 
 ## Riesgos principales
 
@@ -23,6 +23,6 @@ Evaluación finalizada el 16 de octubre de 2026. La suite Playwright ejecutó 46
 - Contrato: 2/6 aprobadas; 4 fallos por incumplimiento documentado.
 - API: 15/25 aprobadas; 10 fallos asociados a validaciones y errores internos.
 - Integración: 2/3 aprobadas; 1 fallo de ciclo de vida final.
-- E2E: 4/7 aprobadas; 3 inconsistencias de navegación y permisos.
+- E2E: 5/7 aprobadas; 2 inconsistencias reales de navegación y permisos.
 - Postman/Newman: 20/25 aserciones aprobadas; 5 defectos reproducidos.
 
