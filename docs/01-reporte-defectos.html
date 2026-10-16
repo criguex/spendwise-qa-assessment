@@ -20,6 +20,7 @@
     dl{display:grid;grid-template-columns:175px 1fr;gap:7px 16px;margin:0}dt{font-weight:750;color:#334155}dd{margin:0}ol{margin:5px 0;padding-left:20px}.evidence{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#334155;background:#f1f5f9;border-radius:6px;padding:3px 7px}
     .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.note{padding:15px;border:1px solid var(--line);border-radius:10px;background:#f8fafc}.footer{padding:26px 56px;color:var(--muted);font-size:12px;background:#f8fafc}
     .media{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.media figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#f8fafc}.media img,.media video{display:block;width:100%}.media figcaption{padding:8px 10px;color:var(--muted);font-size:12px}
+    details.curl{margin-top:16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;overflow:hidden}details.curl summary{cursor:pointer;padding:12px 15px;font-weight:800;color:var(--navy);user-select:none}details.curl summary:hover{background:#eef4fb}.curl-note{margin:0;padding:0 15px 10px;color:var(--muted);font-size:12px}.curl-code{margin:0;padding:15px;overflow:auto;background:#0f172a;color:#e2e8f0;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;white-space:pre-wrap;word-break:break-word}.curl-code .placeholder{color:#67e8f9}
     @media(max-width:760px){main{margin:0;border-radius:0}header,section,.footer{padding:28px 22px}.cards,.risk-grid,.media{grid-template-columns:1fr}dl{grid-template-columns:1fr;gap:2px}.defect-head{display:block}.tags{margin-top:10px}table{display:block;overflow:auto}}
     @media print{body{background:#fff}main{margin:0;max-width:none;box-shadow:none}.defect{break-inside:avoid}header{print-color-adjust:exact;-webkit-print-color-adjust:exact}.footer{display:none}}
   </style>
@@ -62,43 +63,83 @@
   <section><h2>Detalle reproducible</h2>
     <article class="defect"><div class="defect-head"><h3>BUG-01 · Creación de gasto con monto cero</h3><div class="tags"><span class="badge high">Alta / Alta</span><span class="badge confirmed">2/2</span></div></div><div class="defect-body"><dl>
       <dt>Precondiciones</dt><dd>Sesión válida con rol Employee.</dd><dt>Pasos</dt><dd><ol><li>Autenticarse por API.</li><li>Enviar <code>POST /api/v1/expenses</code> con fecha vigente, descripción única y <code>amount: 0</code>.</li></ol></dd><dt>Esperado</dt><dd>HTTP 400, mensaje que identifique <code>amount</code> y ningún recurso creado.</dd><dt>Actual</dt><dd>HTTP 201; el gasto queda persistido.</dd><dt>Impacto</dt><dd>Contamina información contable, listados, métricas y auditoría con una transacción inválida.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/BUG-01-api-response.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir con cURL</summary><p class="curl-note">Requiere un token Employee vigente en <code>EMPLOYEE_TOKEN</code>.</p><pre class="curl-code"><code>curl -sk -i -X POST "${API_URL}/api/v1/expenses" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}" \
+  -H "Content-Type: application/json" \
+  --data '{"description":"QA BUG-01 amount zero","amount":0,"date":"2026-10-16"}'</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-02 · Montos negativos y precisión inválida</h3><div class="tags"><span class="badge high">Alta / Alta</span><span class="badge confirmed">Confirmado</span></div></div><div class="defect-body"><dl>
       <dt>Datos de prueba</dt><dd><code>-0.01</code> y <code>1.001</code>.</dd><dt>Pasos</dt><dd>Enviar cada valor como <code>amount</code> al crear un gasto con sesión Employee.</dd><dt>Esperado</dt><dd>HTTP 400 y ausencia del recurso.</dd><dt>Actual</dt><dd>HTTP 201; ambos recursos quedan creados con estado <code>AutoApproved</code>.</dd><dt>Impacto</dt><dd>Permite importes financieros inválidos y altera reportes, tablero y auditoría.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir con cURL</summary><p class="curl-note">Ejecutar ambas variantes; las dos deberían responder 400.</p><pre class="curl-code"><code># Monto negativo
+curl -sk -i -X POST "${API_URL}/api/v1/expenses" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}" -H "Content-Type: application/json" \
+  --data '{"description":"QA BUG-02 negative","amount":-0.01,"date":"2026-10-16"}'
+
+# Más de dos decimales
+curl -sk -i -X POST "${API_URL}/api/v1/expenses" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}" -H "Content-Type: application/json" \
+  --data '{"description":"QA BUG-02 precision","amount":1.001,"date":"2026-10-16"}'</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-03 · Límites de texto generan error interno</h3><div class="tags"><span class="badge high">Alta / Alta</span></div></div><div class="defect-body"><dl>
       <dt>Datos de prueba</dt><dd>Descripción 501, proveedor 201 y notas 1001 caracteres.</dd><dt>Pasos</dt><dd>Crear un gasto variando un campo por solicitud por encima de su límite.</dd><dt>Esperado</dt><dd>HTTP 400 con campo y restricción infringida.</dd><dt>Actual</dt><dd>HTTP 500 con <code>An unexpected error occurred.</code> en los tres casos.</dd><dt>Impacto</dt><dd>Una entrada controlada por el usuario causa un fallo interno y oculta la corrección necesaria.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir con cURL</summary><p class="curl-note">La sustitución genera una descripción de 501 caracteres sin incluir secretos.</p><pre class="curl-code"><code>DESCRIPTION_501="$(printf 'A%.0s' {1..501})"
+curl -sk -i -X POST "${API_URL}/api/v1/expenses" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}" -H "Content-Type: application/json" \
+  --data "{\"description\":\"${DESCRIPTION_501}\",\"amount\":1,\"date\":\"2026-10-16\"}"</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-04 · Paginación inválida genera HTTP 500</h3><div class="tags"><span class="badge medium">Media / Alta</span></div></div><div class="defect-body"><dl>
       <dt>Pasos</dt><dd>Ejecutar <code>GET /api/v1/expenses?page=0</code> con sesión válida. La suite también prueba tamaño negativo y texto no numérico.</dd><dt>Esperado</dt><dd>HTTP 400 con mensaje de validación comprensible.</dd><dt>Actual</dt><dd>HTTP 500.</dd><dt>Impacto</dt><dd>Parámetros de cliente inválidos se procesan como fallos del servidor, afectando estabilidad y observabilidad.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir con cURL</summary><pre class="curl-code"><code>curl -sk -i "${API_URL}/api/v1/expenses?page=0" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}"</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-05 · El motor permite reglas inválidas</h3><div class="tags"><span class="badge high">Alta / Alta</span></div></div><div class="defect-body"><dl>
       <dt>Datos de prueba</dt><dd>Regla con nombre vacío y regla con límite negativo.</dd><dt>Pasos</dt><dd>Crear cada regla mediante el endpoint de políticas con un usuario autorizado.</dd><dt>Esperado</dt><dd>HTTP 400; configuración no persistida.</dd><dt>Actual</dt><dd>HTTP 201; se crean reglas inactivas. Fueron eliminadas después de obtener evidencia.</dd><dt>Impacto</dt><dd>Configuración sensible queda inconsistente y podría alterar decisiones si se activa.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-api-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir con cURL</summary><p class="curl-note">Requiere token Administrator. Las reglas creadas deben eliminarse después de capturar evidencia.</p><pre class="curl-code"><code># Nombre vacío
+curl -sk -i -X POST "${API_URL}/api/v1/policies" \
+  -H "Authorization: Bearer ${ADMIN_TOKEN}" -H "Content-Type: application/json" \
+  --data '{"name":"","action":"AutoApprove","maxAmount":1,"isActive":false}'
+
+# Límite negativo
+curl -sk -i -X POST "${API_URL}/api/v1/policies" \
+  -H "Authorization: Bearer ${ADMIN_TOKEN}" -H "Content-Type: application/json" \
+  --data '{"name":"QA BUG-05 negative threshold","action":"AutoApprove","maxAmount":-1,"isActive":false}'</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-06 · Contrato Swagger incompleto</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
       <dt>Pasos</dt><dd>Inspeccionar la especificación OpenAPI y sus operaciones protegidas.</dd><dt>Esperado</dt><dd><code>securitySchemes</code>, seguridad por operación, respuestas 400/401/403/404 y esquemas de respuesta.</dd><dt>Actual</dt><dd>No se define el esquema de seguridad; predominan respuestas exitosas genéricas sin modelos ni errores.</dd><dt>Impacto</dt><dd>Dificulta la integración, la generación de clientes y la automatización contractual segura.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Inspeccionar contrato con cURL</summary><p class="curl-note">Guarda la especificación y consulta los elementos contractuales ausentes.</p><pre class="curl-code"><code>curl -sk "${API_URL}/swagger/v1/swagger.json" -o /tmp/spendwise-openapi.json
+jq '.components.securitySchemes // "AUSENTE"' /tmp/spendwise-openapi.json
+jq '[.. | objects | .responses? // empty | keys[]] | unique' /tmp/spendwise-openapi.json</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-07 · Identificadores e icono incumplen el modelo</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
       <dt>Pasos</dt><dd>Validar respuestas de login, gastos y categorías contra el modelo declarado.</dd><dt>Esperado</dt><dd>Identificadores con formato GUID y propiedad <code>icon</code> en categoría.</dd><dt>Actual</dt><dd>Se reciben identificadores no válidos como UUID; categorías omiten <code>icon</code>.</dd><dt>Impacto</dt><dd>Rompe consumidores tipados, validadores de contrato y expectativas de interoperabilidad.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span> <span class="evidence">test-run-newman-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir con cURL</summary><p class="curl-note">Las respuestas permiten inspeccionar IDs y la propiedad <code>icon</code> de cada categoría.</p><pre class="curl-code"><code>curl -sk "${API_URL}/api/v1/categories" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}" | jq .
+
+curl -sk "${API_URL}/api/v1/expenses?page=1&amp;pageSize=20" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}" | jq .</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-08 · Eliminación de gasto en estado final</h3><div class="tags"><span class="badge high">Alta / Alta</span></div></div><div class="defect-body"><dl>
       <dt>Pasos</dt><dd><ol><li>Crear un gasto de USD 10.</li><li>Confirmar estado <code>AutoApproved</code>.</li><li>Enviar <code>DELETE /expenses/{id}</code>.</li></ol></dd><dt>Esperado</dt><dd>Operación rechazada; gasto e historial conservados.</dd><dt>Actual</dt><dd>HTTP 204 y recurso eliminado.</dd><dt>Impacto</dt><dd>Pérdida de una decisión final y de su trazabilidad; riesgo de auditoría e integridad.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/test-run-contract-integration-e2e-2026-10-16.txt</span></dd>
-    </dl></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir con cURL</summary><p class="curl-note">Primero crea un gasto AutoApproved y copia su <code>id</code> en <code>EXPENSE_ID</code>.</p><pre class="curl-code"><code>CREATE_RESPONSE=$(curl -sk -X POST "${API_URL}/api/v1/expenses" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}" -H "Content-Type: application/json" \
+  --data '{"description":"QA BUG-08 delete final","amount":10,"date":"2026-10-16"}')
+EXPENSE_ID=$(printf '%s' "$CREATE_RESPONSE" | jq -r '.id')
+printf '%s\n' "$CREATE_RESPONSE" | jq '{id,status,amount}'
+curl -sk -i -X DELETE "${API_URL}/api/v1/expenses/${EXPENSE_ID}" \
+  -H "Authorization: Bearer ${EMPLOYEE_TOKEN}"</code></pre></details></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-09 · El login pierde el deep link</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
       <dt>Usuario / rol</dt><dd><code>employee2@spendwise.test</code> · Employee.</dd><dt>Pasos</dt><dd>Abrir <code>/expenses</code> sin sesión y autenticarse después de la redirección.</dd><dt>Esperado</dt><dd>Retorno a <code>/expenses</code>.</dd><dt>Actual</dt><dd>Redirección a <code>/dashboard</code>.</dd><dt>Impacto</dt><dd>Rompe la continuidad, los favoritos y enlaces compartidos hacia funciones protegidas.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/selected/BUG-09</span></dd>
-    </dl><div class="media"><figure><img src="../evidence/selected/BUG-09/BUG-09-dashboard-instead-of-expenses.png" alt="Dashboard mostrado después del login"><figcaption>Captura seleccionada: Dashboard en lugar de la ruta /expenses.</figcaption></figure><figure><video controls preload="metadata" src="../evidence/selected/BUG-09/BUG-09-reproduction.mp4"></video><figcaption>Video completo de reproducción E2E-03.</figcaption></figure></div></div></article>
+    </dl><details class="curl"><summary>▶ Solicitudes auxiliares con cURL</summary><p class="curl-note">cURL confirma que la ruta existe, pero la pérdida del deep link requiere ejecutar el flujo en navegador; ver video adjunto.</p><pre class="curl-code"><code>curl -sk -i "${WEB_URL}/expenses"
+curl -sk -i -X POST "${API_URL}/api/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  --data '{"email":"employee2@spendwise.test","password":"&lt;SEED_PASSWORD&gt;"}'</code></pre></details><div class="media"><figure><img src="../evidence/selected/BUG-09/BUG-09-dashboard-instead-of-expenses.png" alt="Dashboard mostrado después del login"><figcaption>Captura seleccionada: Dashboard en lugar de la ruta /expenses.</figcaption></figure><figure><video controls preload="metadata" src="../evidence/selected/BUG-09/BUG-09-reproduction.mp4"></video><figcaption>Video completo de reproducción E2E-03.</figcaption></figure></div></div></article>
 
     <article class="defect"><div class="defect-head"><h3>BUG-10 · Acción no autorizada visible para Administrator</h3><div class="tags"><span class="badge medium">Media / Media</span></div></div><div class="defect-body"><dl>
       <dt>Usuario / rol</dt><dd><code>admin@spendwise.test</code> · Administrator.</dd><dt>Pasos</dt><dd>Iniciar sesión como Administrator y revisar el Dashboard.</dd><dt>Esperado</dt><dd>La navegación solo muestra acciones permitidas al rol.</dd><dt>Actual</dt><dd>Se muestra <code>New expense</code>, aunque la API rechaza crear gastos para Administrator.</dd><dt>Impacto</dt><dd>Experiencia contradictoria, intentos fallidos y percepción incorrecta de permisos.</dd><dt>Evidencia</dt><dd><span class="evidence">evidence/selected/BUG-10</span></dd>
-    </dl><div class="media"><figure><img src="../evidence/selected/BUG-10/BUG-10-admin-new-expense-visible.png" alt="Administrador con acción New expense visible"><figcaption>Captura seleccionada: acción no autorizada visible para Administrator.</figcaption></figure><figure><video controls preload="metadata" src="../evidence/selected/BUG-10/BUG-10-reproduction.mp4"></video><figcaption>Video completo de reproducción E2E-07.</figcaption></figure></div></div></article>
+    </dl><details class="curl"><summary>▶ Reproducir restricción API con cURL</summary><p class="curl-note">La API confirma el rol y su prohibición. La acción incorrectamente visible se demuestra en el video.</p><pre class="curl-code"><code>curl -sk -i -X POST "${API_URL}/api/v1/expenses" \
+  -H "Authorization: Bearer ${ADMIN_TOKEN}" -H "Content-Type: application/json" \
+  --data '{"description":"QA BUG-10 forbidden admin","amount":1,"date":"2026-10-16"}'</code></pre></details><div class="media"><figure><img src="../evidence/selected/BUG-10/BUG-10-admin-new-expense-visible.png" alt="Administrador con acción New expense visible"><figcaption>Captura seleccionada: acción no autorizada visible para Administrator.</figcaption></figure><figure><video controls preload="metadata" src="../evidence/selected/BUG-10/BUG-10-reproduction.mp4"></video><figcaption>Video completo de reproducción E2E-07.</figcaption></figure></div></div></article>
 
     <article class="defect"><div class="defect-head"><h3>Control E2E-06 · Access denied funciona correctamente</h3><div class="tags"><span class="badge confirmed">Falso positivo descartado</span></div></div><div class="defect-body"><dl>
       <dt>Usuario / rol</dt><dd><code>employee1@spendwise.test</code> · Employee.</dd><dt>Comprobación</dt><dd>Navegar directamente a <code>/policies</code> después de confirmar que la sesión terminó de establecerse.</dd><dt>Resultado</dt><dd>La pantalla “You don't have access to this page” aparece correctamente.</dd><dt>Causa del fallo inicial</dt><dd>Condición de carrera en la prueba y dependencia de un <code>data-testid</code> no requerido. Se corrigieron sincronización y locator.</dd><dt>Decisión</dt><dd>No se reporta como defecto de producto.</dd>
