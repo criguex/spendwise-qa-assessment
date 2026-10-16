@@ -5,4 +5,5 @@ evidence/raw/
 node_modules/
 playwright-report/
 .DS_Store
+.idea/
 
