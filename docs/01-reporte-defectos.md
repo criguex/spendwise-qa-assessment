@@ -39,6 +39,8 @@
 | BUG-32 | Filtros de Reports no están asociados a sus etiquetas | RN-72 | Media | Media | Confirmado 2/2 |
 | BUG-33 | UI de Reports envía rangos de fecha invertidos | RN-70, RN-71 | Media | Alta | Confirmado 2/2 |
 | BUG-34 | My Expenses desborda 102 px en viewport móvil | Interfaz | Media | Media | Confirmado 2/2 |
+| BUG-35 | Segunda aprobación de gasto Approved responde 200 | RN-40 | Media | Alta | Confirmado 3/3 |
+| BUG-36 | Gasto Rejected puede convertirse en Approved | RN-40, RN-44, RN-50 | Alta | Alta | Confirmado 2/2 |
 
 ## BUG-01 — La API crea gastos con monto igual a cero
 
@@ -404,6 +406,28 @@
 - Impacto: contenido/acciones pueden quedar fuera de vista y requieren desplazamiento lateral global.
 - Severidad / prioridad: Media / Media. Reproducido 2/2.
 - Evidencia: `MUT-UI-13`, `evidence/selected/CAND-UI-06/run-{1,2}/`.
+
+## BUG-35 — Segunda aprobación de un gasto Approved responde 200
+
+- Endpoint: `PUT /api/v1/approvals/{id}/approve`; RN-40.
+- Preparación: crear gasto controlado PendingApproval y aprobarlo una vez legítimamente.
+- Mutación: repetir exactamente la aprobación sobre el gasto ya Approved.
+- Esperado: 4xx; ninguna nueva decisión ni transición.
+- Actual: HTTP 200 en la segunda aprobación.
+- Impacto: incumple la semántica contractual de estado final; no se afirma doble auditoría porque no fue demostrada.
+- Severidad / prioridad: Media / Alta. Reproducido 3/3.
+- Evidencia: `R2-FLOW-01`, `evidence/selected/R2-FLOW-01/`.
+
+## BUG-36 — Un gasto Rejected puede aprobarse posteriormente
+
+- Endpoint: `PUT /api/v1/approvals/{id}/approve`; RN-40, con riesgos sobre RN-44/RN-50.
+- Preparación: crear gasto controlado PendingApproval y rechazarlo con motivo válido.
+- Mutación: intentar aprobar el mismo gasto después del rechazo.
+- Esperado: 4xx; el gasto permanece Rejected.
+- Actual: HTTP 200 y el estado cambia de Rejected a Approved.
+- Impacto: rompe la inmutabilidad de un estado final y permite revertir una decisión financiera cerrada.
+- Severidad / prioridad: Alta / Alta. Reproducido 2/2.
+- Evidencia: `R2-FLOW-02`, `evidence/selected/R2-FLOW-02/`.
 
 ## Control descartado — E2E-06 acceso directo de Employee a Policy Engine
 

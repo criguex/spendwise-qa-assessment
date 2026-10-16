@@ -1,0 +1,29 @@
+DOS RONDAS ADVERSARIALES — 2026-10-16
+
+Escenarios nuevos: 23
+Archivos nuevos: 3
+Suite total disponible: 207 pruebas / 31 archivos
+Ejecución consolidada: 19 aprobadas / 4 fallidas por 2 defectos
+
+Ronda 1 — autorización
+======================
+Escenarios: 11
+Controles conformes: 9
+Candidatos iniciales: 2
+Defectos después de revisión independiente: 0
+Falsos positivos descartados: Administrator lee todos en solo lectura; Finance (+Employee) crea propios.
+
+Ronda 2 — manipulación de flujos
+================================
+Escenarios API: 10
+Reproducciones E2E visuales: 2
+Defectos confirmados: BUG-35, BUG-36
+Controles conformes: self-approval, mass assignment, JSON inesperado, método incorrecto,
+IDs de ruta manipulados y logout stateless.
+
+Trazabilidad
+============
+BUG-35: 3/3 API + screenshot + video con cursor + trace + ficha.
+BUG-36: 2/2 + screenshot + video con cursor + trace + ficha.
+No se ejecutó carga, DoS, lockout, XSS ejecutable, borrado de datos seed ni acceso externo.
+No se incluyen tokens ni contraseñas.

@@ -48,6 +48,8 @@
 | MUT-AUTH/EXPQ/APR/POL/REP/REC | P0-P1 | Mutación cruzada API | 24 mutantes sobre seis módulos; 14 candidatos estables antes de depuración | Sí |
 | MUT-STATE-01..10 | P0-P1 | Mutación E2E de estado | Refresh, Back, cancelación, doble submit, paginación, deep links y logout | Sí |
 | MUT-UI-01..13 | P1 | UI mutante | Teclado, filtros, labels, errores, búsqueda y viewport móvil | Sí |
+| R2-AUTH-01..11 | P0 | Seguridad funcional | IDOR/BOLA, alcance por rol, acceso cruzado y mass assignment | Sí |
+| R2-FLOW-01..12 | P0 | Máquina de estados adversarial | Decisión repetida, estados finales, self-approval, JSON/rutas/métodos manipulados | Sí |
 
-Total automatizado disponible: **184 pruebas en 28 archivos**. Todas se descubren con `npx playwright test --list`.
+Total automatizado disponible: **207 pruebas en 31 archivos**. Todas se descubren con `npx playwright test --list`.
 

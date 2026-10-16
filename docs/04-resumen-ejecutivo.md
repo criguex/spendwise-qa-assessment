@@ -8,7 +8,10 @@ Como extensión adicional se incorporaron 18 pruebas de mutación black-box. El 
 mutantes de solicitudes: 6 fueron rechazados correctamente y 10 sobrevivieron, para un mutation score
 de 37,5%. La suite completa disponible asciende a 184 pruebas en 28 archivos. La expansión cruzada
 añadió 47 escenarios API/E2E y confirmó 13 defectos adicionales después de doble o triple reproducción.
-El total asciende a 34 defectos y 8 oportunidades de mejora separadas. Los sobrevivientes se
+Dos rondas adversariales posteriores agregaron 23 ejecuciones sobre IDOR/BOLA, composición de roles,
+mass assignment y máquina de estados. La consolidación obtuvo 19 aprobadas y 4 fallidas por dos defectos; dos falsos positivos fueron
+descartados contra el Anexo G y se confirmaron BUG-35/36. El total asciende a 36 defectos y 8
+oportunidades de mejora separadas. Los sobrevivientes se
 consolidaron con defectos existentes para no duplicar hallazgos por la misma causa raíz.
 
 ## Riesgos principales

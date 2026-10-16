@@ -51,12 +51,13 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 - `docs/07-pruebas-mutantes.md`: operadores y mutation score de solicitudes black-box.
 - `docs/08-informe-mutacion-ampliada.html`: BUG-22 a BUG-34 con cURL, videos, capturas y traces.
 - `docs/09-oportunidades-mejora.md`: recomendaciones IMP-01 a IMP-08 separadas de los defectos.
+- `docs/10-informe-adversarial.html`: dos rondas de autorización y manipulación de estados con evidencia.
 
 ## Resultado final verificado
 
-- Playwright: 184 pruebas disponibles en 28 archivos. Última regresión base: 119, con 86 aprobadas y 33 fallidas. La expansión agregó 47 escenarios API/E2E y confirmó 13 defectos adicionales tras doble/triple reproducción.
+- Playwright: 207 pruebas disponibles en 31 archivos. La ejecución adversarial consolidada obtuvo 19 aprobadas y 4 fallidas por dos defectos de estado final; además se corrigieron dos falsos positivos de RBAC.
 - Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
-- Hallazgos: 34 defectos confirmados y 8 oportunidades de mejora; la última ampliación agregó BUG-22 a BUG-34.
+- Hallazgos: 36 defectos confirmados y 8 oportunidades de mejora; las rondas adversariales agregaron BUG-35 y BUG-36.
 - Recomendación: **NO GO condicionado**.
 
 ## Uso de IA
