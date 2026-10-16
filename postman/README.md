@@ -14,6 +14,14 @@ No exporte nuevamente el environment después de llenarlo.
 
 ## Newman
 
+La forma recomendada carga las credenciales exclusivamente desde el archivo local `.env` (ignorado por Git):
+
+```bash
+npm run test:postman
+```
+
+También puede ejecutarse manualmente:
+
 ```bash
 newman run postman/SpendWise-QA.postman_collection.json \
   -e postman/SpendWise-QA.postman_environment.json \
