@@ -1,0 +1,24 @@
+SpendWise QA — validación de contrato y datos R4
+Fecha de ejecución: 2026-10-16 (America/Bogota)
+Suite: tests/api/adversarial-data-round4.spec.ts
+Comando: npx playwright test tests/api/adversarial-data-round4.spec.ts --workers=1 --reporter=line --output=/private/tmp/spendwise-r4-run2
+Entorno: API QA asignada; no se incluyen host, credenciales, tokens, IDs ni cuerpos de respuesta.
+
+Referencia contractual
+- openapi/spendwise-openapi.json, components.schemas.CreateExpenseRequest
+- amount: number/double; date: string/date; categoryId: UUID nullable; description y otros textos nullable.
+- additionalProperties: false en CreateExpenseRequest.
+- GET /api/v1/expenses define page y pageSize como integer/int32.
+- POST /api/v1/expenses declara application/json, text/json y application/*+json.
+- No hay campo de moneda ni regla de idempotencia documentados.
+
+Resultado de ejecución
+- 22 casos ejecutados: 21 pasaron, 1 falló por discrepancia contrato/runtime.
+- Conformes: null en categoryId aceptado; texto Unicode y NUL preservados; null, tipos incorrectos y fechas/UUID inválidos respondieron como errores de cliente; límites de page/pageSize respondieron como errores de cliente; parámetros repetidos y desconocidos no produjeron 5xx; text/plain fue rechazado; JSON malformado fue rechazado; PATCH no documentado no mutó la colección y devolvió 404/405.
+- Hallazgo confirmado: un campo superior no documentado (currency) fue aceptado con 201 aunque CreateExpenseRequest declara additionalProperties:false; el campo se omitió de la respuesta. Es una discrepancia de contrato, no evidencia de que el valor se haya almacenado o utilizado.
+- No se reporta como defecto la aceptación de categoryId null (el contrato lo permite), ni los parámetros repetidos/desconocidos (el OpenAPI no define su manejo), ni NUL en texto (el esquema no restringe caracteres).
+
+Notas de seguridad y alcance
+- Casos de datos pequeños y seriales; sin carga, payloads grandes, inyección, scripts ni borrado.
+- Los casos que crean registros usan descripciones QA únicas. No se capturaron ni conservaron trazas con headers o credenciales.
+- La primera ejecución paralela se descartó por colisión de directorios de artefactos. Los resultados anteriores a la corrida aislada no se usan como evidencia.

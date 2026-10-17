@@ -41,6 +41,8 @@
 | BUG-34 | My Expenses desborda 102 px en viewport móvil | Interfaz | Media | Media | Confirmado 2/2 |
 | BUG-35 | Segunda aprobación de gasto Approved responde 200 | RN-40 | Media | Alta | Confirmado 3/3 |
 | BUG-36 | Gasto Rejected puede convertirse en Approved | RN-40, RN-44, RN-50 | Alta | Alta | Confirmado 2/2 |
+| BUG-37 | API acepta propiedades prohibidas por el contrato | Contrato OpenAPI | Media | Alta | Confirmado 2/2 |
+| BUG-38 | Fallo al enviar gasto no se comunica en la UI | UI-02 | Media | Alta | Confirmado 3/3 |
 
 ## BUG-01 — La API crea gastos con monto igual a cero
 
@@ -428,6 +430,28 @@
 - Impacto: rompe la inmutabilidad de un estado final y permite revertir una decisión financiera cerrada.
 - Severidad / prioridad: Alta / Alta. Reproducido 2/2.
 - Evidencia: `R2-FLOW-02`, `evidence/selected/R2-FLOW-02/`.
+
+## BUG-37 — API acepta propiedades prohibidas por el contrato
+
+- Endpoint: `POST /api/v1/expenses`; esquema `CreateExpenseRequest`.
+- Preparación: construir un gasto válido y añadir `currency: "ZZZ"`, propiedad no declarada.
+- Esperado: HTTP 400 porque el OpenAPI declara `additionalProperties: false`.
+- Actual: HTTP 201; el gasto se crea y la propiedad adicional se omite de la respuesta.
+- Impacto: el runtime no cumple el contrato publicado y acepta errores de integración silenciosamente.
+- Severidad / prioridad: Media / Alta. No se afirma que `currency` se almacene o procese.
+- Reproducibilidad: 2/2 en ejecuciones aisladas.
+- Evidencia: `R4-DATA-11`, `evidence/selected/R4-DATA-11/` y `evidence/contract-data-r4-2026-10-16.txt`.
+
+## BUG-38 — Fallo al enviar gasto no se comunica en la UI
+
+- Pantalla: `/expenses/new`; caso UI-02 de recuperación ante errores.
+- Preparación: completar el formulario y simular una respuesta HTTP 500 al `POST /api/v1/expenses`.
+- Esperado: conservar los valores y mostrar un mensaje visible que permita comprender/reintentar el fallo.
+- Actual: los valores se conservan, pero no aparece mensaje, alerta ni indicación visible de error.
+- Impacto: el usuario no sabe si el gasto se procesó y puede repetir la acción o abandonar el flujo.
+- Severidad / prioridad: Media / Alta.
+- Reproducibilidad: 3/3, incluida verificación independiente.
+- Evidencia: `UI-RECOVERY-02`, `evidence/selected/UI-RECOVERY-02/` y `evidence/functional-ui-2026-10-16.md`.
 
 ## Control descartado — E2E-06 acceso directo de Employee a Policy Engine
 

@@ -55,9 +55,9 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 
 ## Resultado final verificado
 
-- Playwright: 207 pruebas disponibles en 31 archivos. La ejecución adversarial consolidada obtuvo 19 aprobadas y 4 fallidas por dos defectos de estado final; además se corrigieron dos falsos positivos de RBAC.
+- Playwright: 232 pruebas disponibles en 34 archivos. Las cinco rondas adversariales cubren autorización, estados, contrato/datos y recuperación UI; las tres últimas agregaron 74 verificaciones ejecutadas y 25 casos automatizados nuevos, y confirmaron BUG-37/38.
 - Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
-- Hallazgos: 36 defectos confirmados y 8 oportunidades de mejora; las rondas adversariales agregaron BUG-35 y BUG-36.
+- Hallazgos: 38 defectos confirmados y 8 oportunidades de mejora; las rondas adversariales agregaron BUG-35 a BUG-38.
 - Recomendación: **NO GO condicionado**.
 
 ## Uso de IA

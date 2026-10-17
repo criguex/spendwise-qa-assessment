@@ -50,6 +50,9 @@
 | MUT-UI-01..13 | P1 | UI mutante | Teclado, filtros, labels, errores, búsqueda y viewport móvil | Sí |
 | R2-AUTH-01..11 | P0 | Seguridad funcional | IDOR/BOLA, alcance por rol, acceso cruzado y mass assignment | Sí |
 | R2-FLOW-01..12 | P0 | Máquina de estados adversarial | Decisión repetida, estados finales, self-approval, JSON/rutas/métodos manipulados | Sí |
+| R3-RBAC | P0 | Matriz autorizada | 48 lecturas por ocho cuentas y dos escrituras denegadas | Sí |
+| R4-DATA/HTTP/QUERY | P0-P1 | Contrato y particiones | Tipos, fechas, UUID, Unicode, query, Content-Type y métodos | Sí |
+| R5-UI | P1 | Recuperación/navegación | Error de envío y navegación Back/Forward | Sí |
 
-Total automatizado disponible: **207 pruebas en 31 archivos**. Todas se descubren con `npx playwright test --list`.
+Total automatizado disponible: **232 pruebas en 34 archivos**. Todas se descubren con `npx playwright test --list`.
 

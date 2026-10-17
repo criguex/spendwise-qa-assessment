@@ -19,6 +19,7 @@
     "test:mutation:api": "playwright test tests/api/mutation-scenarios.spec.ts tests/api/mutation-cross-module.spec.ts --workers=1",
     "test:mutation:e2e": "playwright test tests/e2e/mutation-navigation-state.spec.ts tests/e2e/mutation-ui-controls.spec.ts --workers=1",
     "test:adversarial": "playwright test tests/api/adversarial-authorization-round1.spec.ts tests/api/adversarial-workflow-round2.spec.ts tests/e2e/adversarial-workflow-round2.spec.ts --workers=1",
+    "test:adversarial:extended": "playwright test tests/api/role-access-readonly.spec.ts tests/api/adversarial-data-round4.spec.ts tests/e2e/ui-functional-recovery.spec.ts --workers=1",
     "test:postman": "node scripts/run-postman.mjs",
     "typecheck": "tsc --noEmit",
     "report": "playwright show-report",
