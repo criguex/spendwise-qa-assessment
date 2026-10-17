@@ -23,7 +23,7 @@
     "test:postman": "node scripts/run-postman.mjs",
     "typecheck": "tsc --noEmit",
     "report": "playwright show-report",
-    "report:final": "node scripts/build-final-report.mjs",
+    "report:final": "node scripts/build-final-report.mjs && node scripts/build-doc-html.mjs",
     "quality": "npm run typecheck && npm test"
   },
   "devDependencies": {

@@ -36,6 +36,7 @@ Las credenciales se reciben por variables de entorno y no se guardan en el repos
 - `docs/01-reporte-defectos.md`: hallazgos con evidencia y trazabilidad.
 - `docs/01-reporte-defectos.html`: informe visual listo para entregar o imprimir.
 - `docs/11-informe-final-consolidado.html`: informe ejecutivo interactivo con los 38 defectos completos, filtros y evidencia.
+- `docs/02-estrategia-plan.html`, `03-casos-prueba.html`, `04-resumen-ejecutivo.html`, `06-observacion-no-funcional.html`, `07-pruebas-mutantes.html` y `09-oportunidades-mejora.html`: versiones HTML navegables de cada parte del expediente.
 - `docs/02-estrategia-plan.md`: estrategia basada en riesgos.
 - `docs/03-casos-prueba.md`: diseño y priorización de casos.
 - `docs/04-resumen-ejecutivo.md`: recomendación para negocio.
