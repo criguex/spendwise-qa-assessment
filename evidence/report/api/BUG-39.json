@@ -1,0 +1,190 @@
+{
+  "id": "BUG-39",
+  "capturedAt": "2026-10-17T05:22:45.701Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "24,99 → 201 AutoApproved; 25 → 201 AutoApproved; 80 → 201 PendingApproval",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:45.3233875Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 118,
+      "at": "2026-10-17T05:22:45.245Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión finance",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "finance",
+      "requestBody": {
+        "email": "finance@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:45.441341Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000002",
+          "email": "finance@spendwise.test",
+          "fullName": "Fiona Finance",
+          "roles": [
+            "Employee",
+            "FinanceController"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 121,
+      "at": "2026-10-17T05:22:45.366Z"
+    },
+    {
+      "setup": true,
+      "note": "Reglas vigentes: Receipt required at $25+ activa",
+      "method": "GET",
+      "path": "/api/v1/policies",
+      "role": "finance",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": [
+        {
+          "id": "22222222-0000-0000-0000-000000000001",
+          "name": "Auto-approve under $50",
+          "description": "Expenses at or below $50 are auto-approved without manager review.",
+          "action": "AutoApprove",
+          "maxAmount": 50,
+          "requiresReceipt": false,
+          "isActive": true,
+          "createdAt": "2026-01-01T00:00:00"
+        },
+        {
+          "id": "22222222-0000-0000-0000-000000000002",
+          "name": "Receipt required at $25+",
+          "description": "Expenses of $25 or more must include a receipt.",
+          "action": "RequireApproval",
+          "maxAmount": null,
+          "requiresReceipt": true,
+          "isActive": true,
+          "createdAt": "2026-01-01T00:00:00"
+        }
+      ],
+      "durationMs": 84,
+      "at": "2026-10-17T05:22:45.450Z"
+    },
+    {
+      "setup": true,
+      "note": "Control: USD 24,99 sin recibo se acepta (correcto)",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214565450-48684b",
+        "amount": 24.99,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "c8657af8-2148-4b35-a973-fb307a95adb5",
+        "expenseNumber": "EXP-2026-0325",
+        "description": "QA evidencia 1792214565450-48684b",
+        "vendor": null,
+        "amount": 24.99,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:45.6123705Z"
+      },
+      "durationMs": 84,
+      "at": "2026-10-17T05:22:45.534Z"
+    },
+    {
+      "setup": false,
+      "note": "USD 25 sin recibo",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214565534-58baa8",
+        "amount": 25,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "c92c3c88-4c19-472c-9e8c-5a2c1754c760",
+        "expenseNumber": "EXP-2026-0326",
+        "description": "QA evidencia 1792214565534-58baa8",
+        "vendor": null,
+        "amount": 25,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:45.6954073Z"
+      },
+      "durationMs": 83,
+      "at": "2026-10-17T05:22:45.617Z"
+    },
+    {
+      "setup": false,
+      "note": "USD 80 sin recibo (ejemplo literal del Anexo E)",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214565617-3dfb12",
+        "amount": 80,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "8da9c2e5-7618-421a-bdab-b06ffb557659",
+        "expenseNumber": "EXP-2026-0327",
+        "description": "QA evidencia 1792214565617-3dfb12",
+        "vendor": null,
+        "amount": 80,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "PendingApproval",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:45.7780046Z"
+      },
+      "durationMs": 84,
+      "at": "2026-10-17T05:22:45.701Z"
+    }
+  ]
+}

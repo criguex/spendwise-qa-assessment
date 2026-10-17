@@ -1,0 +1,29 @@
+{
+  "id": "BUG-18",
+  "title": "UI comunica incorrectamente el límite de autoaprobación",
+  "role": "FinanceController",
+  "user": "finance@spendwise.test",
+  "url": "/policies",
+  "recordedAt": "2026-10-17T05:24:38.400Z",
+  "reproduced": true,
+  "expected": "Según Anexo E §2 y §4, USD 50 exacto NO debe autoaprobarse (debe quedar Pending Approval); la UI debe decir \"< $50\"",
+  "actual": "El motor de políticas trata el umbral como \"≤ $50\": la UI muestra \"Auto-approve under $50 · Expenses at or below $50 are auto-approved without manager review. · Auto-approve · ≤ $50\", que coincide con el comportamiento real (incorrecto) del backend, el cual autoaprueba $50 exacto en lugar de dejarlo pendiente",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como finance@spendwise.test",
+      "screenshot": "BUG-18-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir Policy Engine (/policies)",
+      "screenshot": "BUG-18-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Localizar la regla \"Auto-approve under $50\"",
+      "screenshot": "BUG-18-03.png"
+    }
+  ],
+  "notes": "El texto de la UI no es una desinformación aislada: refleja fielmente el comportamiento real (incorrecto) del backend, que autoaprueba USD 50 exacto en vez de dejarlo en Pending Approval como exige Anexo E §2 y §4."
+}

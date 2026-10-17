@@ -1,0 +1,34 @@
+{
+  "id": "BUG-13",
+  "title": "CSV no neutraliza valores con prefijo de fórmula",
+  "role": "Employee",
+  "user": "employee3@spendwise.test",
+  "url": "/reports",
+  "recordedAt": "2026-10-17T05:18:35.943Z",
+  "reproduced": true,
+  "expected": "El valor debe neutralizarse (p.ej. con apóstrofo inicial '=2+2...) para impedir evaluación como fórmula",
+  "actual": "El CSV contiene literalmente: EXP-2026-0099,\"=2+2 QA-1792188840801\",,,2026-10-16,10,AutoApproved",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee3@spendwise.test",
+      "screenshot": "BUG-13-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Confirmar gasto existente con descripción de fórmula: \"=2+2 QA-1792188840801\"",
+      "screenshot": "BUG-13-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Exportar CSV desde Reports",
+      "screenshot": "BUG-13-03.png"
+    },
+    {
+      "n": 4,
+      "text": "Mostrar el contenido crudo del CSV descargado",
+      "screenshot": "BUG-13-04.png"
+    }
+  ],
+  "notes": "Línea completa del CSV: EXP-2026-0099,\"=2+2 QA-1792188840801\",,,2026-10-16,10,AutoApproved"
+}

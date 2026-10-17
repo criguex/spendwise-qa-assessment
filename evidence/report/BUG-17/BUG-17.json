@@ -1,0 +1,29 @@
+{
+  "id": "BUG-17",
+  "title": "Finance ve controles de escritura del motor de políticas",
+  "role": "FinanceController",
+  "user": "finance@spendwise.test",
+  "url": "/policies",
+  "recordedAt": "2026-10-17T05:18:49.880Z",
+  "reproduced": true,
+  "expected": "Finance debe ver una vista de solo lectura, sin controles de escritura",
+  "actual": "Aparecen \"New rule\" (1) y 6 controles de edición/eliminación/activación",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como finance@spendwise.test",
+      "screenshot": "BUG-17-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir Policy Engine (/policies)",
+      "screenshot": "BUG-17-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Localizar los controles de escritura visibles para Finance (sin hacer clic)",
+      "screenshot": "BUG-17-03.png"
+    }
+  ],
+  "notes": "No se hizo clic en ningún control destructivo."
+}

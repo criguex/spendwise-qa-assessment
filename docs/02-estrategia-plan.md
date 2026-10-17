@@ -48,6 +48,7 @@ La mayor cobertura vive bajo la interfaz; E2E se reserva para flujos que requier
 | Riesgo / reglas | Cobertura automatizada |
 |---|---|
 | RN-01, RN-02, RN-04, RN-06 | `expenses-boundaries.spec.ts` |
+| RN-20, Anexo E (recibo desde USD 25, umbral de USD 50) | `policy-rules.spec.ts` |
 | RN-30, RN-31 | `expense-lifecycle.spec.ts` |
 | RN-32 | `policies.spec.ts` |
 | RN-50, RN-51, RN-52 | integración create/detail/history/delete |

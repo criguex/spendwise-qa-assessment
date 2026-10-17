@@ -1,0 +1,100 @@
+{
+  "id": "BUG-19",
+  "capturedAt": "2026-10-17T05:22:41.105Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "campos de cada elemento: id, expenseNumber, description, vendor, amount, date, categoryId, categoryName, status, notes, receiptUrl, createdAt",
+  "analysis": {
+    "campos": [
+      "id",
+      "expenseNumber",
+      "description",
+      "vendor",
+      "amount",
+      "date",
+      "categoryId",
+      "categoryName",
+      "status",
+      "notes",
+      "receiptUrl",
+      "createdAt"
+    ]
+  },
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión finance",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "finance",
+      "requestBody": {
+        "email": "finance@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:41.1098566Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000002",
+          "email": "finance@spendwise.test",
+          "fullName": "Fiona Finance",
+          "roles": [
+            "Employee",
+            "FinanceController"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 114,
+      "at": "2026-10-17T05:22:41.026Z"
+    },
+    {
+      "setup": false,
+      "method": "GET",
+      "path": "/api/v1/approvals/pending",
+      "role": "finance",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "items": [
+          {
+            "id": "7b429bcb-fadd-4585-9f12-19b375d84fba",
+            "expenseNumber": "EXP-2026-0303",
+            "description": "E2E-M13 pending 1792214206813",
+            "vendor": null,
+            "amount": 60,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "PendingApproval",
+            "notes": null,
+            "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+            "createdAt": "2026-10-17T05:16:46.974636"
+          },
+          {
+            "id": "10114417-7d25-40bc-84e2-2700d00c6d8b",
+            "expenseNumber": "EXP-2026-0267",
+            "description": "R2 pending 1792213763211-e6718d",
+            "vendor": null,
+            "amount": 125,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "PendingApproval",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:09:23.2672976"
+          },
+          "… 35 elementos más"
+        ],
+        "totalCount": 37,
+        "totalAmount": 3460.02
+      },
+      "durationMs": 79,
+      "at": "2026-10-17T05:22:41.105Z"
+    }
+  ]
+}

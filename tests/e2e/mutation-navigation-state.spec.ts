@@ -78,6 +78,9 @@ test.describe('Navigation and state mutation charters', () => {
     await submit.dblclick();
     await expect(page).toHaveURL(/\/expenses(?:\/[^/]+)?$/);
     await page.goto('/expenses');
+    const searched = page.waitForResponse(response => response.url().includes('/api/v1/expenses') && response.url().includes(marker));
+    await page.getByPlaceholder('Search vendor or description').fill(marker);
+    await searched;
     await expect(page.getByText(marker, { exact: true })).toHaveCount(1);
   });
 

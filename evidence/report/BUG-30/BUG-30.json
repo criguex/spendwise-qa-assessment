@@ -1,0 +1,24 @@
+{
+  "id": "BUG-30",
+  "title": "Login vacío no comunica el error de forma persistente",
+  "role": "N/A (visitante anónimo)",
+  "user": "N/A",
+  "url": "/login",
+  "recordedAt": "2026-10-17T05:20:01.814Z",
+  "reproduced": false,
+  "expected": "Debe aparecer un error accesible y persistente, y foco en el primer campo inválido",
+  "actual": "La pantalla SÍ muestra mensajes en rojo junto a cada campo: \"Email is required.\" y \"Password is required.\", y el foco queda en login-email. El testid 'login-error' genérico no existe (0), pero el error visible y persistente por campo SÍ está presente.",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Abrir /login con los campos de email y contraseña vacíos",
+      "screenshot": "BUG-30-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Hacer clic en Sign in sin completar ningún dato",
+      "screenshot": "BUG-30-02.png"
+    }
+  ],
+  "notes": "Descartado: el reporte original indicaba ausencia de error accesible persistente, pero esta re-verificación muestra que la UI SÍ presenta \"Email is required.\" y \"Password is required.\" en rojo, de forma persistente, junto a cada campo, con el foco en el campo email. No se confirma el defecto tal como estaba descrito; se documenta como control descartado (falso positivo del reporte original), de forma análoga al caso E2E-06."
+}

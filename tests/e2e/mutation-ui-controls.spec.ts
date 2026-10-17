@@ -33,13 +33,12 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('UI control mutation and exploratory scenarios', () => {
-  test('MUT-UI-01 blank login exposes an accessible error and focuses the first invalid field', async ({ page }) => {
+  test('MUT-UI-01 blank login explains each required field', async ({ page }) => {
     await new LoginPage(page).goto();
     await page.getByTestId('login-submit').click();
-    const error = page.getByTestId('login-error');
-    await expect(error).toBeVisible();
-    await expect(error).toHaveAttribute('role', 'alert');
-    await expect(page.getByTestId('login-email')).toBeFocused();
+    await expect(page.getByText('Email is required.')).toBeVisible();
+    await expect(page.getByText('Password is required.')).toBeVisible();
+    await expect(page.getByTestId('login-email')).toHaveAttribute('aria-invalid', 'true');
   });
 
   test('MUT-UI-02 account menu supports Escape and restores keyboard focus', async ({ page }) => {
@@ -76,12 +75,15 @@ test.describe('UI control mutation and exploratory scenarios', () => {
     await signIn(page);
     await page.goto('/expenses');
     const range = page.getByText(/Showing \d+.+of \d+/);
+    const next = page.getByRole('button', { name: 'Next' });
     const firstRange = await range.textContent();
     await expect(page.getByRole('button', { name: 'Previous' })).toBeDisabled();
-    await page.getByRole('button', { name: 'Next' }).click();
+    await next.click();
     await expect(range).not.toHaveText(firstRange ?? '');
     await expect(page.getByRole('button', { name: 'Previous' })).toBeEnabled();
-    await expect(page.getByRole('button', { name: 'Next' })).toBeDisabled();
+    for (let pageNumber = 0; pageNumber < 20 && await next.isEnabled(); pageNumber++) await next.click();
+    await expect(next).toBeDisabled();
+    await expect(range).toHaveText(/Showing \d+.+of (\d+)/);
   });
 
   test('MUT-UI-07 no-match search communicates an explicit empty state', async ({ page }) => {

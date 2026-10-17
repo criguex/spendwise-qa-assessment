@@ -1,0 +1,63 @@
+{
+  "id": "BUG-07",
+  "capturedAt": "2026-10-17T05:22:55.690Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "9/9 categorías sin icon. Observación: 10 identificadores tienen formato GUID válido pero no siguen la versión RFC 4122 (p. ej. 33333333-0000-0000-0000-000000000005)",
+  "exchanges": [
+    {
+      "setup": false,
+      "note": "El id del usuario en la respuesta de login",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee1",
+      "requestBody": {
+        "email": "employee1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:55.681566Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000005",
+          "email": "employee1@spendwise.test",
+          "fullName": "Elena Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 124,
+      "at": "2026-10-17T05:22:55.605Z"
+    },
+    {
+      "setup": false,
+      "method": "GET",
+      "path": "/api/v1/categories",
+      "role": "employee1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": [
+        {
+          "id": "11111111-0000-0000-0000-000000000004",
+          "name": "Ground Transportation",
+          "description": "Taxis, rideshares, parking",
+          "iconName": "car"
+        },
+        {
+          "id": "11111111-0000-0000-0000-000000000007",
+          "name": "Marketing",
+          "description": "Marketing and advertising expenses",
+          "iconName": "megaphone"
+        },
+        "… 7 elementos más"
+      ],
+      "durationMs": 84,
+      "at": "2026-10-17T05:22:55.689Z"
+    }
+  ]
+}

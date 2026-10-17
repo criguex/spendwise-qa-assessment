@@ -1,0 +1,29 @@
+{
+  "id": "BUG-21",
+  "title": "Notes carece de asociación accesible con su etiqueta",
+  "role": "Employee",
+  "user": "employee1@spendwise.test",
+  "url": "/expenses/new",
+  "recordedAt": "2026-10-17T05:19:53.560Z",
+  "reproduced": true,
+  "expected": "getByLabel('Notes') debe encontrar 1 elemento (la etiqueta visible debe asociarse al textarea)",
+  "actual": "getByLabel('Notes') encuentra 0 elementos; el nombre accesible es el placeholder \"Any additional notes...\"",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-21-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir /expenses/new y omitir OCR",
+      "screenshot": "BUG-21-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Localizar el campo Notes",
+      "screenshot": "BUG-21-03.png"
+    }
+  ],
+  "notes": ""
+}

@@ -1,0 +1,264 @@
+{
+  "id": "BUG-29",
+  "capturedAt": "2026-10-17T05:22:43.871Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "{} → 200; \"   \" → 200; estado Rejected; motivo en historial: null",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee1",
+      "requestBody": {
+        "email": "employee1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:43.222703Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000005",
+          "email": "employee1@spendwise.test",
+          "fullName": "Elena Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 119,
+      "at": "2026-10-17T05:22:43.139Z"
+    },
+    {
+      "setup": true,
+      "note": "Gasto de USD 125 que queda PendingApproval",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee1",
+      "requestBody": {
+        "description": "QA pendiente 1792214563139",
+        "amount": 125,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "069fdcef-ae60-40b0-87c2-cee763fef8be",
+        "expenseNumber": "EXP-2026-0321",
+        "description": "QA pendiente 1792214563139",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "PendingApproval",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:43.3009328Z"
+      },
+      "durationMs": 85,
+      "at": "2026-10-17T05:22:43.224Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee1",
+      "requestBody": {
+        "email": "employee1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:43.4198118Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000005",
+          "email": "employee1@spendwise.test",
+          "fullName": "Elena Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 112,
+      "at": "2026-10-17T05:22:43.336Z"
+    },
+    {
+      "setup": true,
+      "note": "Gasto de USD 125 que queda PendingApproval",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee1",
+      "requestBody": {
+        "description": "QA pendiente 1792214563336",
+        "amount": 125,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "96788e76-64eb-4fc7-a249-f0afe9aaf6d7",
+        "expenseNumber": "EXP-2026-0322",
+        "description": "QA pendiente 1792214563336",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "PendingApproval",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:43.4984494Z"
+      },
+      "durationMs": 84,
+      "at": "2026-10-17T05:22:43.420Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión manager1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "manager1",
+      "requestBody": {
+        "email": "manager1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:43.6179076Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000003",
+          "email": "manager1@spendwise.test",
+          "fullName": "Mario Manager",
+          "roles": [
+            "Employee",
+            "Manager"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 121,
+      "at": "2026-10-17T05:22:43.541Z"
+    },
+    {
+      "setup": false,
+      "note": "Rechazo con cuerpo vacío",
+      "method": "PUT",
+      "path": "/api/v1/approvals/069fdcef-ae60-40b0-87c2-cee763fef8be/reject",
+      "role": "manager1",
+      "requestBody": {},
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "id": "069fdcef-ae60-40b0-87c2-cee763fef8be",
+        "expenseNumber": "EXP-2026-0321",
+        "description": "QA pendiente 1792214563139",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Rejected",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:43.3009328"
+      },
+      "durationMs": 85,
+      "at": "2026-10-17T05:22:43.626Z"
+    },
+    {
+      "setup": false,
+      "note": "Rechazo con motivo de solo espacios",
+      "method": "PUT",
+      "path": "/api/v1/approvals/96788e76-64eb-4fc7-a249-f0afe9aaf6d7/reject",
+      "role": "manager1",
+      "requestBody": {
+        "reason": "   "
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "id": "96788e76-64eb-4fc7-a249-f0afe9aaf6d7",
+        "expenseNumber": "EXP-2026-0322",
+        "description": "QA pendiente 1792214563336",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Rejected",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:43.4984494"
+      },
+      "durationMs": 85,
+      "at": "2026-10-17T05:22:43.711Z"
+    },
+    {
+      "setup": false,
+      "note": "Estado final del primer gasto",
+      "method": "GET",
+      "path": "/api/v1/expenses/069fdcef-ae60-40b0-87c2-cee763fef8be",
+      "role": "manager1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "id": "069fdcef-ae60-40b0-87c2-cee763fef8be",
+        "expenseNumber": "EXP-2026-0321",
+        "description": "QA pendiente 1792214563139",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Rejected",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:43.3009328"
+      },
+      "durationMs": 81,
+      "at": "2026-10-17T05:22:43.792Z"
+    },
+    {
+      "setup": false,
+      "note": "Historial: el rechazo queda sin motivo",
+      "method": "GET",
+      "path": "/api/v1/expenses/069fdcef-ae60-40b0-87c2-cee763fef8be/history",
+      "role": "manager1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": [
+        {
+          "id": "e68a18b6-6633-4e47-bb6f-45c1bd3098f2",
+          "fromStatus": "PendingApproval",
+          "toStatus": "Rejected",
+          "performedBy": "manager1@spendwise.test",
+          "notes": null,
+          "changedAt": "2026-10-17T05:22:43.7027771"
+        },
+        {
+          "id": "ac31b090-25ee-4e18-b141-6a25e78ef50e",
+          "fromStatus": null,
+          "toStatus": "PendingApproval",
+          "performedBy": "employee1@spendwise.test",
+          "notes": null,
+          "changedAt": "2026-10-17T05:22:43.3010267"
+        }
+      ],
+      "durationMs": 79,
+      "at": "2026-10-17T05:22:43.871Z"
+    }
+  ]
+}

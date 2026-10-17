@@ -1,0 +1,34 @@
+{
+  "id": "BUG-20",
+  "title": "UI ofrece eliminar gastos finalizados",
+  "role": "Employee",
+  "user": "employee1@spendwise.test",
+  "url": "/expenses",
+  "recordedAt": "2026-10-17T05:19:38.674Z",
+  "reproduced": true,
+  "expected": "No debe existir acción Delete en gastos con estado final (Approved/AutoApproved/Rejected)",
+  "actual": "Aparece el botón 'Delete expense' en un gasto con estado Approved",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-20-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir My Expenses (/expenses)",
+      "screenshot": "BUG-20-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Filtrar por estado Approved (estado final)",
+      "screenshot": "BUG-20-03.png"
+    },
+    {
+      "n": 4,
+      "text": "Localizar el botón Delete en un gasto Approved (sin confirmar nada)",
+      "screenshot": "BUG-20-04.png"
+    }
+  ],
+  "notes": "No se hizo clic ni se confirmó ninguna eliminación."
+}

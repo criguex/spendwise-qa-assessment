@@ -1,0 +1,2549 @@
+{
+  "startedAt": "2026-10-17T05:23:03.883Z",
+  "durationMs": 351582,
+  "total": 238,
+  "passed": 168,
+  "failed": 70,
+  "skipped": 0,
+  "failedByDefect": {
+    "BUG-01": [
+      "VAL-01",
+      "MUT-EXP-07"
+    ],
+    "BUG-02": [
+      "VAL-02",
+      "VAL-03",
+      "MUT-EXP-08",
+      "MUT-EXP-09"
+    ],
+    "BUG-03": [
+      "VAL-04",
+      "VAL-05",
+      "VAL-06",
+      "MUT-EXP-05"
+    ],
+    "BUG-04": [
+      "VAL-09",
+      "MUT-EXPQ-01",
+      "MUT-EXPQ-02"
+    ],
+    "BUG-05": [
+      "POL-02",
+      "POL-04",
+      "POL-05"
+    ],
+    "BUG-06": [
+      "CON-03"
+    ],
+    "BUG-07": [
+      "CON-06"
+    ],
+    "BUG-08": [
+      "INT-03"
+    ],
+    "BUG-09": [
+      "E2E-03"
+    ],
+    "BUG-10": [
+      "E2E-M09",
+      "E2E-07"
+    ],
+    "BUG-11": [
+      "QUERY-08",
+      "MUT-EXP-15"
+    ],
+    "BUG-12": [
+      "INT-ANA-01",
+      "INT-ANA-02",
+      "INT-ANA-03"
+    ],
+    "BUG-13": [
+      "E2E-M12"
+    ],
+    "BUG-14": [
+      "EXPA-01",
+      "EXPA-02",
+      "MUT-EXP-02",
+      "MUT-EXP-06",
+      "MUT-EXP-10",
+      "MUT-EXP-11"
+    ],
+    "BUG-15": [
+      "EXPA-05",
+      "MUT-EXP-16"
+    ],
+    "BUG-16": [
+      "EXPA-08",
+      "MUT-REP-03"
+    ],
+    "BUG-17": [
+      "EXPUI-01"
+    ],
+    "BUG-18": [
+      "THR-02",
+      "EXPUI-02"
+    ],
+    "BUG-19": [
+      "APR-CON-01",
+      "EXPUI-03"
+    ],
+    "BUG-20": [
+      "EXPUI-04"
+    ],
+    "BUG-21": [
+      "EXPUI-06",
+      "MUT-UI-11"
+    ],
+    "BUG-22": [
+      "MUT-EXPQ-04"
+    ],
+    "BUG-23": [
+      "MUT-EXPQ-06"
+    ],
+    "BUG-24": [
+      "MUT-EXPQ-07"
+    ],
+    "BUG-25": [
+      "MUT-APR-01"
+    ],
+    "BUG-26": [
+      "MUT-REP-01"
+    ],
+    "BUG-27": [
+      "MUT-REP-02"
+    ],
+    "BUG-28": [
+      "MUT-REC-02"
+    ],
+    "BUG-29": [
+      "MUT-APR-02",
+      "MUT-APR-03"
+    ],
+    "BUG-31": [
+      "MUT-UI-05"
+    ],
+    "BUG-32": [
+      "MUT-UI-09"
+    ],
+    "BUG-33": [
+      "MUT-UI-10"
+    ],
+    "BUG-34": [
+      "MUT-UI-13"
+    ],
+    "BUG-35": [
+      "R2-FLOW-01",
+      "R2-FLOW-01-EVIDENCE"
+    ],
+    "BUG-36": [
+      "R2-FLOW-02",
+      "R2-FLOW-02-EVIDENCE"
+    ],
+    "BUG-37": [
+      "R4-DATA-11"
+    ],
+    "BUG-38": [
+      "UI-02"
+    ],
+    "BUG-39": [
+      "RCPT-02",
+      "RCPT-03"
+    ],
+    "BUG-40": [
+      "E2E-M13",
+      "MUT-STATE-06"
+    ]
+  },
+  "unmapped": [
+    {
+      "id": "MUT-STATE-03",
+      "title": "MUT-STATE-03 repeated submit gesture creates exactly one expense",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByText('double-submit-1792214896888', { exact: true }) · Expected: 1",
+      "cause": "el gasto se creó una sola vez (verificado por API), pero quedó fuera de la primera página porque hay más de 20 gastos con la misma fecha; la prueba ahora lo busca por su descripción y pasa.",
+      "rerun": "passed"
+    }
+  ],
+  "tests": [
+    {
+      "project": "component",
+      "file": "component/contracts.spec.ts",
+      "title": "CMP-04 rejects expense identifiers that are not UUID",
+      "id": "CMP-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 5,
+      "error": null
+    },
+    {
+      "project": "component",
+      "file": "component/contracts.spec.ts",
+      "title": "CMP-05 rejects login payload without access token",
+      "id": "CMP-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1,
+      "error": null
+    },
+    {
+      "project": "component",
+      "file": "component/expense-builder.spec.ts",
+      "title": "CMP-01 produces valid isolated defaults",
+      "id": "CMP-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 4,
+      "error": null
+    },
+    {
+      "project": "component",
+      "file": "component/expense-builder.spec.ts",
+      "title": "CMP-02 fluent overrides do not leak to a new builder",
+      "id": "CMP-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1,
+      "error": null
+    },
+    {
+      "project": "component",
+      "file": "component/expense-builder.spec.ts",
+      "title": "CMP-03 client-controlled attack fields are explicit",
+      "id": "CMP-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 0,
+      "error": null
+    },
+    {
+      "project": "component",
+      "file": "component/expense-mutants.spec.ts",
+      "title": "MUT-CMP-01 catalogue IDs are unique and each mutant changes one valid baseline",
+      "id": "MUT-CMP-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3,
+      "error": null
+    },
+    {
+      "project": "component",
+      "file": "component/expense-mutants.spec.ts",
+      "title": "MUT-CMP-02 catalogue covers all mutation operator families",
+      "id": "MUT-CMP-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 0,
+      "error": null
+    },
+    {
+      "project": "contract",
+      "file": "contract/openapi-structure.spec.ts",
+      "title": "CON-01 @smoke exposes every required operation",
+      "id": "CON-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 8,
+      "error": null
+    },
+    {
+      "project": "contract",
+      "file": "contract/openapi-structure.spec.ts",
+      "title": "CON-02 every operation declares at least one response",
+      "id": "CON-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 4,
+      "error": null
+    },
+    {
+      "project": "contract",
+      "file": "contract/openapi-structure.spec.ts",
+      "title": "CON-03 documents security and negative response contracts",
+      "id": "CON-03",
+      "status": "failed",
+      "defect": "BUG-06",
+      "durationMs": 1,
+      "error": "Error: GET /api/v1/auth/me should document 401 · expect(received).toBeDefined() · Received: undefined"
+    },
+    {
+      "project": "contract",
+      "file": "contract/runtime-contracts.spec.ts",
+      "title": "CON-04 @smoke login response matches the consumer schema",
+      "id": "CON-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 696,
+      "error": null
+    },
+    {
+      "project": "contract",
+      "file": "contract/runtime-contracts.spec.ts",
+      "title": "CON-05 expense list matches pagination schema",
+      "id": "CON-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 702,
+      "error": null
+    },
+    {
+      "project": "contract",
+      "file": "contract/runtime-contracts.spec.ts",
+      "title": "CON-06 category entries match schema",
+      "id": "CON-06",
+      "status": "failed",
+      "defect": "BUG-07",
+      "durationMs": 722,
+      "error": "ZodError: [ ·   { ·     \"expected\": \"string\","
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-01 employee cannot read another employee expense detail",
+      "id": "R2-AUTH-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 969,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-02 employee cannot read another employee expense history",
+      "id": "R2-AUTH-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 851,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-03 employee cannot delete another employee pending expense",
+      "id": "R2-AUTH-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1133,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-04 manager cannot approve an expense outside managed scope",
+      "id": "R2-AUTH-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 875,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-05 employee cannot approve an expense by direct API call",
+      "id": "R2-AUTH-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1099,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-06 Finance cannot delete an employee expense",
+      "id": "R2-AUTH-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1666,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-07 Administrator has documented global read-only expense visibility",
+      "id": "R2-AUTH-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 861,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-08 Manager cannot create or modify policies",
+      "id": "R2-AUTH-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 644,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-09 Finance inherits Employee capability and creates only its own expense",
+      "id": "R2-AUTH-09",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 746,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-10 mass assignment cannot override owner, status or expense number",
+      "id": "R2-AUTH-10",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 979,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-authorization-round1.spec.ts",
+      "title": "R2-AUTH-11 Employee list cannot expose expenses owned by another employee",
+      "id": "R2-AUTH-11",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 913,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-01 rejects null amount without 5xx",
+      "id": "R4-DATA-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 787,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-02 rejects boolean amount without 5xx",
+      "id": "R4-DATA-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 828,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-03 rejects object amount without 5xx",
+      "id": "R4-DATA-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 918,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-04 rejects null date without 5xx",
+      "id": "R4-DATA-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1619,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-05 rejects semantic invalid date without 5xx",
+      "id": "R4-DATA-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 732,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-06 rejects datetime instead of date without 5xx",
+      "id": "R4-DATA-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 701,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-07 rejects malformed category UUID without 5xx",
+      "id": "R4-DATA-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 671,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-08 rejects array description without 5xx",
+      "id": "R4-DATA-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 716,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-09 rejects boolean description without 5xx",
+      "id": "R4-DATA-09",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 711,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-11 rejects undocumented currency field without 5xx",
+      "id": "R4-DATA-11",
+      "status": "failed",
+      "defect": "BUG-37",
+      "durationMs": 770,
+      "error": "Error: R4-DATA-11: {\"id\":\"850b3a17-433d-47c7-88f1-c5b98d37a025\",\"expenseNumber\":\"EXP-2026-0338\",\"description\":\"R4-DATA-11 1792214595615\",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-QUERY-01 rejects fractional page deterministically",
+      "id": "R4-QUERY-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 750,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-QUERY-02 rejects page over int32 deterministically",
+      "id": "R4-QUERY-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 722,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-QUERY-03 rejects fractional page size deterministically",
+      "id": "R4-QUERY-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 736,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-QUERY-04 handles duplicate page parameter without server error",
+      "id": "R4-QUERY-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 657,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-QUERY-05 handles duplicate status parameter without server error",
+      "id": "R4-QUERY-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 676,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-QUERY-06 handles undocumented query parameter without server error",
+      "id": "R4-QUERY-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 746,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-VALID-01 accepts nullable categoryId as documented",
+      "id": "R4-VALID-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 709,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-VALID-02 accepts Unicode text and NUL as schema-unconstrained strings",
+      "id": "R4-VALID-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 703,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-DATA-13 preserves safe Unicode without normalization loss",
+      "id": "R4-DATA-13",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 721,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-HTTP-01 rejects JSON body sent as text/plain",
+      "id": "R4-HTTP-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1208,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-HTTP-02 rejects malformed JSON as a client error",
+      "id": "R4-HTTP-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1279,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-data-round4.spec.ts",
+      "title": "R4-HTTP-03 unsupported PATCH cannot mutate the expenses collection",
+      "id": "R4-HTTP-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1691,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-01 repeated approval cannot decide a final expense twice",
+      "id": "R2-FLOW-01",
+      "status": "failed",
+      "defect": "BUG-35",
+      "durationMs": 948,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-02 rejected expense cannot later be approved",
+      "id": "R2-FLOW-02",
+      "status": "failed",
+      "defect": "BUG-36",
+      "durationMs": 996,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-03 employee cannot self-approve own pending expense",
+      "id": "R2-FLOW-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 950,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-04 client cannot overwrite owner, status or expense number",
+      "id": "R2-FLOW-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 700,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-05 unexpected JSON shape is a client error, never 5xx",
+      "id": "R2-FLOW-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 785,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-06 unexpected JSON shape is a client error, never 5xx",
+      "id": "R2-FLOW-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 760,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-07 unexpected JSON shape is a client error, never 5xx",
+      "id": "R2-FLOW-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 735,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-08 wrong method cannot mutate approval state",
+      "id": "R2-FLOW-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 980,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-09 malformed and encoded route identifiers do not produce 5xx",
+      "id": "R2-FLOW-09",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 888,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-10 API logout follows documented stateless-token behavior",
+      "id": "R2-FLOW-10",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 767,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-employee1-01 dashboard exposes coherent metrics for employee1",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 678,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-employee1-02 reports arithmetic is internally consistent for employee1",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1110,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-manager1-01 dashboard exposes coherent metrics for manager1",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 780,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-manager1-02 reports arithmetic is internally consistent for manager1",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 834,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-finance-01 dashboard exposes coherent metrics for finance",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 728,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-finance-02 reports arithmetic is internally consistent for finance",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 841,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-admin-01 dashboard exposes coherent metrics for admin",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 755,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-admin-02 reports arithmetic is internally consistent for admin",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 920,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-09 report date range includes only requested dates",
+      "id": "ANA-09",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 678,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-10 @negative malformed report dates return 400 rather than 5xx",
+      "id": "ANA-10",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 775,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-11 reports reject missing authentication",
+      "id": "ANA-11",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 597,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/analytics.spec.ts",
+      "title": "ANA-12 dashboard rejects missing authentication",
+      "id": "ANA-12",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 568,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-contract.spec.ts",
+      "title": "APR-CON-01 queue items identify the submitter required for a decision",
+      "id": "APR-CON-01",
+      "status": "failed",
+      "defect": "BUG-19",
+      "durationMs": 766,
+      "error": "Error: Missing submitter identity in {\"id\":\"7b429bcb-fadd-4585-9f12-19b375d84fba\",\"expenseNumber\":\"EXP-2026-0303\",\"description\":\"E2E-M13 pending 1792214206813\",\"vendor\":null,\"amount\":60,\"date\":\"2026-10-17\",\"categoryId\":n"
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-employee1-01 employee1 cannot read approval queue",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 845,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-admin-01 admin cannot read approval queue",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 679,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-manager1-02 manager1 can read its scoped approval queue",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1381,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-manager2-02 manager2 can read its scoped approval queue",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 706,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-finance-02 finance can read its scoped approval queue",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 744,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-06 unauthenticated approval is rejected",
+      "id": "APR-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 605,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-07 Manager gets 404 for an unknown expense",
+      "id": "APR-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 895,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/approval-matrix.spec.ts",
+      "title": "APR-08 Finance gets 404 for an unknown expense",
+      "id": "APR-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 685,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/auth.spec.ts",
+      "title": "AUTH-01 @smoke valid credentials return the correct identity",
+      "id": "AUTH-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 581,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/auth.spec.ts",
+      "title": "AUTH-02 @negative does not disclose account state",
+      "id": "AUTH-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 557,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/auth.spec.ts",
+      "title": "AUTH-03 @negative does not disclose account state",
+      "id": "AUTH-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 548,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/auth.spec.ts",
+      "title": "AUTH-04 @negative does not disclose account state",
+      "id": "AUTH-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 640,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/auth.spec.ts",
+      "title": "AUTH-05 @negative empty fields return 400",
+      "id": "AUTH-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 578,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/auth.spec.ts",
+      "title": "AUTH-06 @negative protected resources reject missing token",
+      "id": "AUTH-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 573,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-01 search returns only matching descriptions or vendors",
+      "id": "QUERY-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 910,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-AutoApproved status filter is exact and case insensitive",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 837,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-PendingApproval status filter is exact and case insensitive",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 919,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-Approved status filter is exact and case insensitive",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 712,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-Rejected status filter is exact and case insensitive",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 746,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-06 list defaults to page 1 and pageSize 20",
+      "id": "QUERY-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 637,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-07 unknown expense is 404 without disclosure",
+      "id": "QUERY-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 895,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expense-query.spec.ts",
+      "title": "QUERY-08 @negative unknown category is rejected",
+      "id": "QUERY-08",
+      "status": "failed",
+      "defect": "BUG-11",
+      "durationMs": 733,
+      "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-01 @negative @boundary rejects zero amount",
+      "id": "VAL-01",
+      "status": "failed",
+      "defect": "BUG-01",
+      "durationMs": 748,
+      "error": "Error: {\"id\":\"eff9e991-63ce-488c-aa68-b7d5c115b4d7\",\"expenseNumber\":\"EXP-2026-0348\",\"description\":\"QA expense 1792214618619-e519abea\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"st"
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-02 @negative @boundary rejects negative amount",
+      "id": "VAL-02",
+      "status": "failed",
+      "defect": "BUG-02",
+      "durationMs": 774,
+      "error": "Error: {\"id\":\"ad3c7104-f1ef-41ba-b575-ba6616c1a49a\",\"expenseNumber\":\"EXP-2026-0349\",\"description\":\"QA expense 1792214619657-ba5212ed\",\"vendor\":null,\"amount\":-0.01,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-03 @negative @boundary rejects more than two decimals amount",
+      "id": "VAL-03",
+      "status": "failed",
+      "defect": "BUG-02",
+      "durationMs": 830,
+      "error": "Error: {\"id\":\"d26dc538-f5a7-4a9e-8828-0c720afb7e24\",\"expenseNumber\":\"EXP-2026-0350\",\"description\":\"QA expense 1792214620765-a2850de0\",\"vendor\":null,\"amount\":1.001,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-04 @negative @boundary rejects description above its maximum",
+      "id": "VAL-04",
+      "status": "failed",
+      "defect": "BUG-03",
+      "durationMs": 1685,
+      "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-05 @negative @boundary rejects vendor above its maximum",
+      "id": "VAL-05",
+      "status": "failed",
+      "defect": "BUG-03",
+      "durationMs": 839,
+      "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-06 @negative @boundary rejects notes above its maximum",
+      "id": "VAL-06",
+      "status": "failed",
+      "defect": "BUG-03",
+      "durationMs": 809,
+      "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-07 @boundary accepts the minimum positive amount",
+      "id": "VAL-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 746,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-08 @negative rejects missing required description",
+      "id": "VAL-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 749,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/expenses-boundaries.spec.ts",
+      "title": "VAL-09 @negative invalid pagination never produces 5xx",
+      "id": "VAL-09",
+      "status": "failed",
+      "defect": "BUG-04",
+      "durationMs": 680,
+      "error": "Error: ?page=0 · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-01 @negative rejects blank description with 400",
+      "id": "EXPA-01",
+      "status": "failed",
+      "defect": "BUG-14",
+      "durationMs": 1631,
+      "error": "Error: {\"id\":\"9e497d31-0daf-48b5-8dee-225c7b6a5453\",\"expenseNumber\":\"EXP-2026-0352\",\"description\":\"   \",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"status\":\"AutoApproved\",\"notes\":"
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-02 @negative rejects missing date with 400",
+      "id": "EXPA-02",
+      "status": "failed",
+      "defect": "BUG-14",
+      "durationMs": 828,
+      "error": "Error: {\"id\":\"4309f749-c957-47d3-a1eb-8ab01027b2f5\",\"expenseNumber\":\"EXP-2026-0354\",\"description\":\"QA missing date\",\"vendor\":null,\"amount\":10,\"date\":\"0001-01-01\",\"categoryId\":null,\"categoryName\":null,\"status\":\"AutoApprov"
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-03 @negative rejects malformed date with 400",
+      "id": "EXPA-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 992,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-04 client cannot choose owner, state or expense number",
+      "id": "EXPA-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 782,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-05 arbitrary receipt URL does not count as an uploaded receipt",
+      "id": "EXPA-05",
+      "status": "failed",
+      "defect": "BUG-15",
+      "durationMs": 841,
+      "error": "Error: {\"id\":\"1acc6b7a-fb8d-44d6-b5fd-bf190b714a74\",\"expenseNumber\":\"EXP-2026-0359\",\"description\":\"QA expense 1792214626783-cc9872e4\",\"vendor\":null,\"amount\":30,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-06 reversed report interval is handled safely as an empty result",
+      "id": "EXPA-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 813,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-07 unknown category filter returns an empty result",
+      "id": "EXPA-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 728,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/exploratory-boundaries.spec.ts",
+      "title": "EXPA-08 invalid status filter is rejected instead of silently ignored",
+      "id": "EXPA-08",
+      "status": "failed",
+      "defect": "BUG-16",
+      "durationMs": 986,
+      "error": "Error: {\"totalAmount\":13076.15,\"totalCount\":298,\"averageAmount\":43.879697986577181208053691275,\"byCategory\":[{\"categoryName\":\"Uncategorized\",\"total\":9220.65,\"count\":280},{\"categoryName\":\"Office Supplies\",\"total\":1055.00,"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-AUTH-01 rejects a structurally mutated login",
+      "id": "MUT-AUTH-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 658,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-AUTH-02 rejects a structurally mutated login",
+      "id": "MUT-AUTH-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 568,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-AUTH-03 rejects a structurally mutated login",
+      "id": "MUT-AUTH-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 728,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-AUTH-04 does not normalize a credential identifier silently",
+      "id": "MUT-AUTH-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 539,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-01 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-01",
+      "status": "failed",
+      "defect": "BUG-04",
+      "durationMs": 706,
+      "error": "Error: MUT-EXPQ-01 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-02 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-02",
+      "status": "failed",
+      "defect": "BUG-04",
+      "durationMs": 750,
+      "error": "Error: MUT-EXPQ-02 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-03 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 772,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-04 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-04",
+      "status": "failed",
+      "defect": "BUG-22",
+      "durationMs": 741,
+      "error": "Error: MUT-EXPQ-04 survived with 200: {\"items\":[],\"totalCount\":299,\"page\":1,\"pageSize\":0} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-05 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 827,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-06 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-06",
+      "status": "failed",
+      "defect": "BUG-23",
+      "durationMs": 744,
+      "error": "Error: MUT-EXPQ-06 survived with 200: {\"items\":[{\"id\":\"6c0bba7a-1774-430b-a32a-040733edbaa1\",\"expenseNumber\":\"EXP-2026-0260\",\"description\":\"R2 pending 1792213756382-312947\",\"vendor\":null,\"amount\":125.00,\"date\":\"2026-10-1"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-07 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-07",
+      "status": "failed",
+      "defect": "BUG-24",
+      "durationMs": 710,
+      "error": "Error: MUT-EXPQ-07 survived with 200: {\"items\":[{\"id\":\"6c0bba7a-1774-430b-a32a-040733edbaa1\",\"expenseNumber\":\"EXP-2026-0260\",\"description\":\"R2 pending 1792213756382-312947\",\"vendor\":null,\"amount\":125.00,\"date\":\"2026-10-1"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-EXPQ-08 rejects one invalid expense query mutation",
+      "id": "MUT-EXPQ-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1618,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-APR-01 rejects malformed approval identifiers at the boundary",
+      "id": "MUT-APR-01",
+      "status": "failed",
+      "defect": "BUG-25",
+      "durationMs": 692,
+      "error": "Error: MUT-APR-01 survived with 404:  · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-POL-01 enforces policy write authorization",
+      "id": "MUT-POL-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 787,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-POL-02 enforces policy write authorization",
+      "id": "MUT-POL-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 727,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-POL-03 rejects one policy contract mutation",
+      "id": "MUT-POL-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 697,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-POL-04 rejects one policy contract mutation",
+      "id": "MUT-POL-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 674,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-REP-01 rejects one invalid reporting filter",
+      "id": "MUT-REP-01",
+      "status": "failed",
+      "defect": "BUG-26",
+      "durationMs": 714,
+      "error": "Error: MUT-REP-01 survived with 200: {\"totalAmount\":0,\"totalCount\":0,\"averageAmount\":0,\"byCategory\":[],\"byDay\":[],\"expenses\":[]} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-REP-02 rejects one invalid reporting filter",
+      "id": "MUT-REP-02",
+      "status": "failed",
+      "defect": "BUG-27",
+      "durationMs": 732,
+      "error": "Error: MUT-REP-02 survived with 200: {\"totalAmount\":0,\"totalCount\":0,\"averageAmount\":0,\"byCategory\":[],\"byDay\":[],\"expenses\":[]} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-REP-03 rejects one invalid reporting filter",
+      "id": "MUT-REP-03",
+      "status": "failed",
+      "defect": "BUG-16",
+      "durationMs": 969,
+      "error": "Error: MUT-REP-03 survived with 200: {\"totalAmount\":13137.14,\"totalCount\":306,\"averageAmount\":42.931830065359477124183006536,\"byCategory\":[{\"categoryName\":\"Uncategorized\",\"total\":9281.64,\"count\":288},{\"categoryName\":\"Off"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-REC-01 validates receipt content rather than metadata only",
+      "id": "MUT-REC-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 737,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-REC-02 validates receipt content rather than metadata only",
+      "id": "MUT-REC-02",
+      "status": "failed",
+      "defect": "BUG-28",
+      "durationMs": 1495,
+      "error": "Error: MUT-REC-02 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-APR-02 validates rejection reason before changing state",
+      "id": "MUT-APR-02",
+      "status": "failed",
+      "defect": "BUG-29",
+      "durationMs": 936,
+      "error": "Error: MUT-APR-02 survived with 200: {\"id\":\"fc276b3b-2747-433c-9743-9b3df7168903\",\"expenseNumber\":\"EXP-2026-0370\",\"description\":\"MUT-APR-02 controlled pending expense 1792214649080\",\"vendor\":null,\"amount\":60.00,\"date\":\"2"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-cross-module.spec.ts",
+      "title": "MUT-APR-03 validates rejection reason before changing state",
+      "id": "MUT-APR-03",
+      "status": "failed",
+      "defect": "BUG-29",
+      "durationMs": 1009,
+      "error": "Error: MUT-APR-03 survived with 200: {\"id\":\"d6245b84-8636-4b7d-8118-0a21ef615175\",\"expenseNumber\":\"EXP-2026-0371\",\"description\":\"MUT-APR-03 controlled pending expense 1792214650352\",\"vendor\":null,\"amount\":60.00,\"date\":\"2"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-01 @mutation @negative kills mutant: remove required description",
+      "id": "MUT-EXP-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 725,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-02 @mutation @negative kills mutant: replace description with whitespace",
+      "id": "MUT-EXP-02",
+      "status": "failed",
+      "defect": "BUG-14",
+      "durationMs": 676,
+      "error": "Error: MUT-EXP-02 survived with 201: {\"id\":\"ac557948-f0ce-4492-95f1-9d9920618b5c\",\"expenseNumber\":\"EXP-2026-0360\",\"description\":\"   \",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-03 @mutation @negative kills mutant: replace description with null",
+      "id": "MUT-EXP-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 726,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-04 @mutation @negative kills mutant: replace description with an object",
+      "id": "MUT-EXP-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 666,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-05 @mutation @negative kills mutant: exceed description maximum by one",
+      "id": "MUT-EXP-05",
+      "status": "failed",
+      "defect": "BUG-03",
+      "durationMs": 710,
+      "error": "Error: MUT-EXP-05 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-06 @mutation @negative kills mutant: remove required amount",
+      "id": "MUT-EXP-06",
+      "status": "failed",
+      "defect": "BUG-14",
+      "durationMs": 975,
+      "error": "Error: MUT-EXP-06 survived with 201: {\"id\":\"d08a9594-0a25-4a09-b870-668e271c4955\",\"expenseNumber\":\"EXP-2026-0362\",\"description\":\"MUT-EXP-06 1792214635013\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"c"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-07 @mutation @negative kills mutant: replace amount with zero",
+      "id": "MUT-EXP-07",
+      "status": "failed",
+      "defect": "BUG-01",
+      "durationMs": 730,
+      "error": "Error: MUT-EXP-07 survived with 201: {\"id\":\"c640cceb-ca85-432f-9e6c-6ba3a5d1bf6d\",\"expenseNumber\":\"EXP-2026-0363\",\"description\":\"MUT-EXP-07 1792214636022\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"c"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-08 @mutation @negative kills mutant: replace amount with a negative value",
+      "id": "MUT-EXP-08",
+      "status": "failed",
+      "defect": "BUG-02",
+      "durationMs": 737,
+      "error": "Error: MUT-EXP-08 survived with 201: {\"id\":\"6019148b-f912-45a6-b815-ef109681ec44\",\"expenseNumber\":\"EXP-2026-0364\",\"description\":\"MUT-EXP-08 1792214637041\",\"vendor\":null,\"amount\":-0.01,\"date\":\"2026-10-17\",\"categoryId\":nul"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-09 @mutation @negative kills mutant: use more than two decimal places",
+      "id": "MUT-EXP-09",
+      "status": "failed",
+      "defect": "BUG-02",
+      "durationMs": 1501,
+      "error": "Error: MUT-EXP-09 survived with 201: {\"id\":\"03551ac2-497f-440b-80b4-a69b0b732396\",\"expenseNumber\":\"EXP-2026-0365\",\"description\":\"MUT-EXP-09 1792214638817\",\"vendor\":null,\"amount\":1.001,\"date\":\"2026-10-17\",\"categoryId\":nul"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-10 @mutation @negative kills mutant: replace amount with a numeric string",
+      "id": "MUT-EXP-10",
+      "status": "failed",
+      "defect": "BUG-14",
+      "durationMs": 714,
+      "error": "Error: MUT-EXP-10 survived with 201: {\"id\":\"bdf42b23-38a2-4538-8d42-01ebb303d5a2\",\"expenseNumber\":\"EXP-2026-0366\",\"description\":\"MUT-EXP-10 1792214639791\",\"vendor\":null,\"amount\":10.00,\"date\":\"2026-10-17\",\"categoryId\":nul"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-11 @mutation @negative kills mutant: remove required date",
+      "id": "MUT-EXP-11",
+      "status": "failed",
+      "defect": "BUG-14",
+      "durationMs": 743,
+      "error": "Error: MUT-EXP-11 survived with 201: {\"id\":\"ce3e88ab-e6a2-4cf9-8760-df844cb0294a\",\"expenseNumber\":\"EXP-2026-0367\",\"description\":\"MUT-EXP-11 1792214640840\",\"vendor\":null,\"amount\":10,\"date\":\"0001-01-01\",\"categoryId\":null,\""
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-12 @mutation @negative kills mutant: replace date with an empty string",
+      "id": "MUT-EXP-12",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 836,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-13 @mutation @negative kills mutant: replace date with malformed text",
+      "id": "MUT-EXP-13",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 682,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-14 @mutation @negative kills mutant: replace date with a number",
+      "id": "MUT-EXP-14",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 779,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-15 @mutation @negative kills mutant: reference a nonexistent category",
+      "id": "MUT-EXP-15",
+      "status": "failed",
+      "defect": "BUG-11",
+      "durationMs": 715,
+      "error": "Error: MUT-EXP-15 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/mutation-scenarios.spec.ts",
+      "title": "MUT-EXP-16 @mutation @negative kills mutant: forge a receipt URL without uploading a file",
+      "id": "MUT-EXP-16",
+      "status": "failed",
+      "defect": "BUG-15",
+      "durationMs": 744,
+      "error": "Error: MUT-EXP-16 survived with 201: {\"id\":\"bdb4c265-0326-4c44-93fb-4ab0761fe87d\",\"expenseNumber\":\"EXP-2026-0369\",\"description\":\"MUT-EXP-16 1792214645193\",\"vendor\":null,\"amount\":30,\"date\":\"2026-10-17\",\"categoryId\":null,\""
+    },
+    {
+      "project": "api",
+      "file": "api/policies.spec.ts",
+      "title": "POL-01 @smoke initial policies are readable by Finance",
+      "id": "POL-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 768,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/policies.spec.ts",
+      "title": "POL-02 @negative rejects invalid policy data",
+      "id": "POL-02",
+      "status": "failed",
+      "defect": "BUG-05",
+      "durationMs": 810,
+      "error": "Error: {\"id\":\"b19dd931-4bef-40b3-8347-6b87745096c3\",\"name\":\"\",\"description\":null,\"action\":\"AutoApprove\",\"maxAmount\":1,\"requiresReceipt\":false,\"isActive\":false,\"createdAt\":\"2026-10-17T05:24:07.1101187Z\"} · expect(received"
+    },
+    {
+      "project": "api",
+      "file": "api/policies.spec.ts",
+      "title": "POL-03 @negative rejects invalid policy data",
+      "id": "POL-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 779,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/policies.spec.ts",
+      "title": "POL-04 @negative rejects invalid policy data",
+      "id": "POL-04",
+      "status": "failed",
+      "defect": "BUG-05",
+      "durationMs": 808,
+      "error": "Error: {\"id\":\"4aa4a5e0-8b26-42b6-ba1a-5fb39aeedf71\",\"name\":\"QA negative threshold\",\"description\":null,\"action\":\"AutoApprove\",\"maxAmount\":-1,\"requiresReceipt\":false,\"isActive\":false,\"createdAt\":\"2026-10-17T05:24:09.007795"
+    },
+    {
+      "project": "api",
+      "file": "api/policies.spec.ts",
+      "title": "POL-05 @negative rejects invalid policy data",
+      "id": "POL-05",
+      "status": "failed",
+      "defect": "BUG-05",
+      "durationMs": 717,
+      "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/policy-rules.spec.ts",
+      "title": "RCPT-01 @boundary accepts 24.99 without receipt",
+      "id": "RCPT-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 723,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/policy-rules.spec.ts",
+      "title": "RCPT-02 @negative @boundary rejects exactly 25 without receipt",
+      "id": "RCPT-02",
+      "status": "failed",
+      "defect": "BUG-39",
+      "durationMs": 761,
+      "error": "Error: {\"id\":\"9308a597-2409-4337-96d1-f8cf2e81e73e\",\"expenseNumber\":\"EXP-2026-0373\",\"description\":\"QA expense 1792214651694-24085335\",\"vendor\":null,\"amount\":25,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+    },
+    {
+      "project": "api",
+      "file": "api/policy-rules.spec.ts",
+      "title": "RCPT-03 @negative @boundary rejects the 80 USD example from Annex E without receipt",
+      "id": "RCPT-03",
+      "status": "failed",
+      "defect": "BUG-39",
+      "durationMs": 770,
+      "error": "Error: {\"id\":\"c10c8fcc-0ec0-41fb-a1b4-15e319265f99\",\"expenseNumber\":\"EXP-2026-0374\",\"description\":\"QA expense 1792214652747-5077a687\",\"vendor\":null,\"amount\":80,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+    },
+    {
+      "project": "api",
+      "file": "api/policy-rules.spec.ts",
+      "title": "THR-01 @boundary 49.99 with receipt ends AutoApproved",
+      "id": "THR-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1258,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/policy-rules.spec.ts",
+      "title": "THR-02 @boundary 50 with receipt ends PendingApproval",
+      "id": "THR-02",
+      "status": "failed",
+      "defect": "BUG-18",
+      "durationMs": 785,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: \"PendingApproval\" · Received: \"AutoApproved\""
+    },
+    {
+      "project": "api",
+      "file": "api/rbac.spec.ts",
+      "title": "RBAC-01 @negative Employee cannot read policies",
+      "id": "RBAC-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 710,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/rbac.spec.ts",
+      "title": "RBAC-02 @negative Manager cannot read policies",
+      "id": "RBAC-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 765,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/rbac.spec.ts",
+      "title": "RBAC-03 Finance can read but cannot write policies",
+      "id": "RBAC-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 799,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/rbac.spec.ts",
+      "title": "RBAC-04 @negative Administrator cannot create expenses",
+      "id": "RBAC-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1314,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/rbac.spec.ts",
+      "title": "RBAC-05 @negative Administrator cannot access approval queue",
+      "id": "RBAC-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 707,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/receipts.spec.ts",
+      "title": "REC-01 @negative extraction requires authentication",
+      "id": "REC-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 645,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/receipts.spec.ts",
+      "title": "REC-02 @negative Employee receives a clear 4xx for unsupported content",
+      "id": "REC-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 678,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/receipts.spec.ts",
+      "title": "REC-03 @negative Administrator cannot extract receipts",
+      "id": "REC-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 660,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/role-access-readonly.spec.ts",
+      "title": "RBAC-RO-01 role read access matches the documented resource matrix",
+      "id": "RBAC-RO-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 6242,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/session-expanded.spec.ts",
+      "title": "AUTHX-employee1 /auth/me reflects the authenticated employee1",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 711,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/session-expanded.spec.ts",
+      "title": "AUTHX-manager1 /auth/me reflects the authenticated manager1",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 683,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/session-expanded.spec.ts",
+      "title": "AUTHX-finance /auth/me reflects the authenticated finance",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 708,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/session-expanded.spec.ts",
+      "title": "AUTHX-admin /auth/me reflects the authenticated admin",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 703,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/session-expanded.spec.ts",
+      "title": "AUTHX-05 @negative an altered token is rejected",
+      "id": "AUTHX-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 652,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/session-expanded.spec.ts",
+      "title": "AUTHX-06 logout follows the documented 204 contract",
+      "id": "AUTHX-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 641,
+      "error": null
+    },
+    {
+      "project": "integration",
+      "file": "integration/analytics-consistency.spec.ts",
+      "title": "INT-ANA-01 rejected expenses are excluded from report spending totals",
+      "id": "INT-ANA-01",
+      "status": "failed",
+      "defect": "BUG-12",
+      "durationMs": 1022,
+      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 11047.119999999995 · Received: 13487.12"
+    },
+    {
+      "project": "integration",
+      "file": "integration/analytics-consistency.spec.ts",
+      "title": "INT-ANA-02 category aggregates exclude rejected expenses",
+      "id": "INT-ANA-02",
+      "status": "failed",
+      "defect": "BUG-12",
+      "durationMs": 1051,
+      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 11047.119999999995 · Received: 13487.12"
+    },
+    {
+      "project": "integration",
+      "file": "integration/analytics-consistency.spec.ts",
+      "title": "INT-ANA-03 report total count matches non-rejected total population",
+      "id": "INT-ANA-03",
+      "status": "failed",
+      "defect": "BUG-12",
+      "durationMs": 944,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: 295 · Received: 313"
+    },
+    {
+      "project": "integration",
+      "file": "integration/expense-lifecycle.spec.ts",
+      "title": "INT-01 @smoke create -> retrieve -> audit keeps identity and automatic decision",
+      "id": "INT-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 904,
+      "error": null
+    },
+    {
+      "project": "integration",
+      "file": "integration/expense-lifecycle.spec.ts",
+      "title": "INT-02 @negative Manager cannot see an unrelated employee expense",
+      "id": "INT-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 970,
+      "error": null
+    },
+    {
+      "project": "integration",
+      "file": "integration/expense-lifecycle.spec.ts",
+      "title": "INT-03 @negative final automatic decision cannot be deleted",
+      "id": "INT-03",
+      "status": "failed",
+      "defect": "BUG-08",
+      "durationMs": 755,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    204"
+    },
+    {
+      "project": "integration",
+      "file": "integration/policy-lifecycle.spec.ts",
+      "title": "INT-POL-01 Administrator creates, updates and deletes an inactive rule",
+      "id": "INT-POL-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1803,
+      "error": null
+    },
+    {
+      "project": "integration",
+      "file": "integration/policy-lifecycle.spec.ts",
+      "title": "INT-POL-02 deleted inactive rule no longer appears in the list",
+      "id": "INT-POL-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 841,
+      "error": null
+    },
+    {
+      "project": "integration",
+      "file": "integration/policy-lifecycle.spec.ts",
+      "title": "INT-POL-03 Finance cannot update an existing rule",
+      "id": "INT-POL-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 727,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/accessibility.spec.ts",
+      "title": "E2E-A11 login controls have accessible names and required test IDs",
+      "id": "E2E-A11",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1186,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/accessibility.spec.ts",
+      "title": "E2E-A12 Manager navigation includes approvals but not policy configuration",
+      "id": "E2E-A12",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1896,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/accessibility.spec.ts",
+      "title": "E2E-A13 Finance navigation combines employee, approval and policy capabilities",
+      "id": "E2E-A13",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1848,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-01-EVIDENCE repeated approval returns success",
+      "id": "R2-FLOW-01-EVIDENCE",
+      "status": "failed",
+      "defect": "BUG-35",
+      "durationMs": 4755,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/adversarial-workflow-round2.spec.ts",
+      "title": "R2-FLOW-02-EVIDENCE rejected expense can become approved",
+      "id": "R2-FLOW-02-EVIDENCE",
+      "status": "failed",
+      "defect": "BUG-36",
+      "durationMs": 5619,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/authentication.spec.ts",
+      "title": "E2E-01 @smoke employee signs in and sees identity",
+      "id": "E2E-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1810,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/authentication.spec.ts",
+      "title": "E2E-02 @negative invalid credentials show a visible error and preserve email",
+      "id": "E2E-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2146,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/authentication.spec.ts",
+      "title": "E2E-03 protected deep link returns to the original route after login",
+      "id": "E2E-03",
+      "status": "failed",
+      "defect": "BUG-09",
+      "durationMs": 8469,
+      "error": "Error: expect(page).toHaveURL(expected) failed · Expected pattern: /\\/expenses/ · Received string:  \"https://spendwise-igs.eastus2.cloudapp.azure.com:4406/dashboard\""
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/authentication.spec.ts",
+      "title": "E2E-04 sign out prevents browser back from exposing protected data",
+      "id": "E2E-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3503,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/expense-status-tabs.spec.ts",
+      "title": "E2E-M13 Pending tab lists the user expenses awaiting approval (RN-60)",
+      "id": "E2E-M13",
+      "status": "failed",
+      "defect": "BUG-40",
+      "durationMs": 10460,
+      "error": "Error: expect(locator).toBeVisible() failed · Locator: getByText('E2E-M13 pending 1792214684186') · Expected: visible"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/exploratory-ui.spec.ts",
+      "title": "EXPUI-01 @negative Finance policy page is read-only",
+      "id": "EXPUI-01",
+      "status": "failed",
+      "defect": "BUG-17",
+      "durationMs": 9699,
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByRole('button', { name: /new rule/i }) · Expected: 0"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/exploratory-ui.spec.ts",
+      "title": "EXPUI-02 policy threshold communicates strictly less than 50",
+      "id": "EXPUI-02",
+      "status": "failed",
+      "defect": "BUG-18",
+      "durationMs": 10632,
+      "error": "Error: expect(locator).toContainText(expected) failed · Locator: getByText('Auto-approve under $50').locator('..').locator('..') · Expected pattern: /<\\s*\\$?50|less than \\$?50/i"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/exploratory-ui.spec.ts",
+      "title": "EXPUI-03 approval queue identifies the submitter",
+      "id": "EXPUI-03",
+      "status": "failed",
+      "defect": "BUG-19",
+      "durationMs": 10243,
+      "error": "Error: expect(locator).toContainText(expected) failed · Locator: locator('main') · Expected pattern: /Elena Employee|Ethan Employee|employee\\d@spendwise\\.test/i"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/exploratory-ui.spec.ts",
+      "title": "EXPUI-04 final expenses do not expose delete actions",
+      "id": "EXPUI-04",
+      "status": "failed",
+      "defect": "BUG-20",
+      "durationMs": 10733,
+      "error": "Error: expect(locator).toBeVisible() failed · Locator: getByText('EXP-2026-0004', { exact: true }) · Expected: visible"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/exploratory-ui.spec.ts",
+      "title": "EXPUI-05 global search has an accessible name",
+      "id": "EXPUI-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1932,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/exploratory-ui.spec.ts",
+      "title": "EXPUI-06 manual expense fields are associated with labels",
+      "id": "EXPUI-06",
+      "status": "failed",
+      "defect": "BUG-21",
+      "durationMs": 10874,
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByLabel(/Notes/i) · Expected: 1"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M01 employee1 opens /expenses",
+      "id": "E2E-M01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3321,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M02 employee1 opens /expenses/new",
+      "id": "E2E-M02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2761,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M03 employee1 opens /reports",
+      "id": "E2E-M03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2285,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M04 manager1 opens /approvals",
+      "id": "E2E-M04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1999,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M05 finance opens /approvals",
+      "id": "E2E-M05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2076,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M06 finance opens /policies",
+      "id": "E2E-M06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2038,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M07 admin opens /policies",
+      "id": "E2E-M07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1993,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M08 admin opens /reports",
+      "id": "E2E-M08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3212,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M09 @negative Administrator direct access to New expense is denied",
+      "id": "E2E-M09",
+      "status": "failed",
+      "defect": "BUG-10",
+      "durationMs": 10525,
+      "error": "Error: expect(locator).toBeVisible() failed · Locator: getByTestId('access-denied') · Expected: visible"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M10 Reports exposes a working export control",
+      "id": "E2E-M10",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2213,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M11 Reports exports a non-empty CSV file",
+      "id": "E2E-M11",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3364,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/modules.spec.ts",
+      "title": "E2E-M12 @negative CSV neutralizes spreadsheet formula prefixes",
+      "id": "E2E-M12",
+      "status": "failed",
+      "defect": "BUG-13",
+      "durationMs": 2384,
+      "error": "Error: expect(received).not.toMatch(expected) · Expected pattern: not /(?:^|,)\"?[=+@]/m · Received string:      \"Expense #,Description,Vendor,Category,Date,Amount,Status"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-01 browser refresh does not submit a partially completed expense",
+      "id": "MUT-STATE-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2532,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-02 Back from manual entry cancels without creating a draft or expense",
+      "id": "MUT-STATE-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2402,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-03 repeated submit gesture creates exactly one expense",
+      "id": "MUT-STATE-03",
+      "status": "failed",
+      "defect": null,
+      "durationMs": 10197,
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByText('double-submit-1792214896888', { exact: true }) · Expected: 1"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-04 status filter returns only the selected lifecycle state",
+      "id": "MUT-STATE-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 4783,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-05 pagination Next changes page and Previous restores the first page",
+      "id": "MUT-STATE-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2377,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-06 changing status while on page two resets pagination safely",
+      "id": "MUT-STATE-06",
+      "status": "failed",
+      "defect": "BUG-40",
+      "durationMs": 10288,
+      "error": "Error: expect(locator).toBeVisible() failed · Locator: locator('main .divide-y').last().locator(':scope > div').first() · Expected: visible"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-07 browser Back restores the expenses page after visiting a report",
+      "id": "MUT-STATE-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3722,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-08 unknown deep link fails gracefully without exposing protected data",
+      "id": "MUT-STATE-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2058,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-09 logout remains effective after Back and hard refresh",
+      "id": "MUT-STATE-09",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3753,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-navigation-state.spec.ts",
+      "title": "MUT-STATE-10 report filters survive Refresh action and remain reflected in results",
+      "id": "MUT-STATE-10",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2470,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-01 blank login explains each required field",
+      "id": "MUT-UI-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1304,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-02 account menu supports Escape and restores keyboard focus",
+      "id": "MUT-UI-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2442,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-03 global search has a programmatic accessible name",
+      "id": "MUT-UI-03",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2305,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-04 expense-table search has a programmatic accessible name",
+      "id": "MUT-UI-04",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2705,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-05 selected status filter is announced to assistive technology",
+      "id": "MUT-UI-05",
+      "status": "failed",
+      "defect": "BUG-31",
+      "durationMs": 9687,
+      "error": "Error: expect(locator).toHaveAttribute(expected) failed · Locator:  getByRole('button', { name: 'Approved', exact: true }) · Expected: \"true\""
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-06 pagination has correct boundary controls and changes page",
+      "id": "MUT-UI-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3661,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-07 no-match search communicates an explicit empty state",
+      "id": "MUT-UI-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2869,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-08 special characters in search do not crash or expose a server error",
+      "id": "MUT-UI-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2122,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-09 report filters have associated accessible labels",
+      "id": "MUT-UI-09",
+      "status": "failed",
+      "defect": "BUG-32",
+      "durationMs": 10285,
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByLabel('From', { exact: true }) · Expected: 1"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-10 invalid report date range is rejected before requesting data",
+      "id": "MUT-UI-10",
+      "status": "failed",
+      "defect": "BUG-33",
+      "durationMs": 4024,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: false · Received: true"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-11 manual-entry Notes control is associated with its visible label",
+      "id": "MUT-UI-11",
+      "status": "failed",
+      "defect": "BUG-21",
+      "durationMs": 9562,
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByLabel('Notes', { exact: true }) · Expected: 1"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-12 blank manual form prevents submission and reports field errors",
+      "id": "MUT-UI-12",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2266,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/mutation-ui-controls.spec.ts",
+      "title": "MUT-UI-13 mobile viewport has no page-level horizontal overflow",
+      "id": "MUT-UI-13",
+      "status": "failed",
+      "defect": "BUG-34",
+      "durationMs": 3790,
+      "error": "Error: expect(received).toBeLessThanOrEqual(expected) · Expected: <= 1 · Received:    102"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/role-navigation.spec.ts",
+      "title": "E2E-05 Employee menu exposes only Employee capabilities",
+      "id": "E2E-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1922,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/role-navigation.spec.ts",
+      "title": "E2E-06 Employee direct access to policy configuration is denied",
+      "id": "E2E-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2259,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/role-navigation.spec.ts",
+      "title": "E2E-07 Administrator cannot see expense creation or approval navigation",
+      "id": "E2E-07",
+      "status": "failed",
+      "defect": "BUG-10",
+      "durationMs": 9362,
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByRole('link', { name: /new expense/i }) · Expected: 0"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/ui-functional-recovery.spec.ts",
+      "title": "UI-02 failed expense submission shows a message and preserves entered values",
+      "id": "UI-02",
+      "status": "failed",
+      "defect": "BUG-38",
+      "durationMs": 10944,
+      "error": "Error: expect(locator).toContainText(expected) failed · Locator: locator('main') · Expected pattern: /error|failed|try again|unable/i"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/ui-functional-recovery.spec.ts",
+      "title": "browser Forward restores the report after Back returns to expenses",
+      "id": null,
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2912,
+      "error": null
+    }
+  ]
+}

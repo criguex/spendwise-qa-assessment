@@ -1,0 +1,57 @@
+{
+  "id": "BUG-11",
+  "capturedAt": "2026-10-17T05:22:38.890Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "HTTP 500",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:38.8910958Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 113,
+      "at": "2026-10-17T05:22:38.808Z"
+    },
+    {
+      "setup": false,
+      "note": "categoryId UUID válido pero inexistente",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214558809-a1d061",
+        "amount": 10,
+        "date": "2026-10-17",
+        "categoryId": "c7145438-0b66-44ab-9025-8e5c189ffc27"
+      },
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "responseBody": {
+        "error": "An unexpected error occurred."
+      },
+      "durationMs": 81,
+      "at": "2026-10-17T05:22:38.890Z"
+    }
+  ]
+}

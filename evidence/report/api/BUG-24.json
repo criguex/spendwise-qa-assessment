@@ -1,0 +1,132 @@
+{
+  "id": "BUG-24",
+  "capturedAt": "2026-10-17T05:22:41.843Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "HTTP 200; totalCount 81 (sin filtro: 81)",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee1",
+      "requestBody": {
+        "email": "employee1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:41.7687824Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000005",
+          "email": "employee1@spendwise.test",
+          "fullName": "Elena Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 113,
+      "at": "2026-10-17T05:22:41.686Z"
+    },
+    {
+      "setup": true,
+      "note": "Listado sin filtro (referencia)",
+      "method": "GET",
+      "path": "/api/v1/expenses",
+      "role": "employee1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "items": [
+          {
+            "id": "6c0bba7a-1774-430b-a32a-040733edbaa1",
+            "expenseNumber": "EXP-2026-0260",
+            "description": "R2 pending 1792213756382-312947",
+            "vendor": null,
+            "amount": 125,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "Approved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:09:16.447931"
+          },
+          {
+            "id": "4658bc96-1ea2-43c9-b13a-107ecfed25d6",
+            "expenseNumber": "EXP-2026-0297",
+            "description": "QA expense 1792213828248-b9ce89d5",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:10:28.3023074"
+          },
+          "… 18 elementos más"
+        ],
+        "totalCount": 81,
+        "page": 1,
+        "pageSize": 20
+      },
+      "durationMs": 79,
+      "at": "2026-10-17T05:22:41.765Z"
+    },
+    {
+      "setup": false,
+      "method": "GET",
+      "path": "/api/v1/expenses?categoryId=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "role": "employee1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "items": [
+          {
+            "id": "6c0bba7a-1774-430b-a32a-040733edbaa1",
+            "expenseNumber": "EXP-2026-0260",
+            "description": "R2 pending 1792213756382-312947",
+            "vendor": null,
+            "amount": 125,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "Approved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:09:16.447931"
+          },
+          {
+            "id": "4658bc96-1ea2-43c9-b13a-107ecfed25d6",
+            "expenseNumber": "EXP-2026-0297",
+            "description": "QA expense 1792213828248-b9ce89d5",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:10:28.3023074"
+          },
+          "… 18 elementos más"
+        ],
+        "totalCount": 81,
+        "page": 1,
+        "pageSize": 20
+      },
+      "durationMs": 78,
+      "at": "2026-10-17T05:22:41.843Z"
+    }
+  ]
+}

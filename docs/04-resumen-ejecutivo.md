@@ -1,45 +1,27 @@
 # E4 — Resumen ejecutivo
 
-## Estado de calidad
+## Recomendación
 
-Evaluación ampliada el 16 de octubre de 2026. La automatización creció de 46 a 184 pruebas en 28 archivos. La regresión base de 119 obtuvo 86 aprobadas y 33 fallidas en 4,1 minutos. Las campañas exploratorias y mutantes posteriores añadieron 65 controles especializados y elevaron la trazabilidad a 34 defectos confirmados y 8 oportunidades de mejora. Postman/Newman conserva 15 solicitudes y 25 aserciones. E2E-06 fue corregido como falso positivo de sincronización: la pantalla de acceso denegado sí funciona.
+**No liberar esta versión.** Se puede reconsiderar cuando se corrijan y se vuelvan a probar los 17 defectos de severidad alta.
 
-Como extensión adicional se incorporaron 18 pruebas de mutación black-box. El catálogo ejecutó 16
-mutantes de solicitudes: 6 fueron rechazados correctamente y 10 sobrevivieron, para un mutation score
-de 37,5%. La suite completa disponible asciende a 184 pruebas en 28 archivos. La expansión cruzada
-añadió 47 escenarios API/E2E y confirmó 13 defectos adicionales después de doble o triple reproducción.
-Dos rondas adversariales posteriores agregaron 23 ejecuciones sobre IDOR/BOLA, composición de roles,
-mass assignment y máquina de estados. La consolidación obtuvo 19 aprobadas y 4 fallidas por dos defectos; dos falsos positivos fueron
-descartados contra el Anexo G y se confirmaron BUG-35/36. Tres rondas adicionales validaron 50 controles de permisos,
-22 mutaciones de contrato/datos y recuperación/navegación UI; confirmaron BUG-37/38. El total asciende a 38 defectos y 8
-oportunidades de mejora separadas. Los sobrevivientes se
-consolidaron con defectos existentes para no duplicar hallazgos por la misma causa raíz.
+## Estado de la calidad
 
-## Riesgos principales
+SpendWise cumple lo básico: las personas inician sesión, registran gastos, los aprueban y consultan reportes, y cada rol solo accede a lo que le corresponde. Las fallas están en las reglas que protegen el dinero y la confianza en las cifras. Se confirmaron 39 defectos (17 de severidad alta, 21 media y 1 baja). Todos se volvieron a ejecutar el 17 de octubre y siguen ocurriendo.
 
-- La API persiste gastos con monto cero, negativo o precisión inválida.
-- Entradas fuera de longitud y paginación inválida producen HTTP 500.
-- El motor permite crear reglas con datos inválidos.
-- Un gasto `AutoApproved`, considerado final, puede eliminarse y perder trazabilidad.
-- Existen divergencias de contrato en identificadores, categorías y Swagger.
-- La navegación presenta inconsistencias de deep link y permisos visibles por rol.
-- Los reportes incluyen gastos rechazados y presentan totales financieros inflados.
-- La exportación CSV no neutraliza prefijos de fórmula controlados por el usuario.
-- Una categoría inexistente provoca HTTP 500 en lugar de validación 400.
-- Campos obligatorios vacíos/ausentes y comprobantes falsos se aceptan y persisten.
-- La cola no identifica al solicitante y Finance recibe controles de escritura no autorizados.
-- La UI comunica mal el borde de USD 50 y ofrece Delete en estados finales.
+## Principales riesgos para el negocio
 
-## Recomendación final
+- **Gastos aprobados sin el control previsto.** Un gasto de exactamente 50 dólares se aprueba solo cuando debería revisarlo una persona; los gastos de 25 dólares o más se aceptan sin comprobante, y cualquier texto se toma como comprobante.
+- **Decisiones que se pueden deshacer o tomar sin justificación.** Un gasto rechazado puede aprobarse después, se puede rechazar sin dar motivo, aprobar dos veces deja un registro falso en la auditoría y un gasto ya aprobado se puede borrar.
+- **Información que no se puede creer.** Los totales de los reportes incluyen gastos rechazados, y la pestaña de pendientes del empleado siempre aparece vacía aunque tenga gastos esperando aprobación.
+- **Datos que no deberían existir.** Se aceptan gastos en cero, negativos o sin datos obligatorios, y algunos datos mal escritos provocan errores del sistema en lugar de un mensaje claro.
+- **Seguridad de los archivos exportados.** El archivo CSV puede contener fórmulas que se ejecutan al abrirlo en Excel.
 
-**NO GO condicionado.** No se recomienda liberar mientras permanezcan abiertos los once defectos de severidad alta relacionados con integridad financiera, validación, políticas, comprobantes, trazabilidad de aprobación, eliminación de estados finales, cálculo de reportes y seguridad CSV. Después de corregirlos debe ejecutarse retest dirigido y regresión completa. Los diez hallazgos medios requieren aceptación explícita del riesgo si no se corrigen antes de producción.
+## Qué hace falta para liberar
 
-## Cobertura y evidencia
+1. Corregir los 17 defectos de severidad alta.
+2. Repetir sus pruebas (ya están automatizadas) y la regresión completa.
+3. Para los defectos medios y bajos que queden abiertos, que negocio acepte el riesgo por escrito.
 
-- Componentes: 5/5 aprobadas.
-- Contrato: 2/6 aprobadas; 4 fallos por incumplimiento documentado.
-- API: cobertura ampliada de autenticación, sesión, consultas, recibos, aprobaciones, dashboard, reportes y RBAC.
-- Integración: políticas completas con cleanup, analítica cruzada, visibilidad y ciclo de vida.
-- E2E: 31 escenarios sobre autenticación, accesibilidad, cuatro roles, todos los módulos, descarga CSV, rutas prohibidas y exploratorias UI.
-- Postman/Newman: 20/25 aserciones aprobadas; 5 defectos reproducidos.
+## Alcance
 
+Se evaluaron la aplicación web y la API frente a las reglas de los anexos, con las cuentas de prueba de cada rol. No se hicieron pruebas de rendimiento ni de carga porque están fuera del alcance de la prueba.

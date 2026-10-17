@@ -1,0 +1,34 @@
+{
+  "id": "BUG-38",
+  "title": "Fallo al enviar gasto no se comunica en la UI",
+  "role": "Employee",
+  "user": "employee1@spendwise.test",
+  "url": "/expenses/new",
+  "recordedAt": "2026-10-17T05:21:12.573Z",
+  "reproduced": true,
+  "expected": "Deben conservarse los valores ingresados y mostrarse un mensaje visible de error/falla",
+  "actual": "Valores conservados: true · Mensaje de error visible: false",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-38-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir /expenses/new y completar el formulario manual",
+      "screenshot": "BUG-38-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Se simula una respuesta HTTP 500 del servidor (intercepción de red)",
+      "screenshot": "BUG-38-03.png"
+    },
+    {
+      "n": 4,
+      "text": "Enviar el formulario (la API responde 500)",
+      "screenshot": "BUG-38-04.png"
+    }
+  ],
+  "notes": "No se creó ningún gasto real: la petición POST fue interceptada y respondida con 500 simulado."
+}

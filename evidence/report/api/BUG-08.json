@@ -1,0 +1,97 @@
+{
+  "id": "BUG-08",
+  "capturedAt": "2026-10-17T05:22:38.693Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "creado AutoApproved; DELETE → 204; GET posterior → 404",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee2",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee2",
+      "requestBody": {
+        "email": "employee2@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:38.5124627Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000006",
+          "email": "employee2@spendwise.test",
+          "fullName": "Ernesto Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 118,
+      "at": "2026-10-17T05:22:38.433Z"
+    },
+    {
+      "setup": true,
+      "note": "Gasto de USD 10 → AutoApproved (estado final)",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee2",
+      "requestBody": {
+        "description": "QA evidencia 1792214558433-229dfb",
+        "amount": 10,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "5114b731-f264-40b2-acc4-f6386e6d3ff4",
+        "expenseNumber": "EXP-2026-0311",
+        "description": "QA evidencia 1792214558433-229dfb",
+        "vendor": null,
+        "amount": 10,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:38.5997328Z"
+      },
+      "durationMs": 91,
+      "at": "2026-10-17T05:22:38.524Z"
+    },
+    {
+      "setup": false,
+      "method": "DELETE",
+      "path": "/api/v1/expenses/5114b731-f264-40b2-acc4-f6386e6d3ff4",
+      "role": "employee2",
+      "requestBody": null,
+      "status": 204,
+      "statusText": "No Content",
+      "responseBody": "",
+      "durationMs": 89,
+      "at": "2026-10-17T05:22:38.613Z"
+    },
+    {
+      "setup": false,
+      "note": "El gasto ya no existe",
+      "method": "GET",
+      "path": "/api/v1/expenses/5114b731-f264-40b2-acc4-f6386e6d3ff4",
+      "role": "employee2",
+      "requestBody": null,
+      "status": 404,
+      "statusText": "Not Found",
+      "responseBody": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+        "title": "Not Found",
+        "status": 404,
+        "traceId": "00-f71c540fc7a69db064b94a0872781065-2bd5ec933ae42d3f-00"
+      },
+      "durationMs": 80,
+      "at": "2026-10-17T05:22:38.693Z"
+    }
+  ]
+}

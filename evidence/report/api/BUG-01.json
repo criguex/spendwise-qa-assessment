@@ -1,0 +1,66 @@
+{
+  "id": "BUG-01",
+  "capturedAt": "2026-10-17T05:22:36.520Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "HTTP 201; estado AutoApproved",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:36.5059571Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 380,
+      "at": "2026-10-17T05:22:36.431Z"
+    },
+    {
+      "setup": false,
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214556431-67ea13",
+        "amount": 0,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "275a26b7-92a8-44ed-93e2-5fe4df32d94a",
+        "expenseNumber": "EXP-2026-0305",
+        "description": "QA evidencia 1792214556431-67ea13",
+        "vendor": null,
+        "amount": 0,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:36.5950107Z"
+      },
+      "durationMs": 89,
+      "at": "2026-10-17T05:22:36.520Z"
+    }
+  ]
+}

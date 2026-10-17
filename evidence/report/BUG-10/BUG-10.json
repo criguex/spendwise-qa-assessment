@@ -1,0 +1,29 @@
+{
+  "id": "BUG-10",
+  "title": "Administrator ve y abre una acción New expense no autorizada",
+  "role": "Administrator",
+  "user": "admin@spendwise.test",
+  "url": "/expenses/new",
+  "recordedAt": "2026-10-17T05:18:20.424Z",
+  "reproduced": true,
+  "expected": "Solo deben ofrecerse opciones utilizables por el rol; /expenses/new debe mostrar acceso denegado",
+  "actual": "Las acciones rápidas son visibles y la ruta directa abre el formulario completo de creación",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como admin@spendwise.test",
+      "screenshot": "BUG-10-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Mostrar que Dashboard expone New expense / Scan receipt / Manual entry",
+      "screenshot": "BUG-10-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Navegar directamente a /expenses/new",
+      "screenshot": "BUG-10-03.png"
+    }
+  ],
+  "notes": "access-denied testid count: 0"
+}

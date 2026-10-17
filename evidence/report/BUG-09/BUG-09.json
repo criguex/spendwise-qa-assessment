@@ -1,0 +1,24 @@
+{
+  "id": "BUG-09",
+  "title": "Login desde ruta protegida no regresa a la ruta original",
+  "role": "Employee",
+  "user": "employee2@spendwise.test",
+  "url": "/expenses",
+  "recordedAt": "2026-10-17T05:18:07.863Z",
+  "reproduced": true,
+  "expected": "Debe regresar a /expenses tras iniciar sesión",
+  "actual": "Aterriza en /dashboard (Dashboard), no en /expenses",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Intentar abrir /expenses sin sesión iniciada",
+      "screenshot": "BUG-09-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Iniciar sesión como employee2@spendwise.test",
+      "screenshot": "BUG-09-02.png"
+    }
+  ],
+  "notes": "URL final observada: https://spendwise-igs.eastus2.cloudapp.azure.com:4406/dashboard"
+}

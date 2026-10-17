@@ -1,0 +1,95 @@
+{
+  "id": "BUG-02",
+  "capturedAt": "2026-10-17T05:22:36.840Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "-0.01 → 201; 1.001 → 201",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:36.7198746Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 123,
+      "at": "2026-10-17T05:22:36.645Z"
+    },
+    {
+      "setup": false,
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214556645-3bc4e5",
+        "amount": -0.01,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "b0755fbc-61ba-4e65-b5bf-5a150d08855b",
+        "expenseNumber": "EXP-2026-0306",
+        "description": "QA evidencia 1792214556645-3bc4e5",
+        "vendor": null,
+        "amount": -0.01,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:36.8161461Z"
+      },
+      "durationMs": 97,
+      "at": "2026-10-17T05:22:36.742Z"
+    },
+    {
+      "setup": false,
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214556742-546687",
+        "amount": 1.001,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "b051547a-bebd-4518-96cf-5ca5d5ee817d",
+        "expenseNumber": "EXP-2026-0307",
+        "description": "QA evidencia 1792214556742-546687",
+        "vendor": null,
+        "amount": 1.001,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:36.9055262Z"
+      },
+      "durationMs": 98,
+      "at": "2026-10-17T05:22:36.840Z"
+    }
+  ]
+}

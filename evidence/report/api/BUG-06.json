@@ -1,0 +1,50 @@
+{
+  "id": "BUG-06",
+  "capturedAt": "2026-10-17T05:22:38.106Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "0/19 operaciones documentan respuestas 4xx/5xx; 0/19 documentan esquema de respuesta; POST /api/v1/expenses documenta 200 y el runtime responde 201; DELETE /api/v1/expenses/{id} documenta 200 y el runtime responde 204",
+  "analysis": {
+    "operaciones": 19,
+    "conRespuestasNegativas": 0,
+    "conEsquemaDeRespuesta": 0,
+    "securitySchemes": [
+      "Bearer"
+    ],
+    "seguridadGlobal": [
+      {
+        "Bearer": []
+      }
+    ],
+    "ejemploPostExpenses": {
+      "200": {
+        "description": "OK"
+      }
+    }
+  },
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Descarga del OpenAPI publicado",
+      "method": "GET",
+      "path": "/swagger/v1/swagger.json",
+      "role": null,
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "openapi": "3.0.1",
+        "info": {
+          "title": "SpendWise API",
+          "version": "v1"
+        },
+        "components": [
+          "schemas",
+          "securitySchemes"
+        ]
+      },
+      "durationMs": 171,
+      "at": "2026-10-17T05:22:38.106Z"
+    }
+  ]
+}

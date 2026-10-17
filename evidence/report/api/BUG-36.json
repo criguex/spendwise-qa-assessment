@@ -1,0 +1,207 @@
+{
+  "id": "BUG-36",
+  "capturedAt": "2026-10-17T05:22:45.127Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "reject → 200; approve → 200; estado final Approved; nota vigente \"Rejected: Rechazo controlado de QA\"",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee1",
+      "requestBody": {
+        "email": "employee1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:44.6553763Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000005",
+          "email": "employee1@spendwise.test",
+          "fullName": "Elena Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 120,
+      "at": "2026-10-17T05:22:44.576Z"
+    },
+    {
+      "setup": true,
+      "note": "Gasto de USD 125 que queda PendingApproval",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee1",
+      "requestBody": {
+        "description": "QA pendiente 1792214564576",
+        "amount": 125,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "1614fe94-ad88-4a70-b7bd-89f28d370c32",
+        "expenseNumber": "EXP-2026-0324",
+        "description": "QA pendiente 1792214564576",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "PendingApproval",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:44.7379269Z"
+      },
+      "durationMs": 84,
+      "at": "2026-10-17T05:22:44.660Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión manager1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "manager1",
+      "requestBody": {
+        "email": "manager1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:44.8582354Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000003",
+          "email": "manager1@spendwise.test",
+          "fullName": "Mario Manager",
+          "roles": [
+            "Employee",
+            "Manager"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 116,
+      "at": "2026-10-17T05:22:44.776Z"
+    },
+    {
+      "setup": true,
+      "note": "Rechazo legítimo con motivo",
+      "method": "PUT",
+      "path": "/api/v1/approvals/1614fe94-ad88-4a70-b7bd-89f28d370c32/reject",
+      "role": "manager1",
+      "requestBody": {
+        "reason": "Rechazo controlado de QA"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "id": "1614fe94-ad88-4a70-b7bd-89f28d370c32",
+        "expenseNumber": "EXP-2026-0324",
+        "description": "QA pendiente 1792214564576",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Rejected",
+        "notes": "Rejected: Rechazo controlado de QA",
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:44.7379269"
+      },
+      "durationMs": 91,
+      "at": "2026-10-17T05:22:44.867Z"
+    },
+    {
+      "setup": false,
+      "note": "Aprobación posterior sobre un gasto Rejected",
+      "method": "PUT",
+      "path": "/api/v1/approvals/1614fe94-ad88-4a70-b7bd-89f28d370c32/approve",
+      "role": "manager1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "id": "1614fe94-ad88-4a70-b7bd-89f28d370c32",
+        "expenseNumber": "EXP-2026-0324",
+        "description": "QA pendiente 1792214564576",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Approved",
+        "notes": "Rejected: Rechazo controlado de QA",
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:44.7379269"
+      },
+      "durationMs": 88,
+      "at": "2026-10-17T05:22:44.955Z"
+    },
+    {
+      "setup": false,
+      "note": "Estado final del gasto",
+      "method": "GET",
+      "path": "/api/v1/expenses/1614fe94-ad88-4a70-b7bd-89f28d370c32",
+      "role": "manager1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "id": "1614fe94-ad88-4a70-b7bd-89f28d370c32",
+        "expenseNumber": "EXP-2026-0324",
+        "description": "QA pendiente 1792214564576",
+        "vendor": null,
+        "amount": 125,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Approved",
+        "notes": "Rejected: Rechazo controlado de QA",
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T05:22:44.7379269"
+      },
+      "durationMs": 80,
+      "at": "2026-10-17T05:22:45.036Z"
+    },
+    {
+      "setup": false,
+      "note": "Historial: Rejected → Approved",
+      "method": "GET",
+      "path": "/api/v1/expenses/1614fe94-ad88-4a70-b7bd-89f28d370c32/history",
+      "role": "manager1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": [
+        {
+          "id": "2c948110-fcff-43f5-ab54-edad10a154bc",
+          "fromStatus": "Rejected",
+          "toStatus": "Approved",
+          "performedBy": "manager1@spendwise.test",
+          "notes": null,
+          "changedAt": "2026-10-17T05:22:45.0301378"
+        },
+        {
+          "id": "a19d5e88-1cc6-4671-9e18-64438e11978b",
+          "fromStatus": "PendingApproval",
+          "toStatus": "Rejected",
+          "performedBy": "manager1@spendwise.test",
+          "notes": "Rechazo controlado de QA",
+          "changedAt": "2026-10-17T05:22:44.9396991"
+        },
+        "… 1 elementos más"
+      ],
+      "durationMs": 91,
+      "at": "2026-10-17T05:22:45.127Z"
+    }
+  ]
+}

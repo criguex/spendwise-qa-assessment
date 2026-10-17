@@ -1,0 +1,57 @@
+{
+  "id": "BUG-26",
+  "capturedAt": "2026-10-17T05:22:42.226Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "HTTP 200; totalAmount 0; totalCount 0",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión finance",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "finance",
+      "requestBody": {
+        "email": "finance@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:42.2328247Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000002",
+          "email": "finance@spendwise.test",
+          "fullName": "Fiona Finance",
+          "roles": [
+            "Employee",
+            "FinanceController"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 112,
+      "at": "2026-10-17T05:22:42.149Z"
+    },
+    {
+      "setup": false,
+      "method": "GET",
+      "path": "/api/v1/reports?dateFrom=2026-10-31&dateTo=2026-10-01",
+      "role": "finance",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "totalAmount": 0,
+        "totalCount": 0,
+        "averageAmount": 0,
+        "byCategory": [],
+        "byDay": [],
+        "expenses": []
+      },
+      "durationMs": 77,
+      "at": "2026-10-17T05:22:42.226Z"
+    }
+  ]
+}

@@ -1,68 +1,81 @@
-# SpendWise — Evaluación QA
+# SpendWise — Prueba técnica de QA
 
-Paquete de trabajo para la prueba técnica de QA Analyst.
+Evaluación de aceptación de caja negra de SpendWise (aplicación web y API) frente a los Anexos A–H del enunciado.
 
-## Arquitectura y principios
+Empiece por `00-INDICE.html`.
 
-La suite usa Playwright + TypeScript + Zod y separa responsabilidades:
+## Entregables
 
-- `HttpClient`: transporte, puerta del entorno y autenticación HTTP.
-- Servicios de dominio: autenticación, gastos, aprobaciones y políticas.
-- Builders: datos únicos y legibles por escenario.
-- Contratos Zod: validación del comportamiento real en runtime.
-- Page Objects y componentes: interacción E2E sin selectores duplicados.
-- Especificaciones: solo orquestación y expectativas de negocio.
+| Entregable | Documento |
+|---|---|
+| E1 · Reporte de defectos | `docs/INFORME-QA-SpendWise.html` (un solo archivo con la evidencia embebida) y `docs/01-reporte-defectos.md` |
+| E2 · Estrategia y plan | `docs/02-estrategia-plan.md` / `.html` |
+| E3 · Casos y automatización | `docs/03-casos-prueba.md` / `.html`, código en `tests/` y `postman/` |
+| E4 · Resumen ejecutivo | `docs/04-resumen-ejecutivo.md` / `.html` |
+| Complementos | `docs/06` observación no funcional, `docs/07` mutación de peticiones, `docs/09` oportunidades de mejora |
 
-Esto aplica SOLID, especialmente responsabilidad única, inversión de dependencias mediante servicios inyectados y extensión por composición. Los Page Objects no contienen assertions de negocio ocultas ni lógica de creación de datos.
+## Resultado
 
-## Ejecución de la automatización
+- 39 defectos confirmados: 17 de severidad alta, 21 media y 1 baja. Todos se re-ejecutaron el 17-oct-2026 y siguen ocurriendo.
+- Recomendación: **no liberar** hasta corregir y re-verificar los defectos de severidad alta.
+- 238 pruebas automatizadas en 36 archivos (Playwright) y una colección Postman/Newman de 15 peticiones y 25 aserciones.
 
-Requisitos: Node.js 20 o superior. No requiere instalar dependencias.
+## Cómo ejecutar
+
+Requisitos: Node.js 20 o superior.
 
 ```bash
-export SPENDWISE_PROXY_USER="..."
-export SPENDWISE_PROXY_PASSWORD="..."
-export SPENDWISE_SEED_PASSWORD="..."
-npm install
+npm ci
 npx playwright install chromium
-npm test
-npm run test:mutation
+cp .env.example .env   # completar con los datos del entorno asignado
 ```
 
-Las credenciales se reciben por variables de entorno y no se guardan en el repositorio ni en las evidencias. Los tokens y cookies se enmascaran en la salida.
+Variables de `.env` (las credenciales se entregan por canal aparte y nunca se guardan en el repositorio):
 
-## Estructura
+| Variable | Uso |
+|---|---|
+| `SPENDWISE_WEB_URL`, `SPENDWISE_API_URL` | Direcciones del entorno asignado |
+| `SPENDWISE_PROXY_USER`, `SPENDWISE_PROXY_PASSWORD` | Puerta de acceso del entorno |
+| `SPENDWISE_SEED_PASSWORD` | Contraseña común de las cuentas del Anexo G |
 
-- `docs/01-reporte-defectos.md`: hallazgos con evidencia y trazabilidad.
-- `docs/01-reporte-defectos.html`: informe visual listo para entregar o imprimir.
-- `docs/11-informe-final-consolidado.html`: informe ejecutivo interactivo con los 38 defectos completos, filtros y evidencia.
-- `docs/02-estrategia-plan.html`, `03-casos-prueba.html`, `04-resumen-ejecutivo.html`, `06-observacion-no-funcional.html`, `07-pruebas-mutantes.html` y `09-oportunidades-mejora.html`: versiones HTML navegables de cada parte del expediente.
-- `docs/02-estrategia-plan.md`: estrategia basada en riesgos.
-- `docs/03-casos-prueba.md`: diseño y priorización de casos.
-- `docs/04-resumen-ejecutivo.md`: recomendación para negocio.
-- `tests/api/`: positivos, negativos, límites y RBAC.
-- `tests/contract/`: estructura OpenAPI y contratos de runtime.
-- `tests/integration/`: flujos entre servicios y ciclo de vida.
-- `tests/e2e/`: flujos de navegador con POM.
-- `src/`: clientes, servicios, builders, contratos y Page Objects.
-- `postman/`: colección Postman/Newman con validación de estructura, datos y comportamiento.
-- `evidence/`: evidencias sanitizadas, sin secretos.
-- `playwright-report/`: reporte HTML generado por la última ejecución integral.
-- `openapi/spendwise-openapi.json`: contrato de la API suministrada por el entorno.
-- `docs/06-observacion-no-funcional.md`: medición serial segura y límites de rendimiento.
-- `docs/07-pruebas-mutantes.md`: operadores y mutation score de solicitudes black-box.
-- `docs/08-informe-mutacion-ampliada.html`: BUG-22 a BUG-34 con cURL, videos, capturas y traces.
-- `docs/09-oportunidades-mejora.md`: recomendaciones IMP-01 a IMP-08 separadas de los defectos.
-- `docs/10-informe-adversarial.html`: dos rondas de autorización y manipulación de estados con evidencia.
+| Comando | Qué ejecuta |
+|---|---|
+| `npm test` | Suite completa (componentes, contrato, API, integración y E2E) |
+| `npm run test:api` · `test:contract` · `test:integration` · `test:e2e` · `test:component` | Un nivel de la pirámide |
+| `npm run test:smoke` · `test:negative` · `test:boundary` | Por etiqueta |
+| `npm run test:policy` | Reglas del motor: recibo desde USD 25 y umbral de USD 50 |
+| `npm run test:mutation` · `test:adversarial` · `test:adversarial:extended` | Campañas de mutación y adversariales |
+| `npm run test:postman` | Colección Postman con Newman |
+| `npm run typecheck` | Verificación de tipos |
+| `npm run evidence:api` | Re-ejecuta los defectos de API y guarda petición/respuesta saneadas en `evidence/report/api/` |
+| `npm run evidence:ui` | Graba video y capturas de los defectos de interfaz en `evidence/report/BUG-XX/` |
+| `npm run report:qa` | Genera el informe HTML, el E1 en Markdown y las páginas de cada documento |
 
-## Resultado final verificado
+Las pruebas crean sus propios datos con descripciones únicas, no dependen del orden de ejecución y las reglas de política de prueba se crean inactivas y se eliminan al terminar. Las pruebas que hoy fallan lo hacen por defectos reportados: la suite conserva el resultado esperado del anexo y no se adaptó al comportamiento del producto.
 
-- Playwright: 232 pruebas disponibles en 34 archivos. Las cinco rondas adversariales cubren autorización, estados, contrato/datos y recuperación UI; las tres últimas agregaron 74 verificaciones ejecutadas y 25 casos automatizados nuevos, y confirmaron BUG-37/38.
-- Newman: 15 requests, 25 aserciones, 20 aprobadas y 5 fallidas por defectos confirmados.
-- Hallazgos: 38 defectos confirmados y 8 oportunidades de mejora; las rondas adversariales agregaron BUG-35 a BUG-38.
-- Recomendación: **NO GO condicionado**.
+## Arquitectura de la automatización
+
+Playwright + TypeScript + Zod, con responsabilidades separadas:
+
+- `src/api/`: `HttpClient` (transporte, puerta del entorno, autenticación) y servicios de dominio (gastos, aprobaciones, políticas, reportes, recibos).
+- `src/data/`: builders con datos únicos y catálogos de mutantes.
+- `src/contracts/`: esquemas de consumidor Zod.
+- `src/pages/`: Page Objects y componentes para E2E.
+- `tests/`: especificaciones por nivel; las aserciones de negocio viven en las pruebas, no en los Page Objects.
+
+## Evidencia y seguridad
+
+- `evidence/report/`: verificación final del 17-oct (petición y respuesta HTTP por defecto de API; video, capturas y metadatos por defecto de interfaz).
+- `evidence/selected/`: corridas del 16-oct con trazas de Playwright. Las trazas se sanearon con `npm run evidence:sanitize` (contraseñas, cabeceras Authorization, cookies y tokens reemplazados por `[REDACTED]`).
+- `evidence/*.txt`: registros de cada campaña de ejecución.
+- La entrega no contiene contraseñas ni tokens.
 
 ## Uso de IA
 
-Se utilizó IA como apoyo para estructurar la estrategia, proponer técnicas de diseño, preparar una base de automatización y revisar claridad y trazabilidad. Cada resultado fue contrastado contra los anexos y el comportamiento observado; las decisiones, ejecuciones y conclusiones finales fueron revisadas por el candidato. No se incluyeron contraseñas ni tokens en los entregables.
+Se usaron asistentes de IA de programación (Codex y Claude Code) como apoyo:
 
+- **Para qué:** proponer la estructura de la estrategia y de los casos, generar la base de la automatización (servicios, builders, Page Objects y pruebas), ejecutar campañas de mutación y adversariales, redactar fichas de defectos y generar el informe HTML.
+- **Con qué instrucciones:** evaluar contra los anexos del enunciado, reproducir cada hallazgo al menos dos veces antes de reportarlo, no adaptar las pruebas al comportamiento del producto, no incluir secretos en la evidencia y no hacer carga ni pruebas fuera del entorno asignado.
+- **Qué se conservó y qué se corrigió:** se conservaron los hallazgos que se reprodujeron en el entorno. Se descartaron o corrigieron los que no resistieron la verificación: E2E-06 y BUG-30 eran falsos positivos; el alcance de BUG-06 y BUG-07 se ajustó tras revisar el OpenAPI; BUG-18 se reclasificó al medir el motor (aprueba USD 50); la verificación final y la corrida completa encontraron BUG-39 y BUG-40 y se agregaron sus pruebas. Las trazas se sanearon antes de entregar.
+
+Todo lo entregado puede ejecutarse y explicarse con los comandos de este archivo.

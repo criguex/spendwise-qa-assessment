@@ -1,0 +1,140 @@
+{
+  "id": "BUG-05",
+  "capturedAt": "2026-10-17T05:22:37.933Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "nombre vacío → 201; maxAmount -1 → 201; nombre de 201 → 500; reglas eliminadas después",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión admin",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "admin",
+      "requestBody": {
+        "email": "admin@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:37.6080804Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000001",
+          "email": "admin@spendwise.test",
+          "fullName": "Ada Admin",
+          "roles": [
+            "Administrator"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 114,
+      "at": "2026-10-17T05:22:37.525Z"
+    },
+    {
+      "setup": false,
+      "note": "Regla con nombre vacío (inactiva)",
+      "method": "POST",
+      "path": "/api/v1/policies",
+      "role": "admin",
+      "requestBody": {
+        "name": "",
+        "action": "AutoApprove",
+        "maxAmount": 1,
+        "requiresReceipt": false,
+        "isActive": false
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "7febf804-3f92-4162-9267-b25a94a19031",
+        "name": "",
+        "description": null,
+        "action": "AutoApprove",
+        "maxAmount": 1,
+        "requiresReceipt": false,
+        "isActive": false,
+        "createdAt": "2026-10-17T05:22:37.6850316Z"
+      },
+      "durationMs": 81,
+      "at": "2026-10-17T05:22:37.606Z"
+    },
+    {
+      "setup": false,
+      "note": "Regla con límite negativo (inactiva)",
+      "method": "POST",
+      "path": "/api/v1/policies",
+      "role": "admin",
+      "requestBody": {
+        "name": "QA negative threshold",
+        "action": "AutoApprove",
+        "maxAmount": -1,
+        "requiresReceipt": false,
+        "isActive": false
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "4e09c1ff-5bf0-41f0-ac32-24fac0953081",
+        "name": "QA negative threshold",
+        "description": null,
+        "action": "AutoApprove",
+        "maxAmount": -1,
+        "requiresReceipt": false,
+        "isActive": false,
+        "createdAt": "2026-10-17T05:22:37.7667905Z"
+      },
+      "durationMs": 82,
+      "at": "2026-10-17T05:22:37.688Z"
+    },
+    {
+      "setup": false,
+      "note": "Regla con nombre de 201 caracteres (inactiva)",
+      "method": "POST",
+      "path": "/api/v1/policies",
+      "role": "admin",
+      "requestBody": {
+        "name": "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
+        "action": "AutoApprove",
+        "maxAmount": 1,
+        "requiresReceipt": false,
+        "isActive": false
+      },
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "responseBody": {
+        "error": "An unexpected error occurred."
+      },
+      "durationMs": 81,
+      "at": "2026-10-17T05:22:37.769Z"
+    },
+    {
+      "setup": true,
+      "note": "Limpieza de la regla creada",
+      "method": "DELETE",
+      "path": "/api/v1/policies/7febf804-3f92-4162-9267-b25a94a19031",
+      "role": "admin",
+      "requestBody": null,
+      "status": 204,
+      "statusText": "No Content",
+      "responseBody": "",
+      "durationMs": 82,
+      "at": "2026-10-17T05:22:37.851Z"
+    },
+    {
+      "setup": true,
+      "note": "Limpieza de la regla creada",
+      "method": "DELETE",
+      "path": "/api/v1/policies/4e09c1ff-5bf0-41f0-ac32-24fac0953081",
+      "role": "admin",
+      "requestBody": null,
+      "status": 204,
+      "statusText": "No Content",
+      "responseBody": "",
+      "durationMs": 82,
+      "at": "2026-10-17T05:22:37.933Z"
+    }
+  ]
+}

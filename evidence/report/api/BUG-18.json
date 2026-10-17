@@ -1,0 +1,193 @@
+{
+  "id": "BUG-18",
+  "capturedAt": "2026-10-17T05:22:40.911Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "49,99 → AutoApproved (correcto); 50 → AutoApproved; 50,01 → PendingApproval. El motor aplica \"≤ 50\" en lugar de \"< 50\"",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión finance",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "finance",
+      "requestBody": {
+        "email": "finance@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:40.5440782Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000002",
+          "email": "finance@spendwise.test",
+          "fullName": "Fiona Finance",
+          "roles": [
+            "Employee",
+            "FinanceController"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 113,
+      "at": "2026-10-17T05:22:40.462Z"
+    },
+    {
+      "setup": false,
+      "note": "Texto de la regla tal como lo devuelve la API",
+      "method": "GET",
+      "path": "/api/v1/policies",
+      "role": "finance",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": [
+        {
+          "id": "22222222-0000-0000-0000-000000000001",
+          "name": "Auto-approve under $50",
+          "description": "Expenses at or below $50 are auto-approved without manager review.",
+          "action": "AutoApprove",
+          "maxAmount": 50,
+          "requiresReceipt": false,
+          "isActive": true,
+          "createdAt": "2026-01-01T00:00:00"
+        },
+        {
+          "id": "22222222-0000-0000-0000-000000000002",
+          "name": "Receipt required at $25+",
+          "description": "Expenses of $25 or more must include a receipt.",
+          "action": "RequireApproval",
+          "maxAmount": null,
+          "requiresReceipt": true,
+          "isActive": true,
+          "createdAt": "2026-01-01T00:00:00"
+        }
+      ],
+      "durationMs": 77,
+      "at": "2026-10-17T05:22:40.539Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T06:22:40.7347152Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 113,
+      "at": "2026-10-17T05:22:40.652Z"
+    },
+    {
+      "setup": false,
+      "note": "USD 49,99 con recibo",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214560652-19c902",
+        "amount": 49.99,
+        "date": "2026-10-17",
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "555e3a9d-1333-4070-b1f1-82a56bd43e0f",
+        "expenseNumber": "EXP-2026-0318",
+        "description": "QA evidencia 1792214560652-19c902",
+        "vendor": null,
+        "amount": 49.99,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+        "createdAt": "2026-10-17T05:22:40.818862Z"
+      },
+      "durationMs": 89,
+      "at": "2026-10-17T05:22:40.741Z"
+    },
+    {
+      "setup": false,
+      "note": "USD 50 con recibo (el Anexo E exige PendingApproval)",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214560741-82f1dd",
+        "amount": 50,
+        "date": "2026-10-17",
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "81d10271-e2da-4b22-b93f-6bde13972ff6",
+        "expenseNumber": "EXP-2026-0319",
+        "description": "QA evidencia 1792214560741-82f1dd",
+        "vendor": null,
+        "amount": 50,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+        "createdAt": "2026-10-17T05:22:40.9036632Z"
+      },
+      "durationMs": 84,
+      "at": "2026-10-17T05:22:40.825Z"
+    },
+    {
+      "setup": true,
+      "note": "Control: USD 50,01 con recibo",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792214560825-43288a",
+        "amount": 50.01,
+        "date": "2026-10-17",
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "160bbaa1-731c-49f8-b668-2bbb6e7721a6",
+        "expenseNumber": "EXP-2026-0320",
+        "description": "QA evidencia 1792214560825-43288a",
+        "vendor": null,
+        "amount": 50.01,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "PendingApproval",
+        "notes": null,
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+        "createdAt": "2026-10-17T05:22:40.9865405Z"
+      },
+      "durationMs": 86,
+      "at": "2026-10-17T05:22:40.911Z"
+    }
+  ]
+}

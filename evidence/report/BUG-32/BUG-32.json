@@ -1,0 +1,29 @@
+{
+  "id": "BUG-32",
+  "title": "Filtros de Reports carecen de etiquetas asociadas",
+  "role": "Employee",
+  "user": "employee1@spendwise.test",
+  "url": "/reports",
+  "recordedAt": "2026-10-17T05:20:29.171Z",
+  "reproduced": true,
+  "expected": "Cada control debe tener una etiqueta asociada programáticamente (getByLabel debe encontrar 1 elemento por campo)",
+  "actual": "getByLabel() por campo → From: 0 · To: 0 · Category: 0 · Status: 0",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-32-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir Expense Reports (/reports)",
+      "screenshot": "BUG-32-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Inspeccionar los filtros From / To / Category / Status",
+      "screenshot": "BUG-32-03.png"
+    }
+  ],
+  "notes": ""
+}

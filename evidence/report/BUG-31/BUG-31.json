@@ -1,0 +1,29 @@
+{
+  "id": "BUG-31",
+  "title": "Filtro activo no anuncia selección",
+  "role": "Employee",
+  "user": "employee1@spendwise.test",
+  "url": "/expenses",
+  "recordedAt": "2026-10-17T05:20:16.364Z",
+  "reproduced": true,
+  "expected": "El filtro activo debe exponer aria-pressed=\"true\" (o patrón accesible equivalente)",
+  "actual": "aria-pressed: null · aria-selected: null (la selección solo se expresa por color/clase)",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-31-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir My Expenses (/expenses)",
+      "screenshot": "BUG-31-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Activar el filtro Approved",
+      "screenshot": "BUG-31-03.png"
+    }
+  ],
+  "notes": ""
+}
