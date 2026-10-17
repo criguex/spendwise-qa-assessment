@@ -1,0 +1,39 @@
+{
+  "id": "BUG-47",
+  "title": "Export CSV de My Expenses no hace nada",
+  "role": "Employee",
+  "user": "employee1@spendwise.test",
+  "url": "/expenses",
+  "recordedAt": "2026-10-17T18:46:18.663Z",
+  "reproduced": true,
+  "expected": "Export CSV de My Expenses debe descargar un CSV, como sí lo hace Reports",
+  "actual": "My Expenses: descargas=0, popups=0, solicitudes de exportación=0; en contraste, Reports sí produjo una descarga",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-47-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir My Expenses",
+      "screenshot": "BUG-47-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Hacer clic en Export CSV de My Expenses y observar durante 6 segundos",
+      "screenshot": "BUG-47-03.png"
+    },
+    {
+      "n": 4,
+      "text": "Contraste: abrir Reports y hacer clic en Export CSV",
+      "screenshot": "BUG-47-04.png"
+    },
+    {
+      "n": 5,
+      "text": "Volver a My Expenses para señalar el botón que no actuó",
+      "screenshot": "BUG-47-05.png"
+    }
+  ],
+  "notes": "La observación de My Expenses duró 6 segundos completos."
+}

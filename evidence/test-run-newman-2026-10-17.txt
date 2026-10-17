@@ -1,0 +1,61 @@
+Newman — SpendWise QA - Contract, Data and Behavior
+Re-ejecución: 2026-10-17 13:39 (hora Colombia)
+
+  GET <API>/__gate [200 OK, 903B, 527ms]
+  ✓  Gate redirects to Swagger or resolves successfully
+  ✓  No server error
+  POST <API>/api/v1/auth/login [200 OK, 827B, 114ms]
+  ✓  HTTP 200
+  ✓  Login structure
+  POST <API>/api/v1/auth/login [401 Unauthorized, 276B, 76ms]
+  ✓  HTTP 401
+  ✓  Does not disclose account existence
+  POST <API>/api/v1/auth/login [400 Bad Request, 250B, 76ms]
+  ✓  HTTP 400
+  POST <API>/api/v1/auth/login [200 OK, 784B, 188ms]
+  ✓  HTTP 200
+  ✓  Administrator role
+  GET <API>/api/v1/categories [200 OK, 1.46kB, 87ms]
+  ✓  HTTP 200
+  ✓  Exactly nine categories
+  1. Required structure
+  ✓  Alphabetical order
+  GET <API>/api/v1/expenses?page=1&pageSize=20 [200 OK, 6.95kB, 82ms]
+  ✓  HTTP 200
+  ✓  Pagination envelope
+  POST <API>/api/v1/expenses [201 Created, 633B, 84ms]
+  ✓  HTTP 201
+  ✓  Data preserved
+  POST <API>/api/v1/expenses [201 Created, 627B, 193ms]
+  2. Rejected with HTTP 400
+  ✓  Error names amount
+  POST <API>/api/v1/expenses [201 Created, 635B, 83ms]
+  3. Rejected with HTTP 400
+  POST <API>/api/v1/expenses [500 Internal Server Error, 242B, 81ms]
+  4. Validation error, never 5xx
+  GET <API>/api/v1/expenses?page=0 [500 Internal Server Error, 242B, 95ms]
+  5. HTTP 400, never 5xx
+  GET <API>/api/v1/expenses [401 Unauthorized, 177B, 211ms]
+  ✓  HTTP 401
+  GET <API>/api/v1/policies [403 Forbidden, 148B, 78ms]
+  ✓  HTTP 403
+  POST <API>/api/v1/expenses [403 Forbidden, 148B, 80ms]
+  ✓  HTTP 403
+│                         │           executed │             failed │
+│              iterations │                  1 │                  0 │
+│                requests │                 15 │                  0 │
+│            test-scripts │                 15 │                  0 │
+│      prerequest-scripts │                 16 │                  0 │
+│              assertions │                 25 │                  5 │
+│ total run duration: 2.3s                                          │
+│ total data received: 11.08kB (approx)                             │
+│ average response time: 137ms [min: 76ms, max: 527ms, s.d.: 113ms] │
+  #  failure         detail                                                                                     
+ 1.  AssertionError  Required structure                                                                         
+ 2.  AssertionError  Rejected with HTTP 400                                                                     
+ 3.  AssertionError  Rejected with HTTP 400                                                                     
+ 4.  AssertionError  Validation error, never 5xx                                                                
+ 5.  AssertionError  HTTP 400, never 5xx                                                                        
+
+Fallos y defecto asociado: icon en categorías → BUG-07; monto cero → BUG-01; monto negativo → BUG-02; descripción 501 → BUG-03; page=0 → BUG-04.
+Credenciales, cookies y tokens omitidos.

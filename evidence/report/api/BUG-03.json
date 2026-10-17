@@ -1,9 +1,9 @@
 {
   "id": "BUG-03",
-  "capturedAt": "2026-10-17T05:22:37.205Z",
+  "capturedAt": "2026-10-17T18:31:38.026Z",
   "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
   "reproduced": true,
-  "observed": "501 → 500; 201 → 500; 1001 → 500",
+  "observed": "descripción 501 → 500; proveedor 201 → 500; notas 1001 → 500; recibo 508 → 500",
   "exchanges": [
     {
       "setup": true,
@@ -19,7 +19,7 @@
       "statusText": "OK",
       "responseBody": {
         "accessToken": "<TOKEN>",
-        "expiresAt": "2026-10-17T06:22:37.0374181Z",
+        "expiresAt": "2026-10-17T19:31:37.5535852Z",
         "user": {
           "id": "33333333-0000-0000-0000-000000000006",
           "email": "employee2@spendwise.test",
@@ -30,8 +30,8 @@
           "managerId": "33333333-0000-0000-0000-000000000003"
         }
       },
-      "durationMs": 117,
-      "at": "2026-10-17T05:22:36.958Z"
+      "durationMs": 121,
+      "at": "2026-10-17T18:31:37.518Z"
     },
     {
       "setup": false,
@@ -49,8 +49,8 @@
       "responseBody": {
         "error": "An unexpected error occurred."
       },
-      "durationMs": 83,
-      "at": "2026-10-17T05:22:37.041Z"
+      "durationMs": 90,
+      "at": "2026-10-17T18:31:37.608Z"
     },
     {
       "setup": false,
@@ -59,7 +59,7 @@
       "path": "/api/v1/expenses",
       "role": "employee2",
       "requestBody": {
-        "description": "QA evidencia 1792214557041-c104df",
+        "description": "QA evidencia 1792261897608-73aa56",
         "amount": 10,
         "date": "2026-10-17",
         "vendor": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
@@ -69,8 +69,8 @@
       "responseBody": {
         "error": "An unexpected error occurred."
       },
-      "durationMs": 83,
-      "at": "2026-10-17T05:22:37.124Z"
+      "durationMs": 97,
+      "at": "2026-10-17T18:31:37.705Z"
     },
     {
       "setup": false,
@@ -79,7 +79,7 @@
       "path": "/api/v1/expenses",
       "role": "employee2",
       "requestBody": {
-        "description": "QA evidencia 1792214557124-caf827",
+        "description": "QA evidencia 1792261897705-a0984b",
         "amount": 10,
         "date": "2026-10-17",
         "notes": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
@@ -89,8 +89,28 @@
       "responseBody": {
         "error": "An unexpected error occurred."
       },
-      "durationMs": 81,
-      "at": "2026-10-17T05:22:37.205Z"
+      "durationMs": 231,
+      "at": "2026-10-17T18:31:37.936Z"
+    },
+    {
+      "setup": false,
+      "note": "Enlace de recibo de 508 caracteres",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee2",
+      "requestBody": {
+        "description": "QA evidencia 1792261897936-64662a",
+        "amount": 10,
+        "date": "2026-10-17",
+        "receiptUrl": "https://example.invalid/rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr.pdf"
+      },
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "responseBody": {
+        "error": "An unexpected error occurred."
+      },
+      "durationMs": 90,
+      "at": "2026-10-17T18:31:38.026Z"
     }
   ]
 }

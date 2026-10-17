@@ -1,0 +1,31 @@
+{
+  "id": "BUG-46",
+  "title": "El login no informa que la cuenta está bloqueada",
+  "role": "Employee",
+  "user": "nomanager@spendwise.test",
+  "url": "/login",
+  "recordedAt": "2026-10-17T18:45:54.018Z",
+  "reproduced": false,
+  "expected": "La UI debe informar el bloqueo. API observada: HTTP 401 · account_locked: Your account is locked. Try again in 15 minutes.",
+  "actual": "La pantalla muestra \"Your account is locked. Try again in 15 minutes.\". API observada: HTTP 401 · account_locked: Your account is locked. Try again in 15 minutes.",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Abrir Login con la cuenta nomanager bloqueada previamente por la API",
+      "screenshot": "BUG-46-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Ingresar la contraseña correcta y pulsar Sign in",
+      "screenshot": "BUG-46-02.png"
+    }
+  ],
+  "notes": "Bloqueo preparado fuera del video a 2026-10-17T18:41:09Z.",
+  "precondition": {
+    "lockedAtUtc": "2026-10-17T18:41:09Z",
+    "attempts": 5,
+    "finalStatus": 401,
+    "finalCode": "account_locked",
+    "finalMessage": "Your account is locked. Try again in 15 minutes."
+  }
+}

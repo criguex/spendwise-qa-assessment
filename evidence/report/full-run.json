@@ -1,9 +1,9 @@
 {
-  "startedAt": "2026-10-17T05:23:03.883Z",
-  "durationMs": 351582,
-  "total": 238,
-  "passed": 168,
-  "failed": 70,
+  "startedAt": "2026-10-17T18:56:47.135Z",
+  "durationMs": 544151,
+  "total": 274,
+  "passed": 184,
+  "failed": 90,
   "skipped": 0,
   "failedByDefect": {
     "BUG-01": [
@@ -20,7 +20,8 @@
       "VAL-04",
       "VAL-05",
       "VAL-06",
-      "MUT-EXP-05"
+      "MUT-EXP-05",
+      "R6-API-09"
     ],
     "BUG-04": [
       "VAL-09",
@@ -39,6 +40,8 @@
       "CON-06"
     ],
     "BUG-08": [
+      "R6-API-05a",
+      "R6-API-05b",
       "INT-03"
     ],
     "BUG-09": [
@@ -53,9 +56,11 @@
       "MUT-EXP-15"
     ],
     "BUG-12": [
+      "R6-API-11",
       "INT-ANA-01",
       "INT-ANA-02",
-      "INT-ANA-03"
+      "INT-ANA-03",
+      "R6-UI-02"
     ],
     "BUG-13": [
       "E2E-M12"
@@ -107,9 +112,11 @@
       "MUT-APR-01"
     ],
     "BUG-26": [
+      "EXPA-06",
       "MUT-REP-01"
     ],
     "BUG-27": [
+      "EXPA-07",
       "MUT-REP-02"
     ],
     "BUG-28": [
@@ -137,6 +144,8 @@
     ],
     "BUG-36": [
       "R2-FLOW-02",
+      "R6-API-03",
+      "R6-API-04",
       "R2-FLOW-02-EVIDENCE"
     ],
     "BUG-37": [
@@ -152,18 +161,37 @@
     "BUG-40": [
       "E2E-M13",
       "MUT-STATE-06"
+    ],
+    "BUG-41": [
+      "R6-INT-01"
+    ],
+    "BUG-42": [
+      "R6-API-02"
+    ],
+    "BUG-43": [
+      "R6-API-10"
+    ],
+    "BUG-44": [
+      "R6-API-12",
+      "R6-UI-04"
+    ],
+    "BUG-45": [
+      "R6-API-13"
+    ],
+    "BUG-47": [
+      "R6-UI-06"
+    ],
+    "BUG-48": [
+      "R6-UI-01",
+      "R6-UI-03"
+    ],
+    "BUG-50": [
+      "R6-UI-07",
+      "R6-UI-08",
+      "R6-UI-09"
     ]
   },
-  "unmapped": [
-    {
-      "id": "MUT-STATE-03",
-      "title": "MUT-STATE-03 repeated submit gesture creates exactly one expense",
-      "file": "e2e/mutation-navigation-state.spec.ts",
-      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByText('double-submit-1792214896888', { exact: true }) · Expected: 1",
-      "cause": "el gasto se creó una sola vez (verificado por API), pero quedó fuera de la primera página porque hay más de 20 gastos con la misma fecha; la prueba ahora lo busca por su descripción y pasa.",
-      "rerun": "passed"
-    }
-  ],
+  "unmapped": [],
   "tests": [
     {
       "project": "component",
@@ -172,7 +200,7 @@
       "id": "CMP-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 5,
+      "durationMs": 12,
       "error": null
     },
     {
@@ -182,7 +210,7 @@
       "id": "CMP-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 1,
+      "durationMs": 2,
       "error": null
     },
     {
@@ -212,7 +240,7 @@
       "id": "CMP-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 0,
+      "durationMs": 1,
       "error": null
     },
     {
@@ -222,7 +250,7 @@
       "id": "MUT-CMP-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 3,
+      "durationMs": 4,
       "error": null
     },
     {
@@ -232,7 +260,7 @@
       "id": "MUT-CMP-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 0,
+      "durationMs": 1,
       "error": null
     },
     {
@@ -242,7 +270,7 @@
       "id": "CON-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 8,
+      "durationMs": 10,
       "error": null
     },
     {
@@ -252,7 +280,7 @@
       "id": "CON-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 4,
+      "durationMs": 12,
       "error": null
     },
     {
@@ -272,7 +300,7 @@
       "id": "CON-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 696,
+      "durationMs": 3426,
       "error": null
     },
     {
@@ -282,7 +310,7 @@
       "id": "CON-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 702,
+      "durationMs": 998,
       "error": null
     },
     {
@@ -292,7 +320,7 @@
       "id": "CON-06",
       "status": "failed",
       "defect": "BUG-07",
-      "durationMs": 722,
+      "durationMs": 1069,
       "error": "ZodError: [ ·   { ·     \"expected\": \"string\","
     },
     {
@@ -302,7 +330,7 @@
       "id": "R2-AUTH-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 969,
+      "durationMs": 2302,
       "error": null
     },
     {
@@ -312,7 +340,7 @@
       "id": "R2-AUTH-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 851,
+      "durationMs": 1300,
       "error": null
     },
     {
@@ -322,7 +350,7 @@
       "id": "R2-AUTH-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 1133,
+      "durationMs": 1572,
       "error": null
     },
     {
@@ -332,7 +360,7 @@
       "id": "R2-AUTH-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 875,
+      "durationMs": 1152,
       "error": null
     },
     {
@@ -342,7 +370,7 @@
       "id": "R2-AUTH-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 1099,
+      "durationMs": 1951,
       "error": null
     },
     {
@@ -352,7 +380,7 @@
       "id": "R2-AUTH-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 1666,
+      "durationMs": 1143,
       "error": null
     },
     {
@@ -362,7 +390,7 @@
       "id": "R2-AUTH-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 861,
+      "durationMs": 1135,
       "error": null
     },
     {
@@ -372,7 +400,7 @@
       "id": "R2-AUTH-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 644,
+      "durationMs": 1395,
       "error": null
     },
     {
@@ -382,7 +410,7 @@
       "id": "R2-AUTH-09",
       "status": "passed",
       "defect": null,
-      "durationMs": 746,
+      "durationMs": 1067,
       "error": null
     },
     {
@@ -392,7 +420,7 @@
       "id": "R2-AUTH-10",
       "status": "passed",
       "defect": null,
-      "durationMs": 979,
+      "durationMs": 1236,
       "error": null
     },
     {
@@ -402,7 +430,7 @@
       "id": "R2-AUTH-11",
       "status": "passed",
       "defect": null,
-      "durationMs": 913,
+      "durationMs": 1293,
       "error": null
     },
     {
@@ -412,7 +440,7 @@
       "id": "R4-DATA-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 787,
+      "durationMs": 937,
       "error": null
     },
     {
@@ -422,7 +450,7 @@
       "id": "R4-DATA-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 828,
+      "durationMs": 954,
       "error": null
     },
     {
@@ -432,7 +460,7 @@
       "id": "R4-DATA-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 918,
+      "durationMs": 900,
       "error": null
     },
     {
@@ -442,7 +470,7 @@
       "id": "R4-DATA-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 1619,
+      "durationMs": 956,
       "error": null
     },
     {
@@ -452,7 +480,7 @@
       "id": "R4-DATA-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 732,
+      "durationMs": 1038,
       "error": null
     },
     {
@@ -462,7 +490,7 @@
       "id": "R4-DATA-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 701,
+      "durationMs": 780,
       "error": null
     },
     {
@@ -472,7 +500,7 @@
       "id": "R4-DATA-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 671,
+      "durationMs": 977,
       "error": null
     },
     {
@@ -482,7 +510,7 @@
       "id": "R4-DATA-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 716,
+      "durationMs": 939,
       "error": null
     },
     {
@@ -492,7 +520,7 @@
       "id": "R4-DATA-09",
       "status": "passed",
       "defect": null,
-      "durationMs": 711,
+      "durationMs": 951,
       "error": null
     },
     {
@@ -502,8 +530,8 @@
       "id": "R4-DATA-11",
       "status": "failed",
       "defect": "BUG-37",
-      "durationMs": 770,
-      "error": "Error: R4-DATA-11: {\"id\":\"850b3a17-433d-47c7-88f1-c5b98d37a025\",\"expenseNumber\":\"EXP-2026-0338\",\"description\":\"R4-DATA-11 1792214595615\",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
+      "durationMs": 1042,
+      "error": "Error: R4-DATA-11: {\"id\":\"c8792854-bd00-40c6-ba8c-5043461e8caa\",\"expenseNumber\":\"EXP-2026-0531\",\"description\":\"R4-DATA-11 1792263423223\",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
     },
     {
       "project": "api",
@@ -512,7 +540,7 @@
       "id": "R4-QUERY-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 750,
+      "durationMs": 1336,
       "error": null
     },
     {
@@ -522,7 +550,7 @@
       "id": "R4-QUERY-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 722,
+      "durationMs": 967,
       "error": null
     },
     {
@@ -532,7 +560,7 @@
       "id": "R4-QUERY-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 736,
+      "durationMs": 843,
       "error": null
     },
     {
@@ -542,7 +570,7 @@
       "id": "R4-QUERY-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 657,
+      "durationMs": 990,
       "error": null
     },
     {
@@ -552,7 +580,7 @@
       "id": "R4-QUERY-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 676,
+      "durationMs": 945,
       "error": null
     },
     {
@@ -562,7 +590,7 @@
       "id": "R4-QUERY-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 746,
+      "durationMs": 911,
       "error": null
     },
     {
@@ -572,7 +600,7 @@
       "id": "R4-VALID-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 709,
+      "durationMs": 971,
       "error": null
     },
     {
@@ -582,7 +610,7 @@
       "id": "R4-VALID-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 703,
+      "durationMs": 789,
       "error": null
     },
     {
@@ -592,7 +620,7 @@
       "id": "R4-DATA-13",
       "status": "passed",
       "defect": null,
-      "durationMs": 721,
+      "durationMs": 974,
       "error": null
     },
     {
@@ -602,7 +630,7 @@
       "id": "R4-HTTP-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 1208,
+      "durationMs": 2108,
       "error": null
     },
     {
@@ -612,7 +640,7 @@
       "id": "R4-HTTP-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 1279,
+      "durationMs": 1479,
       "error": null
     },
     {
@@ -622,7 +650,7 @@
       "id": "R4-HTTP-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 1691,
+      "durationMs": 1928,
       "error": null
     },
     {
@@ -632,7 +660,7 @@
       "id": "R2-FLOW-01",
       "status": "failed",
       "defect": "BUG-35",
-      "durationMs": 948,
+      "durationMs": 2213,
       "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
     },
     {
@@ -642,7 +670,7 @@
       "id": "R2-FLOW-02",
       "status": "failed",
       "defect": "BUG-36",
-      "durationMs": 996,
+      "durationMs": 1653,
       "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
     },
     {
@@ -652,7 +680,7 @@
       "id": "R2-FLOW-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 950,
+      "durationMs": 1271,
       "error": null
     },
     {
@@ -662,7 +690,7 @@
       "id": "R2-FLOW-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 700,
+      "durationMs": 965,
       "error": null
     },
     {
@@ -672,7 +700,7 @@
       "id": "R2-FLOW-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 785,
+      "durationMs": 1119,
       "error": null
     },
     {
@@ -682,7 +710,7 @@
       "id": "R2-FLOW-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 760,
+      "durationMs": 952,
       "error": null
     },
     {
@@ -692,7 +720,7 @@
       "id": "R2-FLOW-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 735,
+      "durationMs": 791,
       "error": null
     },
     {
@@ -702,7 +730,7 @@
       "id": "R2-FLOW-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 980,
+      "durationMs": 1608,
       "error": null
     },
     {
@@ -712,7 +740,7 @@
       "id": "R2-FLOW-09",
       "status": "passed",
       "defect": null,
-      "durationMs": 888,
+      "durationMs": 1218,
       "error": null
     },
     {
@@ -722,7 +750,7 @@
       "id": "R2-FLOW-10",
       "status": "passed",
       "defect": null,
-      "durationMs": 767,
+      "durationMs": 1054,
       "error": null
     },
     {
@@ -732,7 +760,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 678,
+      "durationMs": 1044,
       "error": null
     },
     {
@@ -742,7 +770,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 1110,
+      "durationMs": 1097,
       "error": null
     },
     {
@@ -752,7 +780,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 780,
+      "durationMs": 801,
       "error": null
     },
     {
@@ -762,7 +790,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 834,
+      "durationMs": 1417,
       "error": null
     },
     {
@@ -772,7 +800,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 728,
+      "durationMs": 928,
       "error": null
     },
     {
@@ -782,7 +810,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 841,
+      "durationMs": 1476,
       "error": null
     },
     {
@@ -792,7 +820,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 755,
+      "durationMs": 1152,
       "error": null
     },
     {
@@ -802,7 +830,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 920,
+      "durationMs": 1518,
       "error": null
     },
     {
@@ -812,7 +840,7 @@
       "id": "ANA-09",
       "status": "passed",
       "defect": null,
-      "durationMs": 678,
+      "durationMs": 1247,
       "error": null
     },
     {
@@ -822,7 +850,7 @@
       "id": "ANA-10",
       "status": "passed",
       "defect": null,
-      "durationMs": 775,
+      "durationMs": 1072,
       "error": null
     },
     {
@@ -832,7 +860,7 @@
       "id": "ANA-11",
       "status": "passed",
       "defect": null,
-      "durationMs": 597,
+      "durationMs": 814,
       "error": null
     },
     {
@@ -842,7 +870,7 @@
       "id": "ANA-12",
       "status": "passed",
       "defect": null,
-      "durationMs": 568,
+      "durationMs": 767,
       "error": null
     },
     {
@@ -852,8 +880,8 @@
       "id": "APR-CON-01",
       "status": "failed",
       "defect": "BUG-19",
-      "durationMs": 766,
-      "error": "Error: Missing submitter identity in {\"id\":\"7b429bcb-fadd-4585-9f12-19b375d84fba\",\"expenseNumber\":\"EXP-2026-0303\",\"description\":\"E2E-M13 pending 1792214206813\",\"vendor\":null,\"amount\":60,\"date\":\"2026-10-17\",\"categoryId\":n"
+      "durationMs": 1194,
+      "error": "Error: Missing submitter identity in controlled queue item · expect(received).toBeDefined() · Received: undefined"
     },
     {
       "project": "api",
@@ -862,7 +890,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 845,
+      "durationMs": 846,
       "error": null
     },
     {
@@ -872,7 +900,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 679,
+      "durationMs": 1102,
       "error": null
     },
     {
@@ -882,7 +910,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 1381,
+      "durationMs": 1932,
       "error": null
     },
     {
@@ -892,7 +920,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 706,
+      "durationMs": 2027,
       "error": null
     },
     {
@@ -902,7 +930,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 744,
+      "durationMs": 1804,
       "error": null
     },
     {
@@ -912,7 +940,7 @@
       "id": "APR-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 605,
+      "durationMs": 844,
       "error": null
     },
     {
@@ -922,7 +950,7 @@
       "id": "APR-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 895,
+      "durationMs": 862,
       "error": null
     },
     {
@@ -932,7 +960,7 @@
       "id": "APR-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 685,
+      "durationMs": 843,
       "error": null
     },
     {
@@ -942,7 +970,7 @@
       "id": "AUTH-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 581,
+      "durationMs": 839,
       "error": null
     },
     {
@@ -952,7 +980,7 @@
       "id": "AUTH-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 557,
+      "durationMs": 732,
       "error": null
     },
     {
@@ -962,7 +990,7 @@
       "id": "AUTH-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 548,
+      "durationMs": 880,
       "error": null
     },
     {
@@ -972,7 +1000,7 @@
       "id": "AUTH-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 640,
+      "durationMs": 983,
       "error": null
     },
     {
@@ -982,7 +1010,7 @@
       "id": "AUTH-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 578,
+      "durationMs": 703,
       "error": null
     },
     {
@@ -992,7 +1020,7 @@
       "id": "AUTH-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 573,
+      "durationMs": 799,
       "error": null
     },
     {
@@ -1002,7 +1030,7 @@
       "id": "QUERY-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 910,
+      "durationMs": 1204,
       "error": null
     },
     {
@@ -1012,7 +1040,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 837,
+      "durationMs": 1141,
       "error": null
     },
     {
@@ -1022,7 +1050,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 919,
+      "durationMs": 1252,
       "error": null
     },
     {
@@ -1032,7 +1060,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 712,
+      "durationMs": 1435,
       "error": null
     },
     {
@@ -1042,7 +1070,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 746,
+      "durationMs": 1902,
       "error": null
     },
     {
@@ -1052,7 +1080,7 @@
       "id": "QUERY-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 637,
+      "durationMs": 810,
       "error": null
     },
     {
@@ -1062,7 +1090,7 @@
       "id": "QUERY-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 895,
+      "durationMs": 1044,
       "error": null
     },
     {
@@ -1072,7 +1100,7 @@
       "id": "QUERY-08",
       "status": "failed",
       "defect": "BUG-11",
-      "durationMs": 733,
+      "durationMs": 1069,
       "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1082,8 +1110,8 @@
       "id": "VAL-01",
       "status": "failed",
       "defect": "BUG-01",
-      "durationMs": 748,
-      "error": "Error: {\"id\":\"eff9e991-63ce-488c-aa68-b7d5c115b4d7\",\"expenseNumber\":\"EXP-2026-0348\",\"description\":\"QA expense 1792214618619-e519abea\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"st"
+      "durationMs": 1050,
+      "error": "Error: {\"id\":\"d4bc0730-ba93-4d4b-bbe3-45b8b7dcb788\",\"expenseNumber\":\"EXP-2026-0557\",\"description\":\"QA expense 1792263455776-32f9b8f0\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"st"
     },
     {
       "project": "api",
@@ -1092,8 +1120,8 @@
       "id": "VAL-02",
       "status": "failed",
       "defect": "BUG-02",
-      "durationMs": 774,
-      "error": "Error: {\"id\":\"ad3c7104-f1ef-41ba-b575-ba6616c1a49a\",\"expenseNumber\":\"EXP-2026-0349\",\"description\":\"QA expense 1792214619657-ba5212ed\",\"vendor\":null,\"amount\":-0.01,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
+      "durationMs": 1485,
+      "error": "Error: {\"id\":\"f1f03bd4-bc67-489b-8a7b-51faf1c149b8\",\"expenseNumber\":\"EXP-2026-0559\",\"description\":\"QA expense 1792263457285-71fee002\",\"vendor\":null,\"amount\":-0.01,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
     },
     {
       "project": "api",
@@ -1102,8 +1130,8 @@
       "id": "VAL-03",
       "status": "failed",
       "defect": "BUG-02",
-      "durationMs": 830,
-      "error": "Error: {\"id\":\"d26dc538-f5a7-4a9e-8828-0c720afb7e24\",\"expenseNumber\":\"EXP-2026-0350\",\"description\":\"QA expense 1792214620765-a2850de0\",\"vendor\":null,\"amount\":1.001,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
+      "durationMs": 1056,
+      "error": "Error: {\"id\":\"3375ff06-b8bc-4461-926f-100439cc1c73\",\"expenseNumber\":\"EXP-2026-0560\",\"description\":\"QA expense 1792263459078-36bb9ae5\",\"vendor\":null,\"amount\":1.001,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null"
     },
     {
       "project": "api",
@@ -1112,7 +1140,7 @@
       "id": "VAL-04",
       "status": "failed",
       "defect": "BUG-03",
-      "durationMs": 1685,
+      "durationMs": 1016,
       "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1122,7 +1150,7 @@
       "id": "VAL-05",
       "status": "failed",
       "defect": "BUG-03",
-      "durationMs": 839,
+      "durationMs": 1985,
       "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1132,7 +1160,7 @@
       "id": "VAL-06",
       "status": "failed",
       "defect": "BUG-03",
-      "durationMs": 809,
+      "durationMs": 1021,
       "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1142,7 +1170,7 @@
       "id": "VAL-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 746,
+      "durationMs": 860,
       "error": null
     },
     {
@@ -1152,7 +1180,7 @@
       "id": "VAL-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 749,
+      "durationMs": 857,
       "error": null
     },
     {
@@ -1162,7 +1190,7 @@
       "id": "VAL-09",
       "status": "failed",
       "defect": "BUG-04",
-      "durationMs": 680,
+      "durationMs": 1063,
       "error": "Error: ?page=0 · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1172,8 +1200,8 @@
       "id": "EXPA-01",
       "status": "failed",
       "defect": "BUG-14",
-      "durationMs": 1631,
-      "error": "Error: {\"id\":\"9e497d31-0daf-48b5-8dee-225c7b6a5453\",\"expenseNumber\":\"EXP-2026-0352\",\"description\":\"   \",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"status\":\"AutoApproved\",\"notes\":"
+      "durationMs": 1090,
+      "error": "Error: {\"id\":\"1e599c5b-bea8-43e4-9b8a-c0e1938f4b79\",\"expenseNumber\":\"EXP-2026-0563\",\"description\":\"   \",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"status\":\"AutoApproved\",\"notes\":"
     },
     {
       "project": "api",
@@ -1182,8 +1210,8 @@
       "id": "EXPA-02",
       "status": "failed",
       "defect": "BUG-14",
-      "durationMs": 828,
-      "error": "Error: {\"id\":\"4309f749-c957-47d3-a1eb-8ab01027b2f5\",\"expenseNumber\":\"EXP-2026-0354\",\"description\":\"QA missing date\",\"vendor\":null,\"amount\":10,\"date\":\"0001-01-01\",\"categoryId\":null,\"categoryName\":null,\"status\":\"AutoApprov"
+      "durationMs": 951,
+      "error": "Error: {\"id\":\"95aff8d5-1735-4a71-a2e7-0c57e77db413\",\"expenseNumber\":\"EXP-2026-0565\",\"description\":\"QA missing date\",\"vendor\":null,\"amount\":10,\"date\":\"0001-01-01\",\"categoryId\":null,\"categoryName\":null,\"status\":\"AutoApprov"
     },
     {
       "project": "api",
@@ -1192,7 +1220,7 @@
       "id": "EXPA-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 992,
+      "durationMs": 985,
       "error": null
     },
     {
@@ -1202,7 +1230,7 @@
       "id": "EXPA-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 782,
+      "durationMs": 833,
       "error": null
     },
     {
@@ -1212,28 +1240,28 @@
       "id": "EXPA-05",
       "status": "failed",
       "defect": "BUG-15",
-      "durationMs": 841,
-      "error": "Error: {\"id\":\"1acc6b7a-fb8d-44d6-b5fd-bf190b714a74\",\"expenseNumber\":\"EXP-2026-0359\",\"description\":\"QA expense 1792214626783-cc9872e4\",\"vendor\":null,\"amount\":30,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+      "durationMs": 960,
+      "error": "Error: {\"id\":\"dd089db5-0fcd-40a7-9668-a973d4f9c458\",\"expenseNumber\":\"EXP-2026-0569\",\"description\":\"QA expense 1792263466550-83523b01\",\"vendor\":null,\"amount\":30,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
     },
     {
       "project": "api",
       "file": "api/exploratory-boundaries.spec.ts",
-      "title": "EXPA-06 reversed report interval is handled safely as an empty result",
+      "title": "EXPA-06 reversed report interval is rejected with 400",
       "id": "EXPA-06",
-      "status": "passed",
-      "defect": null,
-      "durationMs": 813,
-      "error": null
+      "status": "failed",
+      "defect": "BUG-26",
+      "durationMs": 837,
+      "error": "Error: {\"totalAmount\":0,\"totalCount\":0,\"averageAmount\":0,\"byCategory\":[],\"byDay\":[],\"expenses\":[]} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
       "project": "api",
       "file": "api/exploratory-boundaries.spec.ts",
-      "title": "EXPA-07 unknown category filter returns an empty result",
+      "title": "EXPA-07 unknown category filter is rejected with 400",
       "id": "EXPA-07",
-      "status": "passed",
-      "defect": null,
-      "durationMs": 728,
-      "error": null
+      "status": "failed",
+      "defect": "BUG-27",
+      "durationMs": 1053,
+      "error": "Error: {\"totalAmount\":0,\"totalCount\":0,\"averageAmount\":0,\"byCategory\":[],\"byDay\":[],\"expenses\":[]} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
       "project": "api",
@@ -1242,8 +1270,8 @@
       "id": "EXPA-08",
       "status": "failed",
       "defect": "BUG-16",
-      "durationMs": 986,
-      "error": "Error: {\"totalAmount\":13076.15,\"totalCount\":298,\"averageAmount\":43.879697986577181208053691275,\"byCategory\":[{\"categoryName\":\"Uncategorized\",\"total\":9220.65,\"count\":280},{\"categoryName\":\"Office Supplies\",\"total\":1055.00,"
+      "durationMs": 1372,
+      "error": "Error: {\"totalAmount\":25647.75,\"totalCount\":481,\"averageAmount\":53.321725571725571725571725572,\"byCategory\":[{\"categoryName\":\"Uncategorized\",\"total\":21792.25,\"count\":463},{\"categoryName\":\"Office Supplies\",\"total\":1055.00"
     },
     {
       "project": "api",
@@ -1252,7 +1280,7 @@
       "id": "MUT-AUTH-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 658,
+      "durationMs": 680,
       "error": null
     },
     {
@@ -1262,7 +1290,7 @@
       "id": "MUT-AUTH-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 568,
+      "durationMs": 1396,
       "error": null
     },
     {
@@ -1272,7 +1300,7 @@
       "id": "MUT-AUTH-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 728,
+      "durationMs": 713,
       "error": null
     },
     {
@@ -1282,7 +1310,7 @@
       "id": "MUT-AUTH-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 539,
+      "durationMs": 840,
       "error": null
     },
     {
@@ -1292,7 +1320,7 @@
       "id": "MUT-EXPQ-01",
       "status": "failed",
       "defect": "BUG-04",
-      "durationMs": 706,
+      "durationMs": 1070,
       "error": "Error: MUT-EXPQ-01 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1302,7 +1330,7 @@
       "id": "MUT-EXPQ-02",
       "status": "failed",
       "defect": "BUG-04",
-      "durationMs": 750,
+      "durationMs": 1010,
       "error": "Error: MUT-EXPQ-02 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1312,7 +1340,7 @@
       "id": "MUT-EXPQ-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 772,
+      "durationMs": 1069,
       "error": null
     },
     {
@@ -1322,8 +1350,8 @@
       "id": "MUT-EXPQ-04",
       "status": "failed",
       "defect": "BUG-22",
-      "durationMs": 741,
-      "error": "Error: MUT-EXPQ-04 survived with 200: {\"items\":[],\"totalCount\":299,\"page\":1,\"pageSize\":0} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+      "durationMs": 955,
+      "error": "Error: MUT-EXPQ-04 survived with 200: {\"items\":[],\"totalCount\":482,\"page\":1,\"pageSize\":0} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
       "project": "api",
@@ -1332,7 +1360,7 @@
       "id": "MUT-EXPQ-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 827,
+      "durationMs": 1458,
       "error": null
     },
     {
@@ -1342,8 +1370,8 @@
       "id": "MUT-EXPQ-06",
       "status": "failed",
       "defect": "BUG-23",
-      "durationMs": 744,
-      "error": "Error: MUT-EXPQ-06 survived with 200: {\"items\":[{\"id\":\"6c0bba7a-1774-430b-a32a-040733edbaa1\",\"expenseNumber\":\"EXP-2026-0260\",\"description\":\"R2 pending 1792213756382-312947\",\"vendor\":null,\"amount\":125.00,\"date\":\"2026-10-1"
+      "durationMs": 946,
+      "error": "Error: MUT-EXPQ-06 survived with 200: {\"items\":[{\"id\":\"909cb77d-7ff0-469c-92fd-30a6cbe332fd\",\"expenseNumber\":\"EXP-2026-0422\",\"description\":\"R6 future 1792261685268-cbef20\",\"vendor\":null,\"amount\":10.00,\"date\":\"2026-10-31\""
     },
     {
       "project": "api",
@@ -1352,8 +1380,8 @@
       "id": "MUT-EXPQ-07",
       "status": "failed",
       "defect": "BUG-24",
-      "durationMs": 710,
-      "error": "Error: MUT-EXPQ-07 survived with 200: {\"items\":[{\"id\":\"6c0bba7a-1774-430b-a32a-040733edbaa1\",\"expenseNumber\":\"EXP-2026-0260\",\"description\":\"R2 pending 1792213756382-312947\",\"vendor\":null,\"amount\":125.00,\"date\":\"2026-10-1"
+      "durationMs": 959,
+      "error": "Error: MUT-EXPQ-07 survived with 200: {\"items\":[{\"id\":\"909cb77d-7ff0-469c-92fd-30a6cbe332fd\",\"expenseNumber\":\"EXP-2026-0422\",\"description\":\"R6 future 1792261685268-cbef20\",\"vendor\":null,\"amount\":10.00,\"date\":\"2026-10-31\""
     },
     {
       "project": "api",
@@ -1362,7 +1390,7 @@
       "id": "MUT-EXPQ-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 1618,
+      "durationMs": 981,
       "error": null
     },
     {
@@ -1372,7 +1400,7 @@
       "id": "MUT-APR-01",
       "status": "failed",
       "defect": "BUG-25",
-      "durationMs": 692,
+      "durationMs": 863,
       "error": "Error: MUT-APR-01 survived with 404:  · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1382,7 +1410,7 @@
       "id": "MUT-POL-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 787,
+      "durationMs": 937,
       "error": null
     },
     {
@@ -1392,7 +1420,7 @@
       "id": "MUT-POL-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 727,
+      "durationMs": 1021,
       "error": null
     },
     {
@@ -1402,7 +1430,7 @@
       "id": "MUT-POL-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 697,
+      "durationMs": 778,
       "error": null
     },
     {
@@ -1412,7 +1440,7 @@
       "id": "MUT-POL-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 674,
+      "durationMs": 971,
       "error": null
     },
     {
@@ -1422,7 +1450,7 @@
       "id": "MUT-REP-01",
       "status": "failed",
       "defect": "BUG-26",
-      "durationMs": 714,
+      "durationMs": 933,
       "error": "Error: MUT-REP-01 survived with 200: {\"totalAmount\":0,\"totalCount\":0,\"averageAmount\":0,\"byCategory\":[],\"byDay\":[],\"expenses\":[]} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1432,7 +1460,7 @@
       "id": "MUT-REP-02",
       "status": "failed",
       "defect": "BUG-27",
-      "durationMs": 732,
+      "durationMs": 1642,
       "error": "Error: MUT-REP-02 survived with 200: {\"totalAmount\":0,\"totalCount\":0,\"averageAmount\":0,\"byCategory\":[],\"byDay\":[],\"expenses\":[]} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1442,8 +1470,8 @@
       "id": "MUT-REP-03",
       "status": "failed",
       "defect": "BUG-16",
-      "durationMs": 969,
-      "error": "Error: MUT-REP-03 survived with 200: {\"totalAmount\":13137.14,\"totalCount\":306,\"averageAmount\":42.931830065359477124183006536,\"byCategory\":[{\"categoryName\":\"Uncategorized\",\"total\":9281.64,\"count\":288},{\"categoryName\":\"Off"
+      "durationMs": 1270,
+      "error": "Error: MUT-REP-03 survived with 200: {\"totalAmount\":25708.74,\"totalCount\":489,\"averageAmount\":52.574110429447852760736196319,\"byCategory\":[{\"categoryName\":\"Uncategorized\",\"total\":21853.24,\"count\":471},{\"categoryName\":\"Of"
     },
     {
       "project": "api",
@@ -1452,7 +1480,7 @@
       "id": "MUT-REC-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 737,
+      "durationMs": 863,
       "error": null
     },
     {
@@ -1462,7 +1490,7 @@
       "id": "MUT-REC-02",
       "status": "failed",
       "defect": "BUG-28",
-      "durationMs": 1495,
+      "durationMs": 2012,
       "error": "Error: MUT-REC-02 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1472,8 +1500,8 @@
       "id": "MUT-APR-02",
       "status": "failed",
       "defect": "BUG-29",
-      "durationMs": 936,
-      "error": "Error: MUT-APR-02 survived with 200: {\"id\":\"fc276b3b-2747-433c-9743-9b3df7168903\",\"expenseNumber\":\"EXP-2026-0370\",\"description\":\"MUT-APR-02 controlled pending expense 1792214649080\",\"vendor\":null,\"amount\":60.00,\"date\":\"2"
+      "durationMs": 1295,
+      "error": "Error: MUT-APR-02 survived with 200: {\"id\":\"cbce4897-585b-4000-91c1-79f51ba39c34\",\"expenseNumber\":\"EXP-2026-0580\",\"description\":\"MUT-APR-02 controlled pending expense 1792263494837\",\"vendor\":null,\"amount\":60.00,\"date\":\"2"
     },
     {
       "project": "api",
@@ -1482,8 +1510,8 @@
       "id": "MUT-APR-03",
       "status": "failed",
       "defect": "BUG-29",
-      "durationMs": 1009,
-      "error": "Error: MUT-APR-03 survived with 200: {\"id\":\"d6245b84-8636-4b7d-8118-0a21ef615175\",\"expenseNumber\":\"EXP-2026-0371\",\"description\":\"MUT-APR-03 controlled pending expense 1792214650352\",\"vendor\":null,\"amount\":60.00,\"date\":\"2"
+      "durationMs": 1355,
+      "error": "Error: MUT-APR-03 survived with 200: {\"id\":\"3df78c62-4c88-4cd8-a92b-c9d4dc4ddf59\",\"expenseNumber\":\"EXP-2026-0581\",\"description\":\"MUT-APR-03 controlled pending expense 1792263496483\",\"vendor\":null,\"amount\":60.00,\"date\":\"2"
     },
     {
       "project": "api",
@@ -1492,7 +1520,7 @@
       "id": "MUT-EXP-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 725,
+      "durationMs": 1039,
       "error": null
     },
     {
@@ -1502,8 +1530,8 @@
       "id": "MUT-EXP-02",
       "status": "failed",
       "defect": "BUG-14",
-      "durationMs": 676,
-      "error": "Error: MUT-EXP-02 survived with 201: {\"id\":\"ac557948-f0ce-4492-95f1-9d9920618b5c\",\"expenseNumber\":\"EXP-2026-0360\",\"description\":\"   \",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+      "durationMs": 1050,
+      "error": "Error: MUT-EXP-02 survived with 201: {\"id\":\"b232c948-2ce3-4aee-bf5e-01eb33044bbb\",\"expenseNumber\":\"EXP-2026-0570\",\"description\":\"   \",\"vendor\":null,\"amount\":10,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
     },
     {
       "project": "api",
@@ -1512,7 +1540,7 @@
       "id": "MUT-EXP-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 726,
+      "durationMs": 1041,
       "error": null
     },
     {
@@ -1522,7 +1550,7 @@
       "id": "MUT-EXP-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 666,
+      "durationMs": 789,
       "error": null
     },
     {
@@ -1532,7 +1560,7 @@
       "id": "MUT-EXP-05",
       "status": "failed",
       "defect": "BUG-03",
-      "durationMs": 710,
+      "durationMs": 823,
       "error": "Error: MUT-EXP-05 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1542,8 +1570,8 @@
       "id": "MUT-EXP-06",
       "status": "failed",
       "defect": "BUG-14",
-      "durationMs": 975,
-      "error": "Error: MUT-EXP-06 survived with 201: {\"id\":\"d08a9594-0a25-4a09-b870-668e271c4955\",\"expenseNumber\":\"EXP-2026-0362\",\"description\":\"MUT-EXP-06 1792214635013\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"c"
+      "durationMs": 1451,
+      "error": "Error: MUT-EXP-06 survived with 201: {\"id\":\"0667a777-6630-4b96-9c08-eacd53bef562\",\"expenseNumber\":\"EXP-2026-0572\",\"description\":\"MUT-EXP-06 1792263477428\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"c"
     },
     {
       "project": "api",
@@ -1552,8 +1580,8 @@
       "id": "MUT-EXP-07",
       "status": "failed",
       "defect": "BUG-01",
-      "durationMs": 730,
-      "error": "Error: MUT-EXP-07 survived with 201: {\"id\":\"c640cceb-ca85-432f-9e6c-6ba3a5d1bf6d\",\"expenseNumber\":\"EXP-2026-0363\",\"description\":\"MUT-EXP-07 1792214636022\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"c"
+      "durationMs": 987,
+      "error": "Error: MUT-EXP-07 survived with 201: {\"id\":\"db665462-b425-452f-920b-791def600bad\",\"expenseNumber\":\"EXP-2026-0573\",\"description\":\"MUT-EXP-07 1792263479131\",\"vendor\":null,\"amount\":0,\"date\":\"2026-10-17\",\"categoryId\":null,\"c"
     },
     {
       "project": "api",
@@ -1562,8 +1590,8 @@
       "id": "MUT-EXP-08",
       "status": "failed",
       "defect": "BUG-02",
-      "durationMs": 737,
-      "error": "Error: MUT-EXP-08 survived with 201: {\"id\":\"6019148b-f912-45a6-b815-ef109681ec44\",\"expenseNumber\":\"EXP-2026-0364\",\"description\":\"MUT-EXP-08 1792214637041\",\"vendor\":null,\"amount\":-0.01,\"date\":\"2026-10-17\",\"categoryId\":nul"
+      "durationMs": 888,
+      "error": "Error: MUT-EXP-08 survived with 201: {\"id\":\"9094e403-cdf0-441d-b544-63c1d5d4585c\",\"expenseNumber\":\"EXP-2026-0574\",\"description\":\"MUT-EXP-08 1792263480321\",\"vendor\":null,\"amount\":-0.01,\"date\":\"2026-10-17\",\"categoryId\":nul"
     },
     {
       "project": "api",
@@ -1572,8 +1600,8 @@
       "id": "MUT-EXP-09",
       "status": "failed",
       "defect": "BUG-02",
-      "durationMs": 1501,
-      "error": "Error: MUT-EXP-09 survived with 201: {\"id\":\"03551ac2-497f-440b-80b4-a69b0b732396\",\"expenseNumber\":\"EXP-2026-0365\",\"description\":\"MUT-EXP-09 1792214638817\",\"vendor\":null,\"amount\":1.001,\"date\":\"2026-10-17\",\"categoryId\":nul"
+      "durationMs": 1131,
+      "error": "Error: MUT-EXP-09 survived with 201: {\"id\":\"3950d421-8d57-48f5-bbd1-47d04e0d96fc\",\"expenseNumber\":\"EXP-2026-0575\",\"description\":\"MUT-EXP-09 1792263481741\",\"vendor\":null,\"amount\":1.001,\"date\":\"2026-10-17\",\"categoryId\":nul"
     },
     {
       "project": "api",
@@ -1582,8 +1610,8 @@
       "id": "MUT-EXP-10",
       "status": "failed",
       "defect": "BUG-14",
-      "durationMs": 714,
-      "error": "Error: MUT-EXP-10 survived with 201: {\"id\":\"bdf42b23-38a2-4538-8d42-01ebb303d5a2\",\"expenseNumber\":\"EXP-2026-0366\",\"description\":\"MUT-EXP-10 1792214639791\",\"vendor\":null,\"amount\":10.00,\"date\":\"2026-10-17\",\"categoryId\":nul"
+      "durationMs": 1074,
+      "error": "Error: MUT-EXP-10 survived with 201: {\"id\":\"322d646f-9e00-4804-bad8-2a955f527e1e\",\"expenseNumber\":\"EXP-2026-0576\",\"description\":\"MUT-EXP-10 1792263482974\",\"vendor\":null,\"amount\":10.00,\"date\":\"2026-10-17\",\"categoryId\":nul"
     },
     {
       "project": "api",
@@ -1592,8 +1620,8 @@
       "id": "MUT-EXP-11",
       "status": "failed",
       "defect": "BUG-14",
-      "durationMs": 743,
-      "error": "Error: MUT-EXP-11 survived with 201: {\"id\":\"ce3e88ab-e6a2-4cf9-8760-df844cb0294a\",\"expenseNumber\":\"EXP-2026-0367\",\"description\":\"MUT-EXP-11 1792214640840\",\"vendor\":null,\"amount\":10,\"date\":\"0001-01-01\",\"categoryId\":null,\""
+      "durationMs": 1036,
+      "error": "Error: MUT-EXP-11 survived with 201: {\"id\":\"df66ad88-d8e5-445c-95ec-d921d0d5ce0a\",\"expenseNumber\":\"EXP-2026-0577\",\"description\":\"MUT-EXP-11 1792263484447\",\"vendor\":null,\"amount\":10,\"date\":\"0001-01-01\",\"categoryId\":null,\""
     },
     {
       "project": "api",
@@ -1602,7 +1630,7 @@
       "id": "MUT-EXP-12",
       "status": "passed",
       "defect": null,
-      "durationMs": 836,
+      "durationMs": 1094,
       "error": null
     },
     {
@@ -1612,7 +1640,7 @@
       "id": "MUT-EXP-13",
       "status": "passed",
       "defect": null,
-      "durationMs": 682,
+      "durationMs": 921,
       "error": null
     },
     {
@@ -1622,7 +1650,7 @@
       "id": "MUT-EXP-14",
       "status": "passed",
       "defect": null,
-      "durationMs": 779,
+      "durationMs": 1040,
       "error": null
     },
     {
@@ -1632,7 +1660,7 @@
       "id": "MUT-EXP-15",
       "status": "failed",
       "defect": "BUG-11",
-      "durationMs": 715,
+      "durationMs": 829,
       "error": "Error: MUT-EXP-15 survived with 500: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1642,8 +1670,8 @@
       "id": "MUT-EXP-16",
       "status": "failed",
       "defect": "BUG-15",
-      "durationMs": 744,
-      "error": "Error: MUT-EXP-16 survived with 201: {\"id\":\"bdb4c265-0326-4c44-93fb-4ab0761fe87d\",\"expenseNumber\":\"EXP-2026-0369\",\"description\":\"MUT-EXP-16 1792214645193\",\"vendor\":null,\"amount\":30,\"date\":\"2026-10-17\",\"categoryId\":null,\""
+      "durationMs": 1055,
+      "error": "Error: MUT-EXP-16 survived with 201: {\"id\":\"72bb905c-c92d-4aa5-a4aa-f64b66328cd0\",\"expenseNumber\":\"EXP-2026-0579\",\"description\":\"MUT-EXP-16 1792263489851\",\"vendor\":null,\"amount\":30,\"date\":\"2026-10-17\",\"categoryId\":null,\""
     },
     {
       "project": "api",
@@ -1652,7 +1680,7 @@
       "id": "POL-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 768,
+      "durationMs": 788,
       "error": null
     },
     {
@@ -1662,8 +1690,8 @@
       "id": "POL-02",
       "status": "failed",
       "defect": "BUG-05",
-      "durationMs": 810,
-      "error": "Error: {\"id\":\"b19dd931-4bef-40b3-8347-6b87745096c3\",\"name\":\"\",\"description\":null,\"action\":\"AutoApprove\",\"maxAmount\":1,\"requiresReceipt\":false,\"isActive\":false,\"createdAt\":\"2026-10-17T05:24:07.1101187Z\"} · expect(received"
+      "durationMs": 1015,
+      "error": "Error: {\"id\":\"51ab03d0-9171-4d34-9457-eac3685457e7\",\"name\":\"\",\"description\":null,\"action\":\"AutoApprove\",\"maxAmount\":1,\"requiresReceipt\":false,\"isActive\":false,\"createdAt\":\"2026-10-17T18:58:12.0216604Z\"} · expect(received"
     },
     {
       "project": "api",
@@ -1672,7 +1700,7 @@
       "id": "POL-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 779,
+      "durationMs": 948,
       "error": null
     },
     {
@@ -1682,8 +1710,8 @@
       "id": "POL-04",
       "status": "failed",
       "defect": "BUG-05",
-      "durationMs": 808,
-      "error": "Error: {\"id\":\"4aa4a5e0-8b26-42b6-ba1a-5fb39aeedf71\",\"name\":\"QA negative threshold\",\"description\":null,\"action\":\"AutoApprove\",\"maxAmount\":-1,\"requiresReceipt\":false,\"isActive\":false,\"createdAt\":\"2026-10-17T05:24:09.007795"
+      "durationMs": 1071,
+      "error": "Error: {\"id\":\"2745119e-ab11-4cca-8807-b2a7d45be1a5\",\"name\":\"QA negative threshold\",\"description\":null,\"action\":\"AutoApprove\",\"maxAmount\":-1,\"requiresReceipt\":false,\"isActive\":false,\"createdAt\":\"2026-10-17T18:58:14.426314"
     },
     {
       "project": "api",
@@ -1692,7 +1720,7 @@
       "id": "POL-05",
       "status": "failed",
       "defect": "BUG-05",
-      "durationMs": 717,
+      "durationMs": 1040,
       "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
     },
     {
@@ -1702,7 +1730,7 @@
       "id": "RCPT-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 723,
+      "durationMs": 1174,
       "error": null
     },
     {
@@ -1712,8 +1740,8 @@
       "id": "RCPT-02",
       "status": "failed",
       "defect": "BUG-39",
-      "durationMs": 761,
-      "error": "Error: {\"id\":\"9308a597-2409-4337-96d1-f8cf2e81e73e\",\"expenseNumber\":\"EXP-2026-0373\",\"description\":\"QA expense 1792214651694-24085335\",\"vendor\":null,\"amount\":25,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+      "durationMs": 1056,
+      "error": "Error: {\"id\":\"0ffa73ec-6f97-4801-afe1-a266d45d4f8c\",\"expenseNumber\":\"EXP-2026-0583\",\"description\":\"QA expense 1792263498162-860d5064\",\"vendor\":null,\"amount\":25,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
     },
     {
       "project": "api",
@@ -1722,8 +1750,8 @@
       "id": "RCPT-03",
       "status": "failed",
       "defect": "BUG-39",
-      "durationMs": 770,
-      "error": "Error: {\"id\":\"c10c8fcc-0ec0-41fb-a1b4-15e319265f99\",\"expenseNumber\":\"EXP-2026-0374\",\"description\":\"QA expense 1792214652747-5077a687\",\"vendor\":null,\"amount\":80,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
+      "durationMs": 961,
+      "error": "Error: {\"id\":\"3737392f-e510-441f-b322-2abec31bfd06\",\"expenseNumber\":\"EXP-2026-0584\",\"description\":\"QA expense 1792263499565-a3c39e32\",\"vendor\":null,\"amount\":80,\"date\":\"2026-10-17\",\"categoryId\":null,\"categoryName\":null,\"s"
     },
     {
       "project": "api",
@@ -1732,7 +1760,7 @@
       "id": "THR-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 1258,
+      "durationMs": 1082,
       "error": null
     },
     {
@@ -1742,7 +1770,7 @@
       "id": "THR-02",
       "status": "failed",
       "defect": "BUG-18",
-      "durationMs": 785,
+      "durationMs": 1032,
       "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: \"PendingApproval\" · Received: \"AutoApproved\""
     },
     {
@@ -1752,7 +1780,7 @@
       "id": "RBAC-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 710,
+      "durationMs": 946,
       "error": null
     },
     {
@@ -1762,7 +1790,7 @@
       "id": "RBAC-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 765,
+      "durationMs": 921,
       "error": null
     },
     {
@@ -1772,7 +1800,7 @@
       "id": "RBAC-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 799,
+      "durationMs": 1009,
       "error": null
     },
     {
@@ -1782,7 +1810,7 @@
       "id": "RBAC-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 1314,
+      "durationMs": 885,
       "error": null
     },
     {
@@ -1792,7 +1820,7 @@
       "id": "RBAC-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 707,
+      "durationMs": 1022,
       "error": null
     },
     {
@@ -1802,17 +1830,17 @@
       "id": "REC-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 645,
+      "durationMs": 761,
       "error": null
     },
     {
       "project": "api",
       "file": "api/receipts.spec.ts",
-      "title": "REC-02 @negative Employee receives a clear 4xx for unsupported content",
+      "title": "REC-02 @negative Employee receives 400 for unsupported content",
       "id": "REC-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 678,
+      "durationMs": 1304,
       "error": null
     },
     {
@@ -1822,7 +1850,7 @@
       "id": "REC-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 660,
+      "durationMs": 1129,
       "error": null
     },
     {
@@ -1832,8 +1860,148 @@
       "id": "RBAC-RO-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 6242,
+      "durationMs": 7548,
       "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-01 expense number is not reused after deleting a pending expense (RN-07)",
+      "id": "R6-API-01",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1464,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-02 automatic decision names the rule that produced it (RN-31)",
+      "id": "R6-API-02",
+      "status": "failed",
+      "defect": "BUG-42",
+      "durationMs": 1059,
+      "error": "Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Auto-approve under $50\" · Received string:    \"Auto-approved by policy\""
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-03 an AutoApproved expense cannot be approved or rejected (Anexo F §3)",
+      "id": "R6-API-03",
+      "status": "failed",
+      "defect": "BUG-36",
+      "durationMs": 1424,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-04 an Approved expense cannot be rejected afterwards (RN-40)",
+      "id": "R6-API-04",
+      "status": "failed",
+      "defect": "BUG-36",
+      "durationMs": 2015,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-05a an Approved expense cannot be deleted (RN-52)",
+      "id": "R6-API-05a",
+      "status": "failed",
+      "defect": "BUG-08",
+      "durationMs": 1462,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    204"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-05b an Rejected expense cannot be deleted (RN-52)",
+      "id": "R6-API-05b",
+      "status": "failed",
+      "defect": "BUG-08",
+      "durationMs": 1873,
+      "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    204"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-06 Finance queue excludes its own pending expense and self-approval is forbidden (Anexo G §2.2)",
+      "id": "R6-API-06",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1460,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-07 a manager own pending expense goes to Finance, not to the manager queue (Anexo G §2.2)",
+      "id": "R6-API-07",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1812,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-08 default expense list is page 1 of 20 ordered by date descending (Anexo C §5)",
+      "id": "R6-API-08",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 836,
+      "error": null
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-09 receipt link longer than 500 characters is rejected with 400 (RN-04, RN-06)",
+      "id": "R6-API-09",
+      "status": "failed",
+      "defect": "BUG-03",
+      "durationMs": 944,
+      "error": "Error: {\"error\":\"An unexpected error occurred.\"} · expect(received).toBe(expected) // Object.is equality · Expected: 400"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-10 approval keeps the optional comment in the audit history (RN-41, RN-50)",
+      "id": "R6-API-10",
+      "status": "failed",
+      "defect": "BUG-43",
+      "durationMs": 1600,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: \"R6 aprobado con comentario\" · Received: null"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-11 dashboard month spend excludes rejected expenses (RN-61)",
+      "id": "R6-API-11",
+      "status": "failed",
+      "defect": "BUG-12",
+      "durationMs": 1392,
+      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 10188.6 · Received: 11853.6"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-12 dashboard month spend ignores future-dated expenses (RN-61)",
+      "id": "R6-API-12",
+      "status": "failed",
+      "defect": "BUG-44",
+      "durationMs": 1444,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: 0 · Received: 10"
+    },
+    {
+      "project": "api",
+      "file": "api/round6-api.spec.ts",
+      "title": "R6-API-13 unsupported receipt type error lists every accepted type (RN-21, RN-22)",
+      "id": "R6-API-13",
+      "status": "failed",
+      "defect": "BUG-45",
+      "durationMs": 1007,
+      "error": "Error: GIF · expect(received).toContain(expected) // indexOf · Expected substring: \"GIF\""
     },
     {
       "project": "api",
@@ -1842,7 +2010,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 711,
+      "durationMs": 842,
       "error": null
     },
     {
@@ -1852,7 +2020,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 683,
+      "durationMs": 933,
       "error": null
     },
     {
@@ -1862,7 +2030,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 708,
+      "durationMs": 902,
       "error": null
     },
     {
@@ -1872,7 +2040,7 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 703,
+      "durationMs": 805,
       "error": null
     },
     {
@@ -1882,7 +2050,7 @@
       "id": "AUTHX-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 652,
+      "durationMs": 938,
       "error": null
     },
     {
@@ -1892,7 +2060,7 @@
       "id": "AUTHX-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 641,
+      "durationMs": 991,
       "error": null
     },
     {
@@ -1902,8 +2070,8 @@
       "id": "INT-ANA-01",
       "status": "failed",
       "defect": "BUG-12",
-      "durationMs": 1022,
-      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 11047.119999999995 · Received: 13487.12"
+      "durationMs": 1860,
+      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 22523.71000000001 · Received: 26328.72"
     },
     {
       "project": "integration",
@@ -1912,8 +2080,8 @@
       "id": "INT-ANA-02",
       "status": "failed",
       "defect": "BUG-12",
-      "durationMs": 1051,
-      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 11047.119999999995 · Received: 13487.12"
+      "durationMs": 1411,
+      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 22773.71000000001 · Received: 26578.72"
     },
     {
       "project": "integration",
@@ -1922,8 +2090,8 @@
       "id": "INT-ANA-03",
       "status": "failed",
       "defect": "BUG-12",
-      "durationMs": 944,
-      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: 295 · Received: 313"
+      "durationMs": 1251,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: 462 · Received: 502"
     },
     {
       "project": "integration",
@@ -1932,7 +2100,7 @@
       "id": "INT-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 904,
+      "durationMs": 1105,
       "error": null
     },
     {
@@ -1942,7 +2110,7 @@
       "id": "INT-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 970,
+      "durationMs": 1184,
       "error": null
     },
     {
@@ -1952,8 +2120,29 @@
       "id": "INT-03",
       "status": "failed",
       "defect": "BUG-08",
-      "durationMs": 755,
+      "durationMs": 1051,
       "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    204"
+    },
+    {
+      "project": "integration",
+      "file": "integration/policy-engine-block.spec.ts",
+      "title": "R6-INT-01 an active Block rule rejects only amounts above its limit",
+      "id": "R6-INT-01",
+      "status": "failed",
+      "defect": "BUG-41",
+      "durationMs": 1566,
+      "error": "Error: amount above the Block limit · expect(received).toBe(expected) // Object.is equality · Expected: \"Rejected\""
+    },
+    {
+      "project": "integration",
+      "file": "integration/policy-engine-block.spec.ts",
+      "title": "R6-INT-02 an inactive Block rule does not influence the decision",
+      "id": "R6-INT-02",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 0,
+      "error": null,
+      "note": "Omitida en la corrida completa por el modo serial del archivo (la prueba anterior falló por BUG-41); se quitó ese modo y se ejecutó aparte a las 19:06 UTC: pasa."
     },
     {
       "project": "integration",
@@ -1962,7 +2151,7 @@
       "id": "INT-POL-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 1803,
+      "durationMs": 1234,
       "error": null
     },
     {
@@ -1972,7 +2161,7 @@
       "id": "INT-POL-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 841,
+      "durationMs": 1155,
       "error": null
     },
     {
@@ -1982,7 +2171,7 @@
       "id": "INT-POL-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 727,
+      "durationMs": 1004,
       "error": null
     },
     {
@@ -1992,7 +2181,7 @@
       "id": "E2E-A11",
       "status": "passed",
       "defect": null,
-      "durationMs": 1186,
+      "durationMs": 1489,
       "error": null
     },
     {
@@ -2002,7 +2191,7 @@
       "id": "E2E-A12",
       "status": "passed",
       "defect": null,
-      "durationMs": 1896,
+      "durationMs": 3180,
       "error": null
     },
     {
@@ -2012,27 +2201,27 @@
       "id": "E2E-A13",
       "status": "passed",
       "defect": null,
-      "durationMs": 1848,
+      "durationMs": 3331,
       "error": null
     },
     {
       "project": "e2e",
       "file": "e2e/adversarial-workflow-round2.spec.ts",
-      "title": "R2-FLOW-01-EVIDENCE repeated approval returns success",
+      "title": "R2-FLOW-01-EVIDENCE repeated approval is rejected",
       "id": "R2-FLOW-01-EVIDENCE",
       "status": "failed",
       "defect": "BUG-35",
-      "durationMs": 4755,
+      "durationMs": 5922,
       "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
     },
     {
       "project": "e2e",
       "file": "e2e/adversarial-workflow-round2.spec.ts",
-      "title": "R2-FLOW-02-EVIDENCE rejected expense can become approved",
+      "title": "R2-FLOW-02-EVIDENCE rejected expense cannot become approved",
       "id": "R2-FLOW-02-EVIDENCE",
       "status": "failed",
       "defect": "BUG-36",
-      "durationMs": 5619,
+      "durationMs": 6175,
       "error": "Error: expect(received).toBeGreaterThanOrEqual(expected) · Expected: >= 400 · Received:    200"
     },
     {
@@ -2042,7 +2231,7 @@
       "id": "E2E-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 1810,
+      "durationMs": 3795,
       "error": null
     },
     {
@@ -2052,7 +2241,7 @@
       "id": "E2E-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 2146,
+      "durationMs": 1690,
       "error": null
     },
     {
@@ -2062,7 +2251,7 @@
       "id": "E2E-03",
       "status": "failed",
       "defect": "BUG-09",
-      "durationMs": 8469,
+      "durationMs": 8753,
       "error": "Error: expect(page).toHaveURL(expected) failed · Expected pattern: /\\/expenses/ · Received string:  \"https://spendwise-igs.eastus2.cloudapp.azure.com:4406/dashboard\""
     },
     {
@@ -2072,7 +2261,7 @@
       "id": "E2E-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 3503,
+      "durationMs": 3573,
       "error": null
     },
     {
@@ -2082,8 +2271,8 @@
       "id": "E2E-M13",
       "status": "failed",
       "defect": "BUG-40",
-      "durationMs": 10460,
-      "error": "Error: expect(locator).toBeVisible() failed · Locator: getByText('E2E-M13 pending 1792214684186') · Expected: visible"
+      "durationMs": 13216,
+      "error": "Error: expect(locator).toBeVisible() failed · Locator: getByText('E2E-M13 pending 1792263556591') · Expected: visible"
     },
     {
       "project": "e2e",
@@ -2092,7 +2281,7 @@
       "id": "EXPUI-01",
       "status": "failed",
       "defect": "BUG-17",
-      "durationMs": 9699,
+      "durationMs": 10207,
       "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByRole('button', { name: /new rule/i }) · Expected: 0"
     },
     {
@@ -2102,7 +2291,7 @@
       "id": "EXPUI-02",
       "status": "failed",
       "defect": "BUG-18",
-      "durationMs": 10632,
+      "durationMs": 11498,
       "error": "Error: expect(locator).toContainText(expected) failed · Locator: getByText('Auto-approve under $50').locator('..').locator('..') · Expected pattern: /<\\s*\\$?50|less than \\$?50/i"
     },
     {
@@ -2112,8 +2301,8 @@
       "id": "EXPUI-03",
       "status": "failed",
       "defect": "BUG-19",
-      "durationMs": 10243,
-      "error": "Error: expect(locator).toContainText(expected) failed · Locator: locator('main') · Expected pattern: /Elena Employee|Ethan Employee|employee\\d@spendwise\\.test/i"
+      "durationMs": 11615,
+      "error": "Error: expect(locator).toContainText(expected) failed · Locator: locator('main').getByText('EXPUI-03-1792263591940-8289d879-5a47-4eb9-a361-65a0ae184e92', { exact: true }).locator('xpath=ancestor::div[contains(@class,\"gri"
     },
     {
       "project": "e2e",
@@ -2122,8 +2311,8 @@
       "id": "EXPUI-04",
       "status": "failed",
       "defect": "BUG-20",
-      "durationMs": 10733,
-      "error": "Error: expect(locator).toBeVisible() failed · Locator: getByText('EXP-2026-0004', { exact: true }) · Expected: visible"
+      "durationMs": 13032,
+      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByText('EXPUI-04-1792263605130-5eacc449-15ab-4771-8b14-1b614123485c', { exact: true }).locator('xpath=ancestor::div[contains(@class,\"border-b\") or contai"
     },
     {
       "project": "e2e",
@@ -2132,7 +2321,7 @@
       "id": "EXPUI-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 1932,
+      "durationMs": 2545,
       "error": null
     },
     {
@@ -2142,7 +2331,7 @@
       "id": "EXPUI-06",
       "status": "failed",
       "defect": "BUG-21",
-      "durationMs": 10874,
+      "durationMs": 10548,
       "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByLabel(/Notes/i) · Expected: 1"
     },
     {
@@ -2152,7 +2341,7 @@
       "id": "E2E-M01",
       "status": "passed",
       "defect": null,
-      "durationMs": 3321,
+      "durationMs": 3290,
       "error": null
     },
     {
@@ -2162,7 +2351,7 @@
       "id": "E2E-M02",
       "status": "passed",
       "defect": null,
-      "durationMs": 2761,
+      "durationMs": 2955,
       "error": null
     },
     {
@@ -2172,7 +2361,7 @@
       "id": "E2E-M03",
       "status": "passed",
       "defect": null,
-      "durationMs": 2285,
+      "durationMs": 3784,
       "error": null
     },
     {
@@ -2182,7 +2371,7 @@
       "id": "E2E-M04",
       "status": "passed",
       "defect": null,
-      "durationMs": 1999,
+      "durationMs": 3388,
       "error": null
     },
     {
@@ -2192,7 +2381,7 @@
       "id": "E2E-M05",
       "status": "passed",
       "defect": null,
-      "durationMs": 2076,
+      "durationMs": 2801,
       "error": null
     },
     {
@@ -2202,7 +2391,7 @@
       "id": "E2E-M06",
       "status": "passed",
       "defect": null,
-      "durationMs": 2038,
+      "durationMs": 2771,
       "error": null
     },
     {
@@ -2212,7 +2401,7 @@
       "id": "E2E-M07",
       "status": "passed",
       "defect": null,
-      "durationMs": 1993,
+      "durationMs": 2998,
       "error": null
     },
     {
@@ -2222,7 +2411,7 @@
       "id": "E2E-M08",
       "status": "passed",
       "defect": null,
-      "durationMs": 3212,
+      "durationMs": 3518,
       "error": null
     },
     {
@@ -2232,7 +2421,7 @@
       "id": "E2E-M09",
       "status": "failed",
       "defect": "BUG-10",
-      "durationMs": 10525,
+      "durationMs": 10763,
       "error": "Error: expect(locator).toBeVisible() failed · Locator: getByTestId('access-denied') · Expected: visible"
     },
     {
@@ -2242,7 +2431,7 @@
       "id": "E2E-M10",
       "status": "passed",
       "defect": null,
-      "durationMs": 2213,
+      "durationMs": 3243,
       "error": null
     },
     {
@@ -2252,7 +2441,7 @@
       "id": "E2E-M11",
       "status": "passed",
       "defect": null,
-      "durationMs": 3364,
+      "durationMs": 4163,
       "error": null
     },
     {
@@ -2262,8 +2451,8 @@
       "id": "E2E-M12",
       "status": "failed",
       "defect": "BUG-13",
-      "durationMs": 2384,
-      "error": "Error: expect(received).not.toMatch(expected) · Expected pattern: not /(?:^|,)\"?[=+@]/m · Received string:      \"Expense #,Description,Vendor,Category,Date,Amount,Status"
+      "durationMs": 4743,
+      "error": "Error: expect(received).not.toMatch(expected) · Expected pattern: not /^[=+\\-@]/ · Received string:      \"-CSV-M12-1792263675601-aed3bff4-7107-47cc-ac5c-00328fcb1e3d\""
     },
     {
       "project": "e2e",
@@ -2272,7 +2461,7 @@
       "id": "MUT-STATE-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 2532,
+      "durationMs": 5259,
       "error": null
     },
     {
@@ -2282,7 +2471,7 @@
       "id": "MUT-STATE-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 2402,
+      "durationMs": 4431,
       "error": null
     },
     {
@@ -2290,10 +2479,10 @@
       "file": "e2e/mutation-navigation-state.spec.ts",
       "title": "MUT-STATE-03 repeated submit gesture creates exactly one expense",
       "id": "MUT-STATE-03",
-      "status": "failed",
+      "status": "passed",
       "defect": null,
-      "durationMs": 10197,
-      "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByText('double-submit-1792214896888', { exact: true }) · Expected: 1"
+      "durationMs": 3507,
+      "error": null
     },
     {
       "project": "e2e",
@@ -2302,7 +2491,7 @@
       "id": "MUT-STATE-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 4783,
+      "durationMs": 3377,
       "error": null
     },
     {
@@ -2312,7 +2501,7 @@
       "id": "MUT-STATE-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 2377,
+      "durationMs": 3425,
       "error": null
     },
     {
@@ -2322,8 +2511,8 @@
       "id": "MUT-STATE-06",
       "status": "failed",
       "defect": "BUG-40",
-      "durationMs": 10288,
-      "error": "Error: expect(locator).toBeVisible() failed · Locator: locator('main .divide-y').last().locator(':scope > div').first() · Expected: visible"
+      "durationMs": 3394,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: \"PendingApproval\" · Received: \"Pending\""
     },
     {
       "project": "e2e",
@@ -2332,7 +2521,7 @@
       "id": "MUT-STATE-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 3722,
+      "durationMs": 3907,
       "error": null
     },
     {
@@ -2342,7 +2531,7 @@
       "id": "MUT-STATE-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 2058,
+      "durationMs": 2885,
       "error": null
     },
     {
@@ -2352,7 +2541,7 @@
       "id": "MUT-STATE-09",
       "status": "passed",
       "defect": null,
-      "durationMs": 3753,
+      "durationMs": 4793,
       "error": null
     },
     {
@@ -2362,7 +2551,7 @@
       "id": "MUT-STATE-10",
       "status": "passed",
       "defect": null,
-      "durationMs": 2470,
+      "durationMs": 3830,
       "error": null
     },
     {
@@ -2372,7 +2561,7 @@
       "id": "MUT-UI-01",
       "status": "passed",
       "defect": null,
-      "durationMs": 1304,
+      "durationMs": 1299,
       "error": null
     },
     {
@@ -2382,7 +2571,7 @@
       "id": "MUT-UI-02",
       "status": "passed",
       "defect": null,
-      "durationMs": 2442,
+      "durationMs": 3115,
       "error": null
     },
     {
@@ -2392,7 +2581,7 @@
       "id": "MUT-UI-03",
       "status": "passed",
       "defect": null,
-      "durationMs": 2305,
+      "durationMs": 2555,
       "error": null
     },
     {
@@ -2402,7 +2591,7 @@
       "id": "MUT-UI-04",
       "status": "passed",
       "defect": null,
-      "durationMs": 2705,
+      "durationMs": 4671,
       "error": null
     },
     {
@@ -2412,7 +2601,7 @@
       "id": "MUT-UI-05",
       "status": "failed",
       "defect": "BUG-31",
-      "durationMs": 9687,
+      "durationMs": 10454,
       "error": "Error: expect(locator).toHaveAttribute(expected) failed · Locator:  getByRole('button', { name: 'Approved', exact: true }) · Expected: \"true\""
     },
     {
@@ -2422,7 +2611,7 @@
       "id": "MUT-UI-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 3661,
+      "durationMs": 4138,
       "error": null
     },
     {
@@ -2432,7 +2621,7 @@
       "id": "MUT-UI-07",
       "status": "passed",
       "defect": null,
-      "durationMs": 2869,
+      "durationMs": 3580,
       "error": null
     },
     {
@@ -2442,7 +2631,7 @@
       "id": "MUT-UI-08",
       "status": "passed",
       "defect": null,
-      "durationMs": 2122,
+      "durationMs": 2858,
       "error": null
     },
     {
@@ -2452,7 +2641,7 @@
       "id": "MUT-UI-09",
       "status": "failed",
       "defect": "BUG-32",
-      "durationMs": 10285,
+      "durationMs": 10186,
       "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByLabel('From', { exact: true }) · Expected: 1"
     },
     {
@@ -2462,7 +2651,7 @@
       "id": "MUT-UI-10",
       "status": "failed",
       "defect": "BUG-33",
-      "durationMs": 4024,
+      "durationMs": 4789,
       "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: false · Received: true"
     },
     {
@@ -2472,7 +2661,7 @@
       "id": "MUT-UI-11",
       "status": "failed",
       "defect": "BUG-21",
-      "durationMs": 9562,
+      "durationMs": 10453,
       "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByLabel('Notes', { exact: true }) · Expected: 1"
     },
     {
@@ -2482,7 +2671,7 @@
       "id": "MUT-UI-12",
       "status": "passed",
       "defect": null,
-      "durationMs": 2266,
+      "durationMs": 4148,
       "error": null
     },
     {
@@ -2492,7 +2681,7 @@
       "id": "MUT-UI-13",
       "status": "failed",
       "defect": "BUG-34",
-      "durationMs": 3790,
+      "durationMs": 2739,
       "error": "Error: expect(received).toBeLessThanOrEqual(expected) · Expected: <= 1 · Received:    102"
     },
     {
@@ -2502,7 +2691,7 @@
       "id": "E2E-05",
       "status": "passed",
       "defect": null,
-      "durationMs": 1922,
+      "durationMs": 2800,
       "error": null
     },
     {
@@ -2512,7 +2701,7 @@
       "id": "E2E-06",
       "status": "passed",
       "defect": null,
-      "durationMs": 2259,
+      "durationMs": 3244,
       "error": null
     },
     {
@@ -2522,8 +2711,208 @@
       "id": "E2E-07",
       "status": "failed",
       "defect": "BUG-10",
-      "durationMs": 9362,
+      "durationMs": 10139,
       "error": "Error: expect(locator).toHaveCount(expected) failed · Locator:  getByRole('link', { name: /new expense/i }) · Expected: 0"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-01 RN-62 Dashboard: metricas reales para employee, manager y finance",
+      "id": "R6-UI-01",
+      "status": "failed",
+      "defect": "BUG-48",
+      "durationMs": 11468,
+      "error": "Error: employee1: spendThisMonth · expect(received).toBeCloseTo(expected, precision) · Expected: 10498.599999999999"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-02 RN-62 Reports: totales, cantidad, promedio y categorias derivan de gastos",
+      "id": "R6-UI-02",
+      "status": "failed",
+      "defect": "BUG-12",
+      "durationMs": 6409,
+      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 23278.740000000013 · Received: 27083.76"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-03 RN-62 receipt/OCR area does not present simulated metrics",
+      "id": "R6-UI-03",
+      "status": "failed",
+      "defect": "BUG-48",
+      "durationMs": 5550,
+      "error": "Error: La precision OCR visible debe tener un dato fuente identificable en las APIs autoritativas · expect(received).toEqual(expected) // deep equality · Expected: ArrayContaining [StringMatching /ocr.*(?:accuracy|precis"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-04 RN-61 Dashboard no suma un gasto futuro del mes",
+      "id": "R6-UI-04",
+      "status": "failed",
+      "defect": "BUG-44",
+      "durationMs": 2392,
+      "error": "Error: expect(received).toBeCloseTo(expected, precision) · Expected: 3574.36 · Received: 3591.67"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-05 RN-63 Reports exporta CSV RFC 4180 integro con texto complejo",
+      "id": "R6-UI-05",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 6139,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-06 RN-63 Export CSV de My Expenses descarga archivo",
+      "id": "R6-UI-06",
+      "status": "failed",
+      "defect": "BUG-47",
+      "durationMs": 10518,
+      "error": "TimeoutError: page.waitForEvent: Timeout 7000ms exceeded while waiting for event \"download\" · =========================== logs =========================== · waiting for event \"download\""
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-07 RN-70 /expenses diferencia error 500 de estado vacio",
+      "id": "R6-UI-07",
+      "status": "failed",
+      "defect": "BUG-50",
+      "durationMs": 11512,
+      "error": "Error: expect(locator).toContainText(expected) failed · Locator: locator('main') · Expected pattern: /error|failed|unable|try again|could not/i"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-08 RN-70 /approvals diferencia error 500 de estado vacio",
+      "id": "R6-UI-08",
+      "status": "failed",
+      "defect": "BUG-50",
+      "durationMs": 3045,
+      "error": "Error: expect(received).toBe(expected) // Object.is equality · Expected: 500 · Received: 200"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-09 RN-70 /reports diferencia error 500 de estado vacio",
+      "id": "R6-UI-09",
+      "status": "failed",
+      "defect": "BUG-50",
+      "durationMs": 10560,
+      "error": "Error: expect(locator).toContainText(expected) failed · Locator: locator('main') · Expected pattern: /error|failed|unable|try again|could not/i"
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-10 RN-70 /dashboard diferencia error 500 de estado vacio",
+      "id": "R6-UI-10",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 4146,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-11 RN-72 botones de icono en Approvals tienen nombre",
+      "id": "R6-UI-11",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 4759,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-12 RN-72 botones de icono en Policy Engine tienen nombre",
+      "id": "R6-UI-12",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2992,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-13 RN-72 toggle de password y acciones de My Expenses tienen nombre",
+      "id": "R6-UI-13",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3778,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-14 Anexo G login testids y menu Finance completo",
+      "id": "R6-UI-14",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 3795,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-15 Anexo G sesion en cookie httpOnly e invisible a document.cookie",
+      "id": "R6-UI-15",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 2878,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-16 Anexo G employee recibe access-denied en Approvals y Policies",
+      "id": "R6-UI-16",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 4084,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-17 Anexo G login muestra el estado en curso y el de credenciales inválidas",
+      "id": "R6-UI-17",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 1674,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-18 Anexo G perdida de cookie muestra sesion expirada",
+      "id": "R6-UI-18",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 5717,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-19 RN-32 Policy Engine distingue limite 0 de sin limite",
+      "id": "R6-UI-19",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 5112,
+      "error": null
+    },
+    {
+      "project": "e2e",
+      "file": "e2e/round6-ui.spec.ts",
+      "title": "R6-UI-20 RN-23 el detalle del gasto muestra historial y Ver recibo apunta al recibo asociado",
+      "id": "R6-UI-20",
+      "status": "passed",
+      "defect": null,
+      "durationMs": 4375,
+      "error": null
     },
     {
       "project": "e2e",
@@ -2532,7 +2921,7 @@
       "id": "UI-02",
       "status": "failed",
       "defect": "BUG-38",
-      "durationMs": 10944,
+      "durationMs": 10559,
       "error": "Error: expect(locator).toContainText(expected) failed · Locator: locator('main') · Expected pattern: /error|failed|try again|unable/i"
     },
     {
@@ -2542,8 +2931,11 @@
       "id": null,
       "status": "passed",
       "defect": null,
-      "durationMs": 2912,
+      "durationMs": 7761,
       "error": null
     }
+  ],
+  "notes": [
+    "R6-INT-02 se ejecutó aparte: estaba omitida por el modo serial de su archivo."
   ]
 }

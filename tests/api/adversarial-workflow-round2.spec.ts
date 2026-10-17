@@ -18,18 +18,30 @@ test.describe('Round 2 adversarial workflow mutations', () => {
     const { expense } = await pendingExpense(auth, expenses);
     const manager = await auth.loginAs('manager1');
     expect((await approvals.approve(manager.accessToken, expense.id)).status()).toBe(200);
+    const detailBefore = await (await expenses.get(manager.accessToken, expense.id)).json();
+    const historyBefore = await (await expenses.history(manager.accessToken, expense.id)).json();
     const repeated = await approvals.approve(manager.accessToken, expense.id);
     expect(repeated.status()).toBeGreaterThanOrEqual(400);
     expect(repeated.status()).toBeLessThan(500);
+    const detailAfter = await (await expenses.get(manager.accessToken, expense.id)).json();
+    const historyAfter = await (await expenses.history(manager.accessToken, expense.id)).json();
+    expect(detailAfter.status).toBe(detailBefore.status);
+    expect(historyAfter).toHaveLength(historyBefore.length);
   });
 
   test('R2-FLOW-02 rejected expense cannot later be approved', async ({ auth, expenses, approvals }) => {
     const { expense } = await pendingExpense(auth, expenses);
     const manager = await auth.loginAs('manager1');
     expect((await approvals.reject(manager.accessToken, expense.id, 'R2 controlled rejection')).status()).toBe(200);
+    const detailBefore = await (await expenses.get(manager.accessToken, expense.id)).json();
+    const historyBefore = await (await expenses.history(manager.accessToken, expense.id)).json();
     const approveFinal = await approvals.approve(manager.accessToken, expense.id);
     expect(approveFinal.status()).toBeGreaterThanOrEqual(400);
     expect(approveFinal.status()).toBeLessThan(500);
+    const detailAfter = await (await expenses.get(manager.accessToken, expense.id)).json();
+    const historyAfter = await (await expenses.history(manager.accessToken, expense.id)).json();
+    expect(detailAfter.status).toBe(detailBefore.status);
+    expect(historyAfter).toHaveLength(historyBefore.length);
   });
 
   test('R2-FLOW-03 employee cannot self-approve own pending expense', async ({ auth, expenses, approvals }) => {
@@ -71,9 +83,17 @@ test.describe('Round 2 adversarial workflow mutations', () => {
   test('R2-FLOW-08 wrong method cannot mutate approval state', async ({ auth, expenses, http }) => {
     const { expense } = await pendingExpense(auth, expenses);
     const manager = await auth.loginAs('manager1');
+    const detailBefore = await (await expenses.get(manager.accessToken, expense.id)).json();
+    const historyBefore = await (await expenses.history(manager.accessToken, expense.id)).json();
     const response = await http.post(`/api/v1/approvals/${expense.id}/approve`, {}, manager.accessToken);
-    expect([404, 405]).toContain(response.status());
-    expect((await expenses.get(manager.accessToken, expense.id)).status()).toBe(200);
+    expect(response.status()).toBeGreaterThanOrEqual(400);
+    expect(response.status()).toBeLessThan(500);
+    const detailAfterResponse = await expenses.get(manager.accessToken, expense.id);
+    expect(detailAfterResponse.status()).toBe(200);
+    const detailAfter = await detailAfterResponse.json();
+    const historyAfter = await (await expenses.history(manager.accessToken, expense.id)).json();
+    expect(detailAfter.status).toBe(detailBefore.status);
+    expect(historyAfter).toHaveLength(historyBefore.length);
   });
 
   test('R2-FLOW-09 malformed and encoded route identifiers do not produce 5xx', async ({ auth, http }) => {

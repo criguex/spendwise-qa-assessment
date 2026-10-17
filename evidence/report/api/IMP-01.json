@@ -1,0 +1,86 @@
+{
+  "id": "IMP-01",
+  "capturedAt": "2026-10-17T18:31:46.838Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "HTTP 200; pageSize 1000; totalCount 401",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión finance",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "finance",
+      "requestBody": {
+        "email": "finance@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:31:46.487821Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000002",
+          "email": "finance@spendwise.test",
+          "fullName": "Fiona Finance",
+          "roles": [
+            "Employee",
+            "FinanceController"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 149,
+      "at": "2026-10-17T18:31:46.458Z"
+    },
+    {
+      "setup": false,
+      "note": "pageSize=1000",
+      "method": "GET",
+      "path": "/api/v1/expenses?pageSize=1000",
+      "role": "finance",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "items": [
+          {
+            "id": "909cb77d-7ff0-469c-92fd-30a6cbe332fd",
+            "expenseNumber": "EXP-2026-0422",
+            "description": "R6 future 1792261685268-cbef20",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-31",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:28:05.3902555"
+          },
+          {
+            "id": "e73b36e2-de55-4cee-adaf-a9b2f9e87cfa",
+            "expenseNumber": "EXP-2026-0482",
+            "description": "QA evidencia 1792261904417-7eec4a",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-31",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:31:44.5384287"
+          },
+          "… 399 elementos más"
+        ],
+        "totalCount": 401,
+        "page": 1,
+        "pageSize": 1000
+      },
+      "durationMs": 380,
+      "at": "2026-10-17T18:31:46.838Z"
+    }
+  ]
+}

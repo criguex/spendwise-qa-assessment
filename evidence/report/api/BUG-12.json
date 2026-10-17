@@ -1,17 +1,20 @@
 {
   "id": "BUG-12",
-  "capturedAt": "2026-10-17T05:22:39.400Z",
+  "capturedAt": "2026-10-17T18:31:41.160Z",
   "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
   "reproduced": true,
-  "observed": "totalAmount 11315.16 vs 9245.16 sin rechazados (diferencia 2070); totalCount 255 vs 241",
+  "observed": "Reports: totalAmount 20095.99 vs 17000.98 sin rechazados (diferencia 3095.01); totalCount 395 vs 365. Tablero de employee1: 8547.49 vs 7402.49 sin rechazados",
   "analysis": {
-    "totalAmountReportado": 11315.16,
-    "sumaSinRechazados": 9245.16,
-    "sumaRechazados": 2070,
-    "totalCountReportado": 255,
-    "conteoSinRechazados": 241,
-    "rechazados": 14,
-    "sumaByCategory": 11315.16
+    "totalAmountReportado": 20095.99,
+    "sumaSinRechazados": 17000.98,
+    "sumaRechazados": 3095.01,
+    "totalCountReportado": 395,
+    "conteoSinRechazados": 365,
+    "rechazados": 30,
+    "sumaByCategory": 20095.99,
+    "tableroGastoDelMes": 8547.49,
+    "tableroSinRechazados": 7402.49,
+    "tableroRechazadosDelMes": 1145
   },
   "exchanges": [
     {
@@ -28,7 +31,7 @@
       "statusText": "OK",
       "responseBody": {
         "accessToken": "<TOKEN>",
-        "expiresAt": "2026-10-17T06:22:39.0867103Z",
+        "expiresAt": "2026-10-17T19:31:40.1209359Z",
         "user": {
           "id": "33333333-0000-0000-0000-000000000002",
           "email": "finance@spendwise.test",
@@ -40,8 +43,8 @@
           "managerId": null
         }
       },
-      "durationMs": 113,
-      "at": "2026-10-17T05:22:39.004Z"
+      "durationMs": 132,
+      "at": "2026-10-17T18:31:40.086Z"
     },
     {
       "setup": false,
@@ -52,14 +55,14 @@
       "status": 200,
       "statusText": "OK",
       "responseBody": {
-        "totalAmount": 11315.16,
-        "totalCount": 255,
-        "averageAmount": 44.373176470588234,
+        "totalAmount": 20095.99,
+        "totalCount": 395,
+        "averageAmount": 50.87592405063291,
         "byCategory": [
           {
             "categoryName": "Uncategorized",
-            "total": 7459.66,
-            "count": 237
+            "total": 16240.49,
+            "count": 377
           },
           {
             "categoryName": "Office Supplies",
@@ -71,7 +74,7 @@
         "byDay": [
           {
             "date": "0001-01-01",
-            "amount": 70
+            "amount": 110
           },
           {
             "date": "2026-03-11",
@@ -115,7 +118,7 @@
           },
           {
             "date": "2026-10-05",
-            "amount": 45
+            "amount": 55
           },
           {
             "date": "2026-10-06",
@@ -147,14 +150,127 @@
           },
           {
             "date": "2026-10-16",
-            "amount": 4894.52
+            "amount": 7699.52
           },
           {
             "date": "2026-10-17",
-            "amount": 2495.14
+            "amount": 8349.04
+          },
+          {
+            "date": "2026-10-30",
+            "amount": 61.93
+          },
+          {
+            "date": "2026-10-31",
+            "amount": 10
           }
         ],
         "expenses": [
+          {
+            "id": "909cb77d-7ff0-469c-92fd-30a6cbe332fd",
+            "expenseNumber": "EXP-2026-0422",
+            "description": "R6 future 1792261685268-cbef20",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-31",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:28:05.3902555"
+          },
+          {
+            "id": "f3fe1e50-87fc-4d3b-9522-20b313fa2269",
+            "expenseNumber": "EXP-2026-0402",
+            "description": "R6-future-1792261440760",
+            "vendor": null,
+            "amount": 17.31,
+            "date": "2026-10-30",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:24:00.8862783"
+          },
+          "… 393 elementos más"
+        ]
+      },
+      "durationMs": 457,
+      "at": "2026-10-17T18:31:40.543Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee1",
+      "requestBody": {
+        "email": "employee1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:31:40.8434779Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000005",
+          "email": "employee1@spendwise.test",
+          "fullName": "Elena Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 125,
+      "at": "2026-10-17T18:31:40.812Z"
+    },
+    {
+      "setup": false,
+      "note": "Gasto del mes del tablero de employee1",
+      "method": "GET",
+      "path": "/api/v1/dashboard/summary",
+      "role": "employee1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "spendThisMonth": 8547.49,
+        "pendingCount": 28,
+        "autoApprovedCount": 58,
+        "autoApprovedTotal": 130,
+        "recentExpenses": [
+          {
+            "id": "50509d0f-311d-454d-b7f1-12d5a4844133",
+            "expenseNumber": "EXP-2026-0259",
+            "description": "R2-AUTH-11-1792213755529",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:09:15.5822255"
+          },
+          {
+            "id": "86287545-3761-429b-bc57-13d42d8760bc",
+            "expenseNumber": "EXP-2026-0450",
+            "description": "QUERY-PendingApproval-1792261754506-47d9403f-68e6-42f2-b179-d0748a2d2f1a",
+            "vendor": null,
+            "amount": 125,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "PendingApproval",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:29:14.6410244"
+          },
           {
             "id": "7b429bcb-fadd-4585-9f12-19b375d84fba",
             "expenseNumber": "EXP-2026-0303",
@@ -170,9 +286,37 @@
             "createdAt": "2026-10-17T05:16:46.974636"
           },
           {
-            "id": "50509d0f-311d-454d-b7f1-12d5a4844133",
-            "expenseNumber": "EXP-2026-0259",
-            "description": "R2-AUTH-11-1792213755529",
+            "id": "8ea438c4-6da6-4453-9d0b-1a4e1b384541",
+            "expenseNumber": "EXP-2026-0429",
+            "description": "R2-AUTH-05 1792261706688",
+            "vendor": null,
+            "amount": 60,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "PendingApproval",
+            "notes": null,
+            "receiptUrl": "https://example.invalid/r2-controlled.pdf",
+            "createdAt": "2026-10-17T18:28:26.8092653"
+          },
+          {
+            "id": "6ec2c9f1-8494-49cd-a553-0788e7925fe5",
+            "expenseNumber": "EXP-2026-0381",
+            "description": "QA expense 1792214878845-8217deaf",
+            "vendor": null,
+            "amount": 125,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "Approved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:27:59.0251595"
+          },
+          {
+            "id": "20d1b728-9f2e-482f-aba6-09c5e6987ec7",
+            "expenseNumber": "EXP-2026-0433",
+            "description": "R2-AUTH-10 1792261712333",
             "vendor": null,
             "amount": 10,
             "date": "2026-10-17",
@@ -181,13 +325,46 @@
             "status": "AutoApproved",
             "notes": null,
             "receiptUrl": null,
-            "createdAt": "2026-10-17T05:09:15.5822255"
+            "createdAt": "2026-10-17T18:28:32.4529586"
+          }
+        ],
+        "spendTrend": [
+          {
+            "date": "2026-09-20",
+            "amount": 640
           },
-          "… 253 elementos más"
+          {
+            "date": "2026-09-24",
+            "amount": 180
+          },
+          {
+            "date": "2026-10-01",
+            "amount": 35
+          },
+          {
+            "date": "2026-10-05",
+            "amount": 10
+          },
+          {
+            "date": "2026-10-06",
+            "amount": 42.5
+          },
+          {
+            "date": "2026-10-12",
+            "amount": 320
+          },
+          {
+            "date": "2026-10-16",
+            "amount": 3605.55
+          },
+          {
+            "date": "2026-10-17",
+            "amount": 4534.44
+          }
         ]
       },
-      "durationMs": 231,
-      "at": "2026-10-17T05:22:39.235Z"
+      "durationMs": 96,
+      "at": "2026-10-17T18:31:40.908Z"
     }
   ]
 }

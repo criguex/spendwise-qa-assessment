@@ -89,7 +89,8 @@ const cases = {
     const a = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee2', json: expense({ description: 'd'.repeat(501) }), note: 'Descripción de 501 caracteres' });
     const b = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee2', json: expense({ vendor: 'v'.repeat(201) }), note: 'Proveedor de 201 caracteres' });
     const c = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee2', json: expense({ notes: 'n'.repeat(1001) }), note: 'Notas de 1001 caracteres' });
-    return { reproduced: [a, b, c].some(x => x.status >= 500), observed: `501 → ${a.status}; 201 → ${b.status}; 1001 → ${c.status}` };
+    const d = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee2', json: expense({ receiptUrl: `https://example.invalid/${'r'.repeat(480)}.pdf` }), note: 'Enlace de recibo de 508 caracteres' });
+    return { reproduced: [a, b, c, d].some(x => x.status >= 500), observed: `descripción 501 → ${a.status}; proveedor 201 → ${b.status}; notas 1001 → ${c.status}; recibo 508 → ${d.status}` };
   },
   async 'BUG-04'(rec) {
     const t = await session(rec, 'employee1');
@@ -136,7 +137,16 @@ const cases = {
     const c = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee2', json: expense({ amount: 10 }), setup: true, note: 'Gasto de USD 10 → AutoApproved (estado final)' });
     const d = await rec.call('DELETE', `/api/v1/expenses/${c.body.id}`, { token: t, role: 'employee2' });
     const g = await rec.call('GET', `/api/v1/expenses/${c.body.id}`, { token: t, role: 'employee2', note: 'El gasto ya no existe' });
-    return { reproduced: c.body.status === 'AutoApproved' && d.status === 204, observed: `creado ${c.body.status}; DELETE → ${d.status}; GET posterior → ${g.status}` };
+    const m = await session(rec, 'manager1');
+    const results = [];
+    for (const decision of ['approve', 'reject']) {
+      const e = await pending(rec);
+      await rec.call('PUT', `/api/v1/approvals/${e.id}/${decision}`, { token: m, role: 'manager1', json: decision === 'reject' ? { reason: 'Rechazo controlado de QA' } : undefined, setup: true, note: decision === 'approve' ? 'Aprobación del gerente' : 'Rechazo del gerente' });
+      const e1 = await session(rec, 'employee1');
+      const del = await rec.call('DELETE', `/api/v1/expenses/${e.id}`, { token: e1, role: 'employee1', note: decision === 'approve' ? 'El dueño elimina un gasto Approved' : 'El dueño elimina un gasto Rejected' });
+      results.push(`${decision === 'approve' ? 'Approved' : 'Rejected'} → ${del.status}`);
+    }
+    return { reproduced: d.status === 204, observed: `AutoApproved → ${d.status} (GET posterior ${g.status}); ${results.join('; ')}` };
   },
   async 'BUG-11'(rec) {
     const t = await session(rec, 'employee3');
@@ -151,8 +161,14 @@ const cases = {
     const valid = all.expenses.filter(e => e.status !== 'Rejected');
     const sum = xs => Math.round(xs.reduce((s, e) => s + e.amount, 0) * 100) / 100;
     const byCat = Math.round(all.byCategory.reduce((s, x) => s + x.total, 0) * 100) / 100;
-    const analysis = { totalAmountReportado: all.totalAmount, sumaSinRechazados: sum(valid), sumaRechazados: sum(rejected), totalCountReportado: all.totalCount, conteoSinRechazados: valid.length, rechazados: rejected.length, sumaByCategory: byCat };
-    return { reproduced: Math.abs(all.totalAmount - sum(valid)) > 0.009 || all.totalCount !== valid.length, observed: `totalAmount ${all.totalAmount} vs ${sum(valid)} sin rechazados (diferencia ${sum(rejected)}); totalCount ${all.totalCount} vs ${valid.length}`, analysis };
+    const e1 = await session(rec, 'employee1');
+    const dash = await rec.call('GET', '/api/v1/dashboard/summary', { token: e1, role: 'employee1', note: 'Gasto del mes del tablero de employee1' });
+    const mine = [];
+    for (let page = 1; ; page++) { const b = await rec.context.fetch(`/api/v1/expenses?page=${page}&pageSize=100`, { headers: { Authorization: `Bearer ${e1}` } }).then(x => x.json()); mine.push(...b.items); if (mine.length >= b.totalCount || !b.items.length) break; }
+    const nowDay = new Date().toISOString().slice(0, 10);
+    const month = mine.filter(e => e.date.startsWith(nowDay.slice(0, 7)) && e.date <= nowDay);
+    const analysis = { totalAmountReportado: all.totalAmount, sumaSinRechazados: sum(valid), sumaRechazados: sum(rejected), totalCountReportado: all.totalCount, conteoSinRechazados: valid.length, rechazados: rejected.length, sumaByCategory: byCat, tableroGastoDelMes: dash.body.spendThisMonth, tableroSinRechazados: sum(month.filter(e => e.status !== 'Rejected')), tableroRechazadosDelMes: sum(month.filter(e => e.status === 'Rejected')) };
+    return { reproduced: Math.abs(all.totalAmount - sum(valid)) > 0.009 || all.totalCount !== valid.length, observed: `Reports: totalAmount ${all.totalAmount} vs ${sum(valid)} sin rechazados (diferencia ${sum(rejected)}); totalCount ${all.totalCount} vs ${valid.length}. Tablero de employee1: ${dash.body.spendThisMonth} vs ${analysis.tableroSinRechazados} sin rechazados`, analysis };
   },
   async 'BUG-14'(rec) {
     const t = await session(rec, 'employee2');
@@ -258,7 +274,15 @@ const cases = {
     const b = await rec.call('PUT', `/api/v1/approvals/${e.id}/approve`, { token: m, role: 'manager1', note: 'Aprobación posterior sobre un gasto Rejected' });
     const g = await rec.call('GET', `/api/v1/expenses/${e.id}`, { token: m, role: 'manager1', note: 'Estado final del gasto' });
     await rec.call('GET', `/api/v1/expenses/${e.id}/history`, { token: m, role: 'manager1', note: 'Historial: Rejected → Approved' });
-    return { reproduced: b.status === 200 && g.body?.status === 'Approved', observed: `reject → ${a.status}; approve → ${b.status}; estado final ${g.body?.status}; nota vigente "${g.body?.notes}"` };
+    const ap = await pending(rec);
+    await rec.call('PUT', `/api/v1/approvals/${ap.id}/approve`, { token: m, role: 'manager1', setup: true, note: 'Aprobación legítima' });
+    const late = await rec.call('PUT', `/api/v1/approvals/${ap.id}/reject`, { token: m, role: 'manager1', json: { reason: 'Rechazo posterior' }, note: 'Rechazo sobre un gasto ya Approved' });
+    const e1 = await session(rec, 'employee1');
+    const auto = await rec.call('POST', '/api/v1/expenses', { token: e1, role: 'employee1', json: expense({ amount: 10 }), setup: true, note: 'Gasto de USD 10 → AutoApproved' });
+    const f = await session(rec, 'finance');
+    const aa = await rec.call('PUT', `/api/v1/approvals/${auto.body.id}/approve`, { token: f, role: 'finance', note: 'Finance aprueba un gasto AutoApproved' });
+    const ar = await rec.call('PUT', `/api/v1/approvals/${auto.body.id}/reject`, { token: f, role: 'finance', json: { reason: 'Rechazo de un estado final' }, note: 'Finance rechaza el mismo gasto' });
+    return { reproduced: b.status === 200 && g.body?.status === 'Approved', observed: `Rejected → approve ${b.status} (estado ${g.body?.status}, nota "${g.body?.notes}"); Approved → reject ${late.status} (estado ${late.body?.status}); AutoApproved → approve ${aa.status}, reject ${ar.status} (estado final ${ar.body?.status})` };
   },
   async 'BUG-39'(rec) {
     const t = await session(rec, 'employee3');
@@ -274,6 +298,73 @@ const cases = {
     const ui = await rec.call('GET', '/api/v1/expenses?status=Pending&page=1&pageSize=20', { token: t, role: 'employee1', note: 'Consulta que envía la pestaña Pending de la interfaz' });
     const ok = await rec.call('GET', '/api/v1/expenses?status=PendingApproval&page=1&pageSize=20', { token: t, role: 'employee1', note: 'Consulta correcta para los gastos pendientes de aprobación' });
     return { reproduced: ui.body?.totalCount === 0 && ok.body?.totalCount > 0, observed: `status=Pending → ${ui.body?.totalCount} gastos; status=PendingApproval → ${ok.body?.totalCount} gastos` };
+  },
+  async 'BUG-41'(rec) {
+    const adm = await session(rec, 'admin');
+    const t = await session(rec, 'employee3');
+    const rule = await rec.call('POST', '/api/v1/policies', { token: adm, role: 'admin', json: { name: `QA Block over 100 ${Date.now()}`, action: 'Block', maxAmount: 100, requiresReceipt: false, isActive: true }, note: 'Regla Block activa con maxAmount 100 (temporal)' });
+    const out = {};
+    try {
+      for (const amount of [150, 60, 10]) {
+        const r = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee3', json: expense({ amount, receiptUrl: 'https://example.invalid/qa-receipt.pdf' }), note: `USD ${amount} con la regla Block activa` });
+        out[amount] = r.body?.status;
+      }
+    } finally {
+      await rec.call('DELETE', `/api/v1/policies/${rule.body.id}`, { token: adm, role: 'admin', setup: true, note: 'Eliminación de la regla temporal' });
+    }
+    const after = await rec.call('GET', '/api/v1/policies', { token: adm, role: 'admin', setup: true, note: 'Reglas tras la limpieza: solo las dos originales' });
+    return { reproduced: out[150] !== 'Rejected' && out[10] === 'Rejected', observed: `150 → ${out[150]}; 60 → ${out[60]}; 10 → ${out[10]}; reglas activas después: ${after.body.map(p => p.name).join(', ')}` };
+  },
+  async 'BUG-42'(rec) {
+    const t = await session(rec, 'employee1');
+    const r = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee1', json: expense({ amount: 10 }), setup: true, note: 'Gasto de USD 10 → AutoApproved' });
+    const h = await rec.call('GET', `/api/v1/expenses/${r.body.id}/history`, { token: t, role: 'employee1', note: 'Historial de la decisión automática' });
+    await rec.call('GET', `/api/v1/expenses/${r.body.id}`, { token: t, role: 'employee1', note: 'Detalle del gasto: no hay campo de regla' });
+    return { reproduced: !String(h.body?.[0]?.notes ?? '').includes('Auto-approve under $50'), observed: `actor ${h.body?.[0]?.performedBy}; motivo "${h.body?.[0]?.notes}"` };
+  },
+  async 'BUG-43'(rec) {
+    const e = await pending(rec);
+    const m = await session(rec, 'manager1');
+    const a = await rec.call('PUT', `/api/v1/approvals/${e.id}/approve`, { token: m, role: 'manager1', json: { comment: 'Aprobado con comentario de QA' }, note: 'Aprobación con comentario opcional' });
+    const h = await rec.call('GET', `/api/v1/expenses/${e.id}/history`, { token: m, role: 'manager1', note: 'Historial de la aprobación' });
+    return { reproduced: a.status === 200 && h.body?.[0]?.notes !== 'Aprobado con comentario de QA', observed: `approve → ${a.status}; notes del historial ${JSON.stringify(h.body?.[0]?.notes)}` };
+  },
+  async 'BUG-44'(rec) {
+    const t = await session(rec, 'employee3');
+    const now = new Date();
+    const lastDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).toISOString().slice(0, 10);
+    const b = await rec.call('GET', '/api/v1/dashboard/summary', { token: t, role: 'employee3', note: 'Tablero antes' });
+    await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee3', json: expense({ amount: 10, date: lastDay }), note: `Gasto de USD 10 con fecha futura ${lastDay}` });
+    const a = await rec.call('GET', '/api/v1/dashboard/summary', { token: t, role: 'employee3', note: 'Tablero después' });
+    const delta = Math.round((a.body.spendThisMonth - b.body.spendThisMonth) * 100) / 100;
+    return { reproduced: delta !== 0, observed: `gasto del mes ${b.body.spendThisMonth} → ${a.body.spendThisMonth} (+${delta}) tras registrar un gasto fechado ${lastDay}` };
+  },
+  async 'BUG-45'(rec) {
+    const t = await session(rec, 'employee2');
+    const txt = await rec.call('POST', '/api/v1/receipts/extract', { token: t, role: 'employee2', multipart: { file: { name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('not a receipt') } }, note: 'Archivo .txt: el mensaje lista los tipos aceptados' });
+    const gif = await rec.call('POST', '/api/v1/receipts/extract', { token: t, role: 'employee2', multipart: { file: { name: 'pixel.gif', mimeType: 'image/gif', buffer: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64') } }, note: 'Imagen GIF de 1×1 px: se acepta aunque el mensaje no la menciona' });
+    const empty = await rec.call('POST', '/api/v1/receipts/extract', { token: t, role: 'employee2', multipart: { file: { name: 'empty.pdf', mimeType: 'application/pdf', buffer: Buffer.alloc(0) } }, note: 'Archivo PDF vacío' });
+    const msg = JSON.stringify(txt.body);
+    return { reproduced: gif.status === 200 && !/GIF/i.test(msg), observed: `.txt → ${txt.status} ${msg}; GIF → ${gif.status}; vacío → ${empty.status} ${JSON.stringify(empty.body)}` };
+  },
+  async 'IMP-01'(rec) {
+    const t = await session(rec, 'finance');
+    const r = await rec.call('GET', '/api/v1/expenses?pageSize=1000', { token: t, role: 'finance', note: 'pageSize=1000' });
+    return { reproduced: r.status === 200, observed: `HTTP ${r.status}; pageSize ${r.body?.pageSize}; totalCount ${r.body?.totalCount}` };
+  },
+  async 'IMP-02'(rec) {
+    const t = await session(rec, 'finance');
+    const r = await rec.call('GET', '/api/v1/expenses?search=%00%0A%0D', { token: t, role: 'finance', note: 'Búsqueda con NUL, LF y CR' });
+    return { reproduced: r.status === 200, observed: `HTTP ${r.status}; totalCount ${r.body?.totalCount}` };
+  },
+  async 'IMP-03'(rec) {
+    const m = await session(rec, 'manager1');
+    const a = await rec.call('PUT', '/api/v1/approvals/not-a-uuid/approve', { token: m, role: 'manager1', note: '404 sin cuerpo' });
+    const t = await session(rec, 'employee3');
+    const b = await rec.call('POST', '/api/v1/expenses', { token: t, role: 'employee3', json: expense({ categoryId: crypto.randomUUID() }), note: '500 genérico' });
+    const c = await rec.call('POST', '/api/v1/receipts/extract', { token: t, role: 'employee3', multipart: { file: { name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('x') } }, note: '400 con {"error"}' });
+    const d = await rec.call('POST', '/api/v1/auth/login', { json: { email: 'employee3@spendwise.test', password: 'WrongPass1' }, note: '401 con {"code","message"}' });
+    return { reproduced: true, observed: `formatos: ${a.status} ${JSON.stringify(a.body) || 'vacío'} · ${b.status} ${JSON.stringify(b.body)} · ${c.status} ${JSON.stringify(c.body)} · ${d.status} ${JSON.stringify(d.body)}` };
   },
   async 'BUG-37'(rec) {
     const t = await session(rec, 'employee1');

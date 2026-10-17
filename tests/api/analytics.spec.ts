@@ -1,4 +1,5 @@
 import { expect, test } from '../fixtures.js';
+import { ExpenseBuilder } from '../../src/data/expense-builder.js';
 
 test.describe('Dashboard and reports', () => {
   for (const role of ['employee1', 'manager1', 'finance', 'admin'] as const) {
@@ -21,17 +22,32 @@ test.describe('Dashboard and reports', () => {
       const response = await analytics.reports(session.accessToken);
       expect(response.status()).toBe(200);
       const body = await response.json();
+      expect(Number.isFinite(body.totalCount)).toBe(true);
+      expect(Number.isFinite(body.totalAmount)).toBe(true);
+      expect(Number.isFinite(body.averageAmount)).toBe(true);
       expect(body.totalCount).toBe(body.expenses.length);
-      if (body.totalCount > 0) expect(body.averageAmount).toBeCloseTo(body.totalAmount / body.totalCount, 8);
+      if (body.totalCount === 0) {
+        expect(body.averageAmount).toBe(0);
+      } else {
+        expect(body.averageAmount).toBeCloseTo(body.totalAmount / body.totalCount, 8);
+      }
       expect(body.byCategory.reduce((sum: number, row: { count: number }) => sum + row.count, 0)).toBe(body.totalCount);
     });
   }
 
-  test('ANA-09 report date range includes only requested dates', async ({ auth, analytics }) => {
+  test('ANA-09 report date range includes only requested dates', async ({ auth, analytics, expenses }) => {
+    const owner = await auth.loginAs('employee1');
+    const marker = `ANA-09-${Date.now()}-${crypto.randomUUID()}`;
+    const createdResponse = await expenses.create(owner.accessToken, new ExpenseBuilder()
+      .withDescription(marker).withAmount(10).withDate('2026-10-05').build());
+    expect(createdResponse.status(), await createdResponse.text()).toBe(201);
+    const created = await createdResponse.json();
     const session = await auth.loginAs('finance');
     const response = await analytics.reports(session.accessToken, '?dateFrom=2026-10-01&dateTo=2026-10-10');
     expect(response.status()).toBe(200);
     const body = await response.json();
+    expect(body.expenses.length).toBeGreaterThan(0);
+    expect(body.expenses.map((expense: { id: string }) => expense.id)).toContain(created.id);
     for (const expense of body.expenses) expect(expense.date >= '2026-10-01' && expense.date <= '2026-10-10').toBeTruthy();
   });
 

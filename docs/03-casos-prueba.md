@@ -8,7 +8,7 @@ Los 26 casos base se diseñaron antes de ejecutar, priorizados por riesgo (P0 = 
 | AUTH-02 | P0 | Partición inválida | Usuario inexistente devuelve 401 indistinguible de contraseña incorrecta | `AUTH-02` | Pasa |
 | AUTH-03 | P0 | Partición / seguridad | Usuario inactivo devuelve el mismo 401 `invalid_credentials` | `AUTH-03` | Pasa |
 | AUTH-04 | P1 | Campos obligatorios | Login con campos vacíos devuelve 400 | `AUTH-04` | Pasa |
-| AUTH-05 | P1 | Transición / seguridad | Quinto intento fallido bloquea la cuenta 15 min | Manual, no ejecutado para no bloquear cuentas compartidas por la suite | — |
+| AUTH-05 | P1 | Transición / seguridad | Quinto intento fallido bloquea la cuenta 15 min; un acierto antes del quinto reinicia el contador | Manual con una sola cuenta (nomanager), fuera de la suite para no bloquear cuentas compartidas | Pasa en API; la web no muestra el estado bloqueado: BUG-46 |
 | SEC-01 | P0 | Autorización negativa | Endpoint protegido sin sesión devuelve 401 | `SEC-01`, `AUTHX` | Pasa |
 | CAT-01 | P2 | Catálogo / orden | Nueve categorías ordenadas por nombre, con ícono | `CAT-01`, `CON-06` | Falla: BUG-07 |
 | RBAC-A | P0 | Matriz de permisos | Employee y Manager no leen políticas: 403 | `RBAC-01`, `RBAC-02` | Pasa |
@@ -58,6 +58,9 @@ Los 26 casos base se diseñaron antes de ejecutar, priorizados por riesgo (P0 = 
 | R5-UI | P1 | Recuperación/navegación | Error de envío y navegación Back/Forward | Sí |
 | RCPT-01..03, THR-01..02 | P0 | Valores límite del motor | Recibo obligatorio desde USD 25 y umbral de autoaprobación en USD 50 (verificación final) | Sí |
 | E2E-M13 | P1 | Partición por estado | La pestaña Pending muestra los gastos PendingApproval (verificación final) | Sí |
+| R6-API-01..13 | P0-P1 | Reglas del anexo sin cobertura | Numeración (RN-07), regla que decide (RN-31), estados finales (RN-40, RN-52), colas por rol, orden y paginación por defecto, longitud del recibo, comentario al aprobar (RN-41), tablero (RN-61), mensaje de tipos de recibo (RN-22) | Sí |
+| R6-INT-01..02 | P0 | Tabla de decisión del motor | Acción Block por encima del límite y regla inactiva sin efecto (Anexo E) | Sí |
+| R6-UI-01..20 | P1 | Exploratoria dirigida por reglas | Métricas reales (RN-62), fechas futuras (RN-61), CSV íntegro y botones de exportar (RN-63), errores de carga (RN-70), nombres de botones de ícono (RN-72), estados de login, cookie de sesión, acceso denegado, límite 0 y ver recibo (Anexo G, RN-23, RN-32) | Sí |
 
-Total automatizado disponible: **238 pruebas en 36 archivos**. Todas se descubren con `npx playwright test --list`.
+Total automatizado disponible: **274 pruebas en 39 archivos**. Todas se descubren con `npx playwright test --list`.
 

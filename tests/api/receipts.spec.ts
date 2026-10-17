@@ -7,11 +7,10 @@ test.describe('Receipt extraction guardrails', () => {
     expect((await receipts.extract(undefined, fake)).status()).toBe(401);
   });
 
-  test('REC-02 @negative Employee receives a clear 4xx for unsupported content', async ({ auth, receipts }) => {
+  test('REC-02 @negative Employee receives 400 for unsupported content', async ({ auth, receipts }) => {
     const session = await auth.loginAs('employee1');
     const response = await receipts.extract(session.accessToken, fake);
-    expect(response.status()).toBeGreaterThanOrEqual(400);
-    expect(response.status()).toBeLessThan(500);
+    expect(response.status(), await response.text()).toBe(400);
   });
 
   test('REC-03 @negative Administrator cannot extract receipts', async ({ auth, receipts }) => {

@@ -66,6 +66,8 @@ const OVERLAY_INIT = () => {
         font:700 13px/18px system-ui,-apple-system,sans-serif;padding:2px 8px;
         border-radius:4px;pointer-events:none;z-index:2147483641;white-space:nowrap;
         max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
+      .__qa_box.__amber{border-color:#f59e0b;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 14px rgba(245,158,11,.65);}
+      .__qa_box_label.__amber{background:#b45309;}
     `;
     (document.head || document.documentElement).appendChild(style);
 
@@ -101,6 +103,7 @@ async function showBanner(page, { kind, lines }) {
   const palette = {
     step: ['#1e293bf2', '#38bdf8'],
     defect: ['#4c0a0ef2', '#ff2d3a'],
+    improvement: ['#78350ff2', '#f59e0b'],
   };
   const [bg, border] = palette[kind] || palette.step;
   const text = lines.join('\n');
@@ -119,7 +122,7 @@ async function showBanner(page, { kind, lines }) {
   } catch { /* ignore if page mid-navigation */ }
 }
 
-async function drawBox(page, locatorOrRect, label) {
+async function drawBox(page, locatorOrRect, label, { color = 'red', clear = true } = {}) {
   let rect;
   if (locatorOrRect && typeof locatorOrRect.boundingBox === 'function') {
     await locatorOrRect.scrollIntoViewIfNeeded().catch(() => {});
@@ -128,17 +131,19 @@ async function drawBox(page, locatorOrRect, label) {
     rect = locatorOrRect;
   }
   if (!rect) return false;
-  await page.evaluate(({ rect, label }) => {
-    document.querySelectorAll('.__qa_box, .__qa_box_label').forEach(e => e.remove());
+  await page.evaluate(({ rect, label, color, clear }) => {
+    if (clear) document.querySelectorAll('.__qa_box, .__qa_box_label').forEach(e => e.remove());
     const pad = 6;
     const box = document.createElement('div');
     box.className = '__qa_box';
+    if (color === 'amber') box.classList.add('__amber');
     Object.assign(box.style, {
       left: (rect.x - pad) + 'px', top: (rect.y - pad) + 'px',
       width: (rect.width + pad * 2) + 'px', height: (rect.height + pad * 2) + 'px',
     });
     const tag = document.createElement('div');
     tag.className = '__qa_box_label';
+    if (color === 'amber') tag.classList.add('__amber');
     tag.style.left = (rect.x - pad) + 'px';
     const aboveTop = rect.y - pad - 22;
     const bannerSafeTop = 68; // keeps the label clear of the fixed top banner
@@ -152,8 +157,17 @@ async function drawBox(page, locatorOrRect, label) {
     if (overflowRight > 0) {
       tag.style.left = Math.max(6, (rect.x - pad) - overflowRight) + 'px';
     }
-  }, { rect, label });
+  }, { rect, label, color, clear });
   return true;
+}
+
+async function drawBoxes(page, targets, label, color = 'red') {
+  await clearBoxes(page);
+  let drawn = 0;
+  for (const target of targets) {
+    if (await drawBox(page, target, label, { color, clear: false })) drawn += 1;
+  }
+  return drawn;
 }
 
 async function clearBoxes(page) {
@@ -212,14 +226,27 @@ class Recorder {
     return shot;
   }
 
-  async defect({ expected, actual, label, target, reproduced, notes }) {
-    if (target) await drawBox(this.page, target, label);
+  async defect({ expected, actual, label, target, targets, reproduced, notes }) {
+    if (targets?.length) await drawBoxes(this.page, targets, label);
+    else if (target) await drawBox(this.page, target, label);
     await showBanner(this.page, { kind: 'defect', lines: [`ESPERADO: ${expected}`, `REAL: ${actual}`] });
     await this.page.waitForTimeout(3000);
     const shot = `${this.id}-final.png`;
     await this.page.screenshot({ path: path.join(this.dir, shot) }).catch(() => {});
     return { expected, actual, reproduced: Boolean(reproduced), notes: notes ?? '', finalScreenshot: shot };
   }
+}
+
+async function apiLogin(email) {
+  const apiCtx = await pwRequest.newContext({
+    baseURL: apiUrl, ignoreHTTPSErrors: true,
+    httpCredentials: { username: proxyUser, password: proxyPassword },
+    extraHTTPHeaders: { Accept: 'application/json' },
+  });
+  await apiCtx.get('/__gate', { maxRedirects: 0 }).catch(() => {});
+  const response = await apiCtx.post('/api/v1/auth/login', { data: { email, password: seedPassword } });
+  const body = await response.json().catch(() => ({}));
+  return { apiCtx, response, body };
 }
 
 async function login(rec, email, opts = {}) {
@@ -333,12 +360,44 @@ const DEFECTS = {
     viewport: DESKTOP_VIEWPORT,
     run: runBug40,
   },
+  'BUG-46': {
+    title: 'El login no informa que la cuenta está bloqueada',
+    role: 'Employee', user: 'nomanager@spendwise.test', url: '/login',
+    viewport: DESKTOP_VIEWPORT, before: lockNoManager, run: runBug46,
+  },
+  'BUG-47': {
+    title: 'Export CSV de My Expenses no hace nada',
+    role: 'Employee', user: 'employee1@spendwise.test', url: '/expenses',
+    viewport: DESKTOP_VIEWPORT, run: runBug47,
+  },
+  'BUG-48': {
+    title: 'La interfaz muestra indicadores fijos que simulan métricas',
+    role: 'Employee / FinanceController', user: 'employee1, employee3, finance', url: '/dashboard; /expenses/new',
+    viewport: DESKTOP_VIEWPORT, run: runBug48,
+  },
+  'BUG-49': {
+    title: 'No existe detalle del gasto: no se ve el historial ni el recibo',
+    role: 'Employee', user: 'employee1@spendwise.test', url: '/expenses',
+    viewport: DESKTOP_VIEWPORT, run: runBug49,
+  },
+  'BUG-50': {
+    title: 'Si falla la carga, la interfaz muestra listas vacías en lugar de un error',
+    role: 'Employee / FinanceController', user: 'employee1, finance', url: '/expenses; /approvals; /reports',
+    viewport: DESKTOP_VIEWPORT, run: runBug50,
+  },
 };
 
 const DEFAULT_ORDER = [
   'BUG-09', 'BUG-10', 'BUG-13', 'BUG-17', 'BUG-18', 'BUG-19', 'BUG-20',
   'BUG-21', 'BUG-30', 'BUG-31', 'BUG-32', 'BUG-33', 'BUG-34', 'BUG-38',
+  'BUG-46', 'BUG-47', 'BUG-48', 'BUG-49', 'BUG-50',
 ];
+
+const IMPROVEMENTS = {
+  'IMP-04': { title: 'Controles interactivos sin data-testid', run: runImp04 },
+  'IMP-05': { title: '404 sin enlace para volver al Dashboard', run: runImp05 },
+  'IMP-06': { title: 'Formulario abandona datos sin confirmación', run: runImp06 },
+};
 
 // ---------------------------------------------------------------------------
 // Individual defect flows
@@ -840,6 +899,342 @@ async function runBug40(rec) {
   });
 }
 
+async function lockNoManager() {
+  const email = 'nomanager@spendwise.test';
+  const apiCtx = await pwRequest.newContext({
+    baseURL: apiUrl, ignoreHTTPSErrors: true,
+    httpCredentials: { username: proxyUser, password: proxyPassword },
+    extraHTTPHeaders: { Accept: 'application/json' },
+  });
+  await apiCtx.get('/__gate', { maxRedirects: 0 }).catch(() => {});
+  const lockedAtUtc = process.env.SPENDWISE_NOMANAGER_LOCKED_AT_UTC || new Date().toISOString();
+  let finalStatus = 0;
+  let finalBody = {};
+  try {
+    if (!process.env.SPENDWISE_NOMANAGER_LOCKED_AT_UTC) {
+      for (let attempt = 1; attempt <= 5; attempt += 1) {
+        await apiCtx.post('/api/v1/auth/login', {
+          data: { email, password: 'deliberately-wrong-password' },
+        });
+      }
+    }
+    const verification = await apiCtx.post('/api/v1/auth/login', { data: { email, password: seedPassword } });
+    finalStatus = verification.status();
+    finalBody = await verification.json().catch(() => ({}));
+  } finally {
+    await apiCtx.dispose();
+  }
+  if (finalStatus !== 401 || finalBody.code !== 'account_locked') {
+    throw new Error(`No se confirmó el bloqueo de nomanager (status=${finalStatus}, code=${finalBody.code ?? 'ausente'})`);
+  }
+  return { lockedAtUtc, attempts: 5, finalStatus, finalCode: finalBody.code, finalMessage: finalBody.message };
+}
+
+async function runBug46(rec) {
+  const page = rec.page;
+  let apiResult = rec.precondition ? {
+    status: rec.precondition.finalStatus,
+    code: rec.precondition.finalCode,
+    message: rec.precondition.finalMessage,
+  } : null;
+  page.on('response', async response => {
+    if (response.request().method() !== 'POST' || !response.url().includes('/api/v1/auth/login')) return;
+    const body = await response.json().catch(() => ({}));
+    apiResult = { status: response.status(), code: body.code, message: body.message };
+  });
+  await rec.step('Abrir Login con la cuenta nomanager bloqueada previamente por la API', async () => {
+    await page.goto(`${webUrl}/__gate`);
+    await page.waitForLoadState('domcontentloaded');
+  });
+  await rec.step('Ingresar la contraseña correcta y pulsar Sign in', async () => {
+    await visibleFill(page, page.getByTestId('login-email'), 'nomanager@spendwise.test');
+    await visibleFill(page, page.getByTestId('login-password'), seedPassword);
+    await visibleClick(page, page.getByTestId('login-submit'));
+    await page.getByTestId('login-error').waitFor({ state: 'visible', timeout: 10000 });
+  });
+  const uiText = await page.getByTestId('login-error').innerText();
+  const apiText = apiResult ? `HTTP ${apiResult.status} · ${apiResult.code}: ${apiResult.message}` : 'respuesta API no capturada';
+  return rec.defect({
+    expected: `La UI debe informar el bloqueo. API observada: ${apiText}`,
+    actual: `La pantalla muestra "${uiText}". API observada: ${apiText}`,
+    label: 'DEFECTO BUG-46: oculta el bloqueo de la cuenta',
+    target: /invalid email or password/i.test(uiText) ? page.getByTestId('login-error') : undefined,
+    reproduced: apiResult?.status === 401 && apiResult?.code === 'account_locked' && /invalid email or password/i.test(uiText),
+    notes: `Bloqueo preparado fuera del video a ${rec.precondition?.lockedAtUtc ?? '(hora no disponible)'}.`,
+  });
+}
+
+async function runBug47(rec) {
+  const page = rec.page;
+  await login(rec, 'employee1@spendwise.test');
+  await rec.step('Abrir My Expenses', async () => {
+    await page.goto(`${webUrl}/expenses`);
+    await page.waitForLoadState('domcontentloaded');
+    await page.locator('.animate-pulse').first().waitFor({ state: 'hidden', timeout: 8000 }).catch(() => {});
+  });
+  let downloads = 0;
+  let popups = 0;
+  const exportRequests = [];
+  page.on('download', () => { downloads += 1; });
+  page.on('popup', () => { popups += 1; });
+  page.on('request', request => {
+    if (/export|\.csv(?:$|\?)/i.test(request.url())) exportRequests.push(request.url());
+  });
+  const expenseExport = page.getByRole('button', { name: /export csv/i });
+  await rec.step('Hacer clic en Export CSV de My Expenses y observar durante 6 segundos', async () => {
+    await visibleClick(page, expenseExport);
+    await page.waitForTimeout(6000);
+  });
+  const none = downloads === 0 && popups === 0 && exportRequests.length === 0;
+  const expenseObservation = `My Expenses: descargas=${downloads}, popups=${popups}, solicitudes de exportación=${exportRequests.length}`;
+
+  await rec.step('Contraste: abrir Reports y hacer clic en Export CSV', async () => {
+    await page.goto(`${webUrl}/reports`);
+    await page.waitForLoadState('domcontentloaded');
+    const download = page.waitForEvent('download', { timeout: 10000 });
+    await visibleClick(page, page.getByRole('button', { name: /export csv/i }));
+    await download;
+  });
+  await rec.step('Volver a My Expenses para señalar el botón que no actuó', async () => {
+    await page.goto(`${webUrl}/expenses`);
+    await page.waitForLoadState('domcontentloaded');
+  });
+  return rec.defect({
+    expected: 'Export CSV de My Expenses debe descargar un CSV, como sí lo hace Reports',
+    actual: `${expenseObservation}; en contraste, Reports sí produjo una descarga`,
+    label: 'DEFECTO BUG-47: Export CSV no ejecuta ninguna acción',
+    target: page.getByRole('button', { name: /export csv/i }),
+    reproduced: none,
+    notes: 'La observación de My Expenses duró 6 segundos completos.',
+  });
+}
+
+async function runBug48(rec) {
+  const page = rec.page;
+  const values = [];
+  for (const email of ['employee1@spendwise.test', 'employee3@spendwise.test', 'finance@spendwise.test']) {
+    await page.context().clearCookies();
+    await login(rec, email);
+    await rec.step(`Mostrar Dashboard de ${email}`, async () => {
+      await page.goto(`${webUrl}/dashboard`);
+      await page.waitForLoadState('domcontentloaded');
+      await page.waitForTimeout(700);
+      const resolution = page.getByText(/Avg\. resolution:\s*1\.4 days/i).first();
+      const rate = page.getByText(/\d+% rate this month/i).first();
+      values.push({ email, resolution: await resolution.innerText(), rate: await rate.innerText() });
+      await drawBox(page, resolution, 'DEFECTO BUG-48: valor fijo 1.4 days');
+    });
+  }
+  await page.context().clearCookies();
+  await login(rec, 'employee1@spendwise.test');
+  await rec.step('Abrir New expense y señalar las métricas promocionales fijas', async () => {
+    await page.goto(`${webUrl}/expenses/new`);
+    await page.waitForLoadState('domcontentloaded');
+    const time = page.getByText(/AI-assisted capture saves ~90 seconds per entry/i).first();
+    const accuracy = page.getByText(/OCR accuracy:\s*96% on clear receipts/i).first();
+    await drawBoxes(page, [time, accuracy], 'DEFECTO BUG-48: indicador fijo sin fuente');
+  });
+  const distinctRates = new Set(values.map(v => v.rate)).size;
+  const fixedTime = page.getByText(/AI-assisted capture saves ~90 seconds per entry/i).first();
+  const fixedAccuracy = page.getByText(/OCR accuracy:\s*96% on clear receipts/i).first();
+  return rec.defect({
+    expected: 'Las métricas deben derivarse de datos reales o identificarse claramente como estimaciones no operativas',
+    actual: `Avg. resolution fue 1.4 days para tres usuarios mientras la tasa varió (${values.map(v => `${v.email}: ${v.rate}`).join(' · ')}); New expense fija ~90 seconds y 96%`,
+    label: 'DEFECTO BUG-48: métricas fijas simuladas',
+    targets: [fixedTime, fixedAccuracy],
+    reproduced: values.length === 3 && values.every(v => /1\.4 days/i.test(v.resolution)) && distinctRates > 1,
+    notes: JSON.stringify(values),
+  });
+}
+
+async function runBug49(rec) {
+  const page = rec.page;
+  const { apiCtx, response, body } = await apiLogin('employee1@spendwise.test');
+  if (response.status() !== 200 || !body.accessToken) {
+    await apiCtx.dispose();
+    throw new Error(`No se pudo autenticar employee1 por API (HTTP ${response.status()})`);
+  }
+  let expense;
+  try {
+    const list = await apiCtx.get('/api/v1/expenses?pageSize=1000', { headers: { Authorization: `Bearer ${body.accessToken}` } });
+    const payload = await list.json();
+    const items = Array.isArray(payload.items) ? payload.items : Array.isArray(payload) ? payload : [];
+    expense = items.find(item => item.receiptUrl);
+  } finally {
+    await apiCtx.dispose();
+  }
+  if (!expense) throw new Error('employee1 no tiene un gasto con receiptUrl');
+
+  await login(rec, 'employee1@spendwise.test');
+  await rec.step(`Abrir My Expenses y localizar ${expense.expenseNumber}, que tiene receiptUrl`, async () => {
+    await page.goto(`${webUrl}/expenses`);
+    await page.waitForLoadState('domcontentloaded');
+    const search = page.getByPlaceholder(/search vendor or description/i);
+    await visibleFill(page, search, expense.description);
+    await page.waitForTimeout(700);
+    await moveTo(page, page.getByText(expense.expenseNumber, { exact: true }));
+  });
+  const number = page.getByText(expense.expenseNumber, { exact: true });
+  const before = page.url();
+  await rec.step('Hacer clic en la fila/número del gasto', async () => {
+    await visibleClick(page, number);
+    await page.waitForTimeout(700);
+  });
+  const stayedOnListUrl = page.url() === before;
+  const receiptLinkVisible = await page.getByRole('link', { name: /view receipt/i }).isVisible().catch(() => false);
+  const historyVisible = await page.getByText(/status history/i).isVisible().catch(() => false);
+  const detailOpened = receiptLinkVisible && historyVisible;
+  await rec.step(`Abrir directamente /expenses/${expense.id}`, async () => {
+    await page.goto(`${webUrl}/expenses/${expense.id}`);
+    await page.waitForLoadState('domcontentloaded');
+  });
+  const notFound = page.getByText('This page could not be found.', { exact: false }).first();
+  const is404 = await notFound.isVisible().catch(() => false);
+  return rec.defect({
+    expected: 'El gasto debe abrir un detalle con historial y el enlace al recibo asociado',
+    actual: detailOpened
+      ? `El clic abre un panel lateral con historial y "View receipt" (URL de lista conservada=${stayedOnListUrl}); solo la URL directa muestra 404`
+      : `El clic no abre detalle y la URL directa muestra 404 "This page could not be found."`,
+    label: 'DEFECTO BUG-49: no existe el detalle del gasto',
+    target: detailOpened ? undefined : notFound,
+    reproduced: !detailOpened && is404,
+    notes: `Gasto ${expense.expenseNumber}; receiptUrl informado sin guardar su valor. Panel lateral: receipt=${receiptLinkVisible}, historial=${historyVisible}.`,
+  });
+}
+
+async function runBug50(rec) {
+  const page = rec.page;
+  await simpleLogin(page, 'employee1@spendwise.test');
+  await rec.step('Se simula una respuesta HTTP 500 del servidor (intercepción de red)', async () => {
+    await page.route('**/api/v1/expenses*', route => route.request().method() === 'GET'
+      ? route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({ message: 'Simulated HTTP 500' }) })
+      : route.continue());
+    await page.goto(`${webUrl}/expenses`);
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForTimeout(800);
+    await showBanner(page, { kind: 'step', lines: ['PASO 1 · Se simula una respuesta HTTP 500 del servidor (intercepción de red)'] });
+  });
+  const expenseEmpty = page.getByText('No expenses found.', { exact: false }).first();
+  const expenseShowsEmpty = await expenseEmpty.isVisible().catch(() => false);
+  await rec.step('My Expenses presenta un estado vacío sin explicar el error', async () => {
+    if (expenseShowsEmpty) await drawBox(page, expenseEmpty, 'DEFECTO BUG-50: HTTP 500 presentado como lista vacía');
+  });
+  await page.unroute('**/api/v1/expenses*');
+
+  await page.context().clearCookies();
+  await login(rec, 'finance@spendwise.test');
+  await page.route('**/api/v1/approvals/pending*', route => route.fulfill({ status: 500, contentType: 'application/json', body: '{}' }));
+  await rec.step('Approvals recibe HTTP 500 y presenta "All caught up!"', async () => {
+    await page.goto(`${webUrl}/approvals`);
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForTimeout(800);
+    const empty = page.getByText('All caught up!', { exact: false }).first();
+    if (await empty.isVisible().catch(() => false)) await drawBox(page, empty, 'DEFECTO BUG-50: HTTP 500 presentado como cola vacía');
+  });
+  const approvalEmpty = await page.getByText('All caught up!', { exact: false }).first().isVisible().catch(() => false);
+  await page.unroute('**/api/v1/approvals/pending*');
+
+  await page.route('**/api/v1/reports*', route => route.fulfill({ status: 500, contentType: 'application/json', body: '{}' }));
+  await rec.step('Reports recibe HTTP 500 y presenta totales en cero', async () => {
+    await page.goto(`${webUrl}/reports`);
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForTimeout(800);
+    await drawBox(page, page.locator('main').first(), 'DEFECTO BUG-50: HTTP 500 presentado como reporte vacío');
+  });
+  const reportText = await page.locator('main').innerText();
+  const reportEmpty = /\$0\.00/.test(reportText) && /\b0\b/.test(reportText) && !/error|failed|unable|try again/i.test(reportText);
+  return rec.defect({
+    expected: 'Cada pantalla debe explicar el fallo de carga y no presentarlo como un estado vacío válido',
+    actual: `My Expenses: "No expenses found."=${expenseShowsEmpty}; Approvals: "All caught up!"=${approvalEmpty}; Reports: totales 0 sin error=${reportEmpty}`,
+    label: 'DEFECTO BUG-50: el HTTP 500 queda oculto',
+    target: page.locator('main').first(),
+    reproduced: expenseShowsEmpty && approvalEmpty && reportEmpty,
+    notes: 'Las tres respuestas HTTP 500 fueron simuladas mediante intercepción de red; no se alteró el servidor.',
+  });
+}
+
+async function simpleLogin(page, email) {
+  await page.goto(`${webUrl}/__gate`);
+  await page.waitForLoadState('domcontentloaded');
+  await visibleFill(page, page.getByTestId('login-email'), email);
+  await visibleFill(page, page.getByTestId('login-password'), seedPassword);
+  await visibleClick(page, page.getByTestId('login-submit'));
+  await page.waitForURL(url => !url.pathname.includes('/login'), { timeout: 15000 });
+}
+
+async function saveImprovement(page, dir, id, n, observed, why, targets, boxLabel) {
+  const label = boxLabel ?? `MEJORA ${id}: ${observed}`;
+  await drawBoxes(page, targets, label, 'amber');
+  await showBanner(page, { kind: 'improvement', lines: [`OBSERVADO: ${observed}`, `POR QUÉ ES MEJORA: ${why}`] });
+  await page.waitForTimeout(500);
+  const filename = `${id}-${pad2(n)}.png`;
+  await page.screenshot({ path: path.join(dir, filename) });
+  return filename;
+}
+
+async function controlsWithoutTestId(page) {
+  return page.locator('button, a[href], input, select, textarea').evaluateAll(elements => elements
+    .filter(el => !el.hasAttribute('data-testid'))
+    .map(el => { const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; })
+    .filter(r => r.width > 0 && r.height > 0));
+}
+
+async function runImp04(page, dir) {
+  await simpleLogin(page, 'employee1@spendwise.test');
+  const files = [];
+  for (const [n, route] of [[1, '/expenses'], [2, '/expenses/new']]) {
+    await page.goto(`${webUrl}${route}`);
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForTimeout(700);
+    const rects = await controlsWithoutTestId(page);
+    files.push(await saveImprovement(page, dir, 'IMP-04', n,
+      `${rects.length} controles interactivos visibles sin data-testid en ${route}`,
+      'La lista obligatoria de test ids del Anexo G sí se cumple; agregar ids a estos controles ampliaría la automatización estable.', rects, 'sin testid'));
+  }
+  return { reproduced: true, files };
+}
+
+async function runImp05(page, dir) {
+  await simpleLogin(page, 'employee1@spendwise.test');
+  await page.goto(`${webUrl}/esta-ruta-no-existe`);
+  await page.waitForLoadState('domcontentloaded');
+  const message = page.getByText('This page could not be found.', { exact: false }).first();
+  const links = await page.getByRole('link', { name: /dashboard|home|back/i }).count();
+  const file = await saveImprovement(page, dir, 'IMP-05', 1,
+    `La página 404 no ofrece un enlace de regreso al Dashboard (enlaces encontrados: ${links})`,
+    'Un enlace de recuperación evita que el usuario quede en una vía muerta.', [message]);
+  return { reproduced: links === 0, files: [file] };
+}
+
+async function runImp06(page, dir) {
+  await simpleLogin(page, 'employee1@spendwise.test');
+  await page.goto(`${webUrl}/expenses/new`);
+  await page.waitForLoadState('domcontentloaded');
+  const skip = page.getByRole('button', { name: /skip/i });
+  if (await skip.isVisible().catch(() => false)) await visibleClick(page, skip);
+  const description = page.getByLabel('Description');
+  const amount = page.getByLabel('Amount');
+  await visibleFill(page, description, 'Borrador que debe protegerse');
+  await visibleFill(page, amount, '45.67');
+  const files = [];
+  files.push(await saveImprovement(page, dir, 'IMP-06', 1,
+    'El formulario contiene datos sin guardar', 'Conviene advertir antes de abandonar cambios.', [description, amount]));
+  const dashboard = page.getByRole('link', { name: /dashboard/i }).first();
+  await visibleClick(page, dashboard);
+  files.push(await saveImprovement(page, dir, 'IMP-06', 2,
+    'Dashboard abrió sin pedir confirmación', 'Una confirmación previene pérdida accidental de datos.', [page.locator('main').first()]));
+  await page.goto(`${webUrl}/expenses/new`);
+  await page.waitForLoadState('domcontentloaded');
+  const skipAgain = page.getByRole('button', { name: /skip/i });
+  if (await skipAgain.isVisible().catch(() => false)) await visibleClick(page, skipAgain);
+  const emptyDescription = (await page.getByLabel('Description').inputValue()) === '';
+  const emptyAmount = (await page.getByLabel('Amount').inputValue()) === '';
+  files.push(await saveImprovement(page, dir, 'IMP-06', 3,
+    `Al volver, los campos están vacíos (descripción=${emptyDescription}, monto=${emptyAmount})`,
+    'Preservar el borrador o confirmar la salida evita pérdida silenciosa.', [page.getByLabel('Description'), page.getByLabel('Amount')]));
+  return { reproduced: emptyDescription && emptyAmount, files };
+}
+
 // ---------------------------------------------------------------------------
 // ffmpeg conversion
 // ---------------------------------------------------------------------------
@@ -866,18 +1261,48 @@ async function probeDuration(mp4Path) {
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
-  const args = process.argv.slice(2).filter(a => /^BUG-\d+$/.test(a));
+  const args = process.argv.slice(2).filter(a => /^(?:BUG|IMP)-\d+$/.test(a));
   const order = args.length ? args : DEFAULT_ORDER;
 
-  const unknown = order.filter(id => !DEFECTS[id]);
+  const unknown = order.filter(id => !DEFECTS[id] && !IMPROVEMENTS[id]);
   if (unknown.length) throw new Error(`Unknown defect id(s): ${unknown.join(', ')}`);
 
   await fs.mkdir(outRoot, { recursive: true });
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = process.env.SPENDWISE_CDP_URL
+    ? await chromium.connectOverCDP(process.env.SPENDWISE_CDP_URL)
+    : await chromium.launch({ headless: true });
   const results = [];
 
-  for (const id of order) {
+  const improvementIds = order.filter(id => IMPROVEMENTS[id]);
+  if (improvementIds.length) {
+    const improvementDir = path.join(outRoot, 'improvements');
+    await fs.mkdir(improvementDir, { recursive: true });
+    for (const id of improvementIds) {
+      for (const existing of await fs.readdir(improvementDir)) {
+        if (existing.startsWith(`${id}-`) && existing.endsWith('.png')) {
+          await fs.unlink(path.join(improvementDir, existing));
+        }
+      }
+      const context = await browser.newContext({
+        viewport: DESKTOP_VIEWPORT, ignoreHTTPSErrors: true,
+        httpCredentials: { username: proxyUser, password: proxyPassword }, acceptDownloads: true,
+      });
+      await installOverlays(context);
+      const page = await context.newPage();
+      await installOverlays(page);
+      console.log(`\n=== ${id} — ${IMPROVEMENTS[id].title} ===`);
+      try {
+        const outcome = await IMPROVEMENTS[id].run(page, improvementDir);
+        results.push({ id, reproduced: Boolean(outcome.reproduced), mp4Size: 0, screenshots: outcome.files.length });
+        console.log(`  reproduced=${Boolean(outcome.reproduced)} screenshots=${outcome.files.length} (sin video)`);
+      } finally {
+        await context.close();
+      }
+    }
+  }
+
+  for (const id of order.filter(candidate => DEFECTS[candidate])) {
     const meta = DEFECTS[id];
     // Safety: this script must NEVER touch evidence/report/ itself (other
     // processes, e.g. API evidence, write siblings there). Only ever remove
@@ -889,6 +1314,8 @@ async function main() {
     await fs.rm(dir, { recursive: true, force: true });
     await fs.mkdir(dir, { recursive: true });
     console.log(`\n=== ${id} — ${meta.title} ===`);
+
+    const precondition = meta.before ? await meta.before() : null;
 
     const context = await browser.newContext({
       viewport: meta.viewport,
@@ -902,6 +1329,7 @@ async function main() {
     const page = await context.newPage();
     await installOverlays(page);
     const rec = new Recorder(page, dir, id);
+    rec.precondition = precondition;
 
     let outcome;
     try {
@@ -948,6 +1376,7 @@ async function main() {
       actual: outcome?.actual ?? '',
       steps: rec.steps,
       notes: outcome?.notes ?? '',
+      ...(precondition ? { precondition } : {}),
     };
     await fs.writeFile(path.join(dir, `${id}.json`), JSON.stringify(record, null, 2));
 
@@ -959,7 +1388,7 @@ async function main() {
 
   console.log('\n=== Summary ===');
   for (const r of results) {
-    console.log(`${r.id}\treproduced=${r.reproduced}\tmp4=${(r.mp4Size / 1024).toFixed(0)}KB\tscreenshots=${r.screenshots}`);
+    console.log(`${r.id}\treproduced=${r.reproduced}\tmp4=${r.mp4Size ? `${(r.mp4Size / 1024).toFixed(0)}KB` : 'N/A'}\tscreenshots=${r.screenshots}`);
   }
 }
 

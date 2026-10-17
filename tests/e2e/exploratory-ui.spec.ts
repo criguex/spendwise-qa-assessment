@@ -1,6 +1,7 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../fixtures.js';
 import { environment } from '../../src/config/environment.js';
 import { LoginPage } from '../../src/pages/login.page.js';
+import { ExpenseBuilder } from '../../src/data/expense-builder.js';
 
 async function signIn(page: import('@playwright/test').Page, role: 'employee1' | 'finance') {
   const login = new LoginPage(page);
@@ -26,19 +27,41 @@ test.describe('Exploratory UI charters', () => {
     await expect(policy).not.toContainText(/≤\s*\$?50|at or below \$?50/i);
   });
 
-  test('EXPUI-03 approval queue identifies the submitter', async ({ page }) => {
+  test('EXPUI-03 approval queue identifies the submitter', async ({ page, auth, expenses }) => {
+    const employee = await auth.loginAs('employee1');
+    const marker = `EXPUI-03-${Date.now()}-${crypto.randomUUID()}`;
+    const created = await expenses.create(employee.accessToken, new ExpenseBuilder()
+      .withDescription(marker).withAmount(125).build());
+    expect(created.status(), await created.text()).toBe(201);
     await signIn(page, 'finance');
     await page.goto('/approvals');
     await expect(page.getByRole('heading', { name: 'Approval queue' })).toBeVisible();
-    await expect(page.locator('main')).toContainText(/Elena Employee|Ethan Employee|employee\d@spendwise\.test/i);
+    const controlledRow = page.locator('main').getByText(marker, { exact: true })
+      .locator('xpath=ancestor::div[contains(@class,"grid")][1]');
+    await expect(controlledRow).toBeVisible();
+    await expect(controlledRow).toContainText(/Elena Employee|Ethan Employee|employee\d@spendwise\.test/i);
   });
 
-  test('EXPUI-04 final expenses do not expose delete actions', async ({ page }) => {
+  test('EXPUI-04 final expenses do not expose delete actions', async ({ page, auth, expenses, approvals }) => {
+    const employee = await auth.loginAs('employee1');
+    const marker = `EXPUI-04-${Date.now()}-${crypto.randomUUID()}`;
+    const createdResponse = await expenses.create(employee.accessToken, new ExpenseBuilder()
+      .withDescription(marker).withAmount(125).build());
+    expect(createdResponse.status(), await createdResponse.text()).toBe(201);
+    const created = await createdResponse.json();
+    const manager = await auth.loginAs('manager1');
+    expect((await approvals.approve(manager.accessToken, created.id)).status()).toBe(200);
     await signIn(page, 'employee1');
     await page.goto('/expenses');
-    const approvedExpense = page.getByText('EXP-2026-0004', { exact: true });
+    const searched = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname.endsWith('/api/v1/expenses') && url.searchParams.get('search') === marker;
+    });
+    await page.getByPlaceholder('Search vendor or description').fill(marker);
+    expect((await searched).status()).toBe(200);
+    const approvedExpense = page.getByText(marker, { exact: true });
     await expect(approvedExpense).toBeVisible();
-    const approvedContainer = approvedExpense.locator('xpath=ancestor::*[.//button[@title="Delete expense"]][1]');
+    const approvedContainer = approvedExpense.locator('xpath=ancestor::div[contains(@class,"border-b") or contains(@class,"grid")][1]');
     await expect(approvedContainer.getByTitle('Delete expense')).toHaveCount(0);
   });
 

@@ -37,18 +37,16 @@ test.describe('Exploratory API boundaries', () => {
     expect(response.status(), await response.text()).toBe(400);
   });
 
-  test('EXPA-06 reversed report interval is handled safely as an empty result', async ({ auth, analytics }) => {
+  test('EXPA-06 reversed report interval is rejected with 400', async ({ auth, analytics }) => {
     const finance = await auth.loginAs('finance');
     const response = await analytics.reports(finance.accessToken, '?dateFrom=2026-10-20&dateTo=2026-10-01');
-    expect(response.status()).toBe(200);
-    expect((await response.json()).totalCount).toBe(0);
+    expect(response.status(), await response.text()).toBe(400);
   });
 
-  test('EXPA-07 unknown category filter returns an empty result', async ({ auth, analytics }) => {
+  test('EXPA-07 unknown category filter is rejected with 400', async ({ auth, analytics }) => {
     const finance = await auth.loginAs('finance');
     const response = await analytics.reports(finance.accessToken, '?categoryId=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa');
-    expect(response.status()).toBe(200);
-    expect((await response.json()).totalCount).toBe(0);
+    expect(response.status(), await response.text()).toBe(400);
   });
 
   test('EXPA-08 invalid status filter is rejected instead of silently ignored', async ({ auth, analytics }) => {

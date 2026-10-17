@@ -100,7 +100,15 @@ test.describe('UI control mutation and exploratory scenarios', () => {
     });
     await signIn(page);
     await page.goto('/expenses');
-    await page.getByPlaceholder('Search vendor or description').fill("<script>'\\\"&%_\\u{1F4A5}");
+    const searchValue = "<script>'\\\"&%_\\u{1F4A5}";
+    const searched = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname.endsWith('/api/v1/expenses') && url.searchParams.get('search') === searchValue;
+    });
+    await page.getByPlaceholder('Search vendor or description').fill(searchValue);
+    const searchResponse = await searched;
+    expect(searchResponse.status()).toBeLessThan(500);
+    expect(new URL(searchResponse.url()).searchParams.get('search')).toBe(searchValue);
     await expect(page.getByRole('heading', { name: 'My Expenses' })).toBeVisible();
     expect(serverErrors).toEqual([]);
   });
@@ -150,6 +158,7 @@ test.describe('UI control mutation and exploratory scenarios', () => {
     await submit.click();
     expect(createAttempted).toBe(false);
     await expect(page.locator('[role="alert"], [aria-live="assertive"], .text-red-500, .text-red-600').first()).toBeVisible();
+    expect(createAttempted).toBe(false);
   });
 
   test('MUT-UI-13 mobile viewport has no page-level horizontal overflow', async ({ page }) => {

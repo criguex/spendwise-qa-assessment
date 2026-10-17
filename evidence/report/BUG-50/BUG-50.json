@@ -1,0 +1,39 @@
+{
+  "id": "BUG-50",
+  "title": "Si falla la carga, la interfaz muestra listas vacías en lugar de un error",
+  "role": "Employee / FinanceController",
+  "user": "employee1, finance",
+  "url": "/expenses; /approvals; /reports",
+  "recordedAt": "2026-10-17T18:48:34.765Z",
+  "reproduced": true,
+  "expected": "Cada pantalla debe explicar el fallo de carga y no presentarlo como un estado vacío válido",
+  "actual": "My Expenses: \"No expenses found.\"=true; Approvals: \"All caught up!\"=true; Reports: totales 0 sin error=true",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Se simula una respuesta HTTP 500 del servidor (intercepción de red)",
+      "screenshot": "BUG-50-01.png"
+    },
+    {
+      "n": 2,
+      "text": "My Expenses presenta un estado vacío sin explicar el error",
+      "screenshot": "BUG-50-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Iniciar sesión como finance@spendwise.test",
+      "screenshot": "BUG-50-03.png"
+    },
+    {
+      "n": 4,
+      "text": "Approvals recibe HTTP 500 y presenta \"All caught up!\"",
+      "screenshot": "BUG-50-04.png"
+    },
+    {
+      "n": 5,
+      "text": "Reports recibe HTTP 500 y presenta totales en cero",
+      "screenshot": "BUG-50-05.png"
+    }
+  ],
+  "notes": "Las tres respuestas HTTP 500 fueron simuladas mediante intercepción de red; no se alteró el servidor."
+}

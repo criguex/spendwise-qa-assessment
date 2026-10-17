@@ -1,0 +1,54 @@
+{
+  "id": "BUG-48",
+  "title": "La interfaz muestra indicadores fijos que simulan métricas",
+  "role": "Employee / FinanceController",
+  "user": "employee1, employee3, finance",
+  "url": "/dashboard; /expenses/new",
+  "recordedAt": "2026-10-17T18:46:55.829Z",
+  "reproduced": true,
+  "expected": "Las métricas deben derivarse de datos reales o identificarse claramente como estimaciones no operativas",
+  "actual": "Avg. resolution fue 1.4 days para tres usuarios mientras la tasa varió (employee1@spendwise.test: 45% rate this month · employee3@spendwise.test: 70% rate this month · finance@spendwise.test: 62% rate this month); New expense fija ~90 seconds y 96%",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-48-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Mostrar Dashboard de employee1@spendwise.test",
+      "screenshot": "BUG-48-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Iniciar sesión como employee3@spendwise.test",
+      "screenshot": "BUG-48-03.png"
+    },
+    {
+      "n": 4,
+      "text": "Mostrar Dashboard de employee3@spendwise.test",
+      "screenshot": "BUG-48-04.png"
+    },
+    {
+      "n": 5,
+      "text": "Iniciar sesión como finance@spendwise.test",
+      "screenshot": "BUG-48-05.png"
+    },
+    {
+      "n": 6,
+      "text": "Mostrar Dashboard de finance@spendwise.test",
+      "screenshot": "BUG-48-06.png"
+    },
+    {
+      "n": 7,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-48-07.png"
+    },
+    {
+      "n": 8,
+      "text": "Abrir New expense y señalar las métricas promocionales fijas",
+      "screenshot": "BUG-48-08.png"
+    }
+  ],
+  "notes": "[{\"email\":\"employee1@spendwise.test\",\"resolution\":\"Avg. resolution: 1.4 days\",\"rate\":\"45% rate this month\"},{\"email\":\"employee3@spendwise.test\",\"resolution\":\"Avg. resolution: 1.4 days\",\"rate\":\"70% rate this month\"},{\"email\":\"finance@spendwise.test\",\"resolution\":\"Avg. resolution: 1.4 days\",\"rate\":\"62% rate this month\"}]"
+}

@@ -1,0 +1,233 @@
+{
+  "id": "BUG-41",
+  "capturedAt": "2026-10-17T18:38:31.836Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "150 → PendingApproval; 60 → Rejected; 10 → Rejected; reglas activas después: Auto-approve under $50, Receipt required at $25+",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión admin",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "admin",
+      "requestBody": {
+        "email": "admin@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:38:31.0253907Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000001",
+          "email": "admin@spendwise.test",
+          "fullName": "Ada Admin",
+          "roles": [
+            "Administrator"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 177,
+      "at": "2026-10-17T18:38:31.051Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:38:31.2036349Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 124,
+      "at": "2026-10-17T18:38:31.175Z"
+    },
+    {
+      "setup": false,
+      "note": "Regla Block activa con maxAmount 100 (temporal)",
+      "method": "POST",
+      "path": "/api/v1/policies",
+      "role": "admin",
+      "requestBody": {
+        "name": "QA Block over 100 1792262311175",
+        "action": "Block",
+        "maxAmount": 100,
+        "requiresReceipt": false,
+        "isActive": true
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "9a9995ee-eb86-4aa1-86b2-7114fde6792a",
+        "name": "QA Block over 100 1792262311175",
+        "description": null,
+        "action": "Block",
+        "maxAmount": 100,
+        "requiresReceipt": false,
+        "isActive": true,
+        "createdAt": "2026-10-17T18:38:31.2913078Z"
+      },
+      "durationMs": 91,
+      "at": "2026-10-17T18:38:31.266Z"
+    },
+    {
+      "setup": false,
+      "note": "USD 150 con la regla Block activa",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792262311266-9cf9b1",
+        "amount": 150,
+        "date": "2026-10-17",
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "3071f07e-5316-4b3b-ac95-82df8734ec92",
+        "expenseNumber": "EXP-2026-0515",
+        "description": "QA evidencia 1792262311266-9cf9b1",
+        "vendor": null,
+        "amount": 150,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "PendingApproval",
+        "notes": null,
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+        "createdAt": "2026-10-17T18:38:31.3836557Z"
+      },
+      "durationMs": 91,
+      "at": "2026-10-17T18:38:31.357Z"
+    },
+    {
+      "setup": false,
+      "note": "USD 60 con la regla Block activa",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792262311357-1b0d8f",
+        "amount": 60,
+        "date": "2026-10-17",
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "c434b4bf-2d2f-4894-8253-d0a6c00f7c04",
+        "expenseNumber": "EXP-2026-0516",
+        "description": "QA evidencia 1792262311357-1b0d8f",
+        "vendor": null,
+        "amount": 60,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Rejected",
+        "notes": null,
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+        "createdAt": "2026-10-17T18:38:31.4735144Z"
+      },
+      "durationMs": 216,
+      "at": "2026-10-17T18:38:31.573Z"
+    },
+    {
+      "setup": false,
+      "note": "USD 10 con la regla Block activa",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792262311573-7669ff",
+        "amount": 10,
+        "date": "2026-10-17",
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "b6cef8a7-9793-44cf-9e71-cbbcd2558fcf",
+        "expenseNumber": "EXP-2026-0517",
+        "description": "QA evidencia 1792262311573-7669ff",
+        "vendor": null,
+        "amount": 10,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "Rejected",
+        "notes": null,
+        "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+        "createdAt": "2026-10-17T18:38:31.6896741Z"
+      },
+      "durationMs": 88,
+      "at": "2026-10-17T18:38:31.661Z"
+    },
+    {
+      "setup": true,
+      "note": "Eliminación de la regla temporal",
+      "method": "DELETE",
+      "path": "/api/v1/policies/9a9995ee-eb86-4aa1-86b2-7114fde6792a",
+      "role": "admin",
+      "requestBody": null,
+      "status": 204,
+      "statusText": "No Content",
+      "responseBody": "",
+      "durationMs": 89,
+      "at": "2026-10-17T18:38:31.750Z"
+    },
+    {
+      "setup": true,
+      "note": "Reglas tras la limpieza: solo las dos originales",
+      "method": "GET",
+      "path": "/api/v1/policies",
+      "role": "admin",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": [
+        {
+          "id": "22222222-0000-0000-0000-000000000001",
+          "name": "Auto-approve under $50",
+          "description": "Expenses at or below $50 are auto-approved without manager review.",
+          "action": "AutoApprove",
+          "maxAmount": 50,
+          "requiresReceipt": false,
+          "isActive": true,
+          "createdAt": "2026-01-01T00:00:00"
+        },
+        {
+          "id": "22222222-0000-0000-0000-000000000002",
+          "name": "Receipt required at $25+",
+          "description": "Expenses of $25 or more must include a receipt.",
+          "action": "RequireApproval",
+          "maxAmount": null,
+          "requiresReceipt": true,
+          "isActive": true,
+          "createdAt": "2026-01-01T00:00:00"
+        }
+      ],
+      "durationMs": 86,
+      "at": "2026-10-17T18:38:31.836Z"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "id": "IMP-03",
+  "capturedAt": "2026-10-17T18:31:48.109Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "formatos: 404 \"\" · 500 {\"error\":\"An unexpected error occurred.\"} · 400 {\"error\":\"File type '.txt' is not allowed. Use JPG, PNG, PDF.\"} · 401 {\"code\":\"invalid_credentials\",\"message\":\"Invalid email or password.\"}",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión manager1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "manager1",
+      "requestBody": {
+        "email": "manager1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:31:47.2073186Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000003",
+          "email": "manager1@spendwise.test",
+          "fullName": "Mario Manager",
+          "roles": [
+            "Employee",
+            "Manager"
+          ],
+          "managerId": null
+        }
+      },
+      "durationMs": 119,
+      "at": "2026-10-17T18:31:47.171Z"
+    },
+    {
+      "setup": false,
+      "note": "404 sin cuerpo",
+      "method": "PUT",
+      "path": "/api/v1/approvals/not-a-uuid/approve",
+      "role": "manager1",
+      "requestBody": null,
+      "status": 404,
+      "statusText": "Not Found",
+      "responseBody": "",
+      "durationMs": 184,
+      "at": "2026-10-17T18:31:47.355Z"
+    },
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:31:47.5122207Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 121,
+      "at": "2026-10-17T18:31:47.476Z"
+    },
+    {
+      "setup": false,
+      "note": "500 genérico",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792261907476-fe48a0",
+        "amount": 10,
+        "date": "2026-10-17",
+        "categoryId": "e9ac9190-0004-4f71-b31f-4cac7d6502f6"
+      },
+      "status": 500,
+      "statusText": "Internal Server Error",
+      "responseBody": {
+        "error": "An unexpected error occurred."
+      },
+      "durationMs": 87,
+      "at": "2026-10-17T18:31:47.563Z"
+    },
+    {
+      "setup": false,
+      "note": "400 con {\"error\"}",
+      "method": "POST",
+      "path": "/api/v1/receipts/extract",
+      "role": "employee3",
+      "requestBody": {
+        "file": "<archivo notes.txt · text/plain · 1 bytes>"
+      },
+      "status": 400,
+      "statusText": "Bad Request",
+      "responseBody": {
+        "error": "File type '.txt' is not allowed. Use JPG, PNG, PDF."
+      },
+      "durationMs": 87,
+      "at": "2026-10-17T18:31:47.650Z"
+    },
+    {
+      "setup": false,
+      "note": "401 con {\"code\",\"message\"}",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": null,
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "WrongPass1"
+      },
+      "status": 401,
+      "statusText": "Unauthorized",
+      "responseBody": {
+        "code": "invalid_credentials",
+        "message": "Invalid email or password."
+      },
+      "durationMs": 459,
+      "at": "2026-10-17T18:31:48.109Z"
+    }
+  ]
+}

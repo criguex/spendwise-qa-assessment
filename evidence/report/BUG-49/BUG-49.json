@@ -1,0 +1,34 @@
+{
+  "id": "BUG-49",
+  "title": "No existe detalle del gasto: no se ve el historial ni el recibo",
+  "role": "Employee",
+  "user": "employee1@spendwise.test",
+  "url": "/expenses",
+  "recordedAt": "2026-10-17T18:47:17.600Z",
+  "reproduced": false,
+  "expected": "El gasto debe abrir un detalle con historial y el enlace al recibo asociado",
+  "actual": "El clic abre un panel lateral con historial y \"View receipt\" (URL de lista conservada=true); solo la URL directa muestra 404",
+  "steps": [
+    {
+      "n": 1,
+      "text": "Iniciar sesión como employee1@spendwise.test",
+      "screenshot": "BUG-49-01.png"
+    },
+    {
+      "n": 2,
+      "text": "Abrir My Expenses y localizar EXP-2026-0303, que tiene receiptUrl",
+      "screenshot": "BUG-49-02.png"
+    },
+    {
+      "n": 3,
+      "text": "Hacer clic en la fila/número del gasto",
+      "screenshot": "BUG-49-03.png"
+    },
+    {
+      "n": 4,
+      "text": "Abrir directamente /expenses/7b429bcb-fadd-4585-9f12-19b375d84fba",
+      "screenshot": "BUG-49-04.png"
+    }
+  ],
+  "notes": "Gasto EXP-2026-0303; receiptUrl informado sin guardar su valor. Panel lateral: receipt=true, historial=true."
+}

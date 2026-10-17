@@ -1,0 +1,327 @@
+{
+  "id": "BUG-44",
+  "capturedAt": "2026-10-17T18:31:44.736Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "gasto del mes 5205.8 → 5215.8 (+10) tras registrar un gasto fechado 2026-10-31",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee3",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee3",
+      "requestBody": {
+        "email": "employee3@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:31:44.3657208Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000007",
+          "email": "employee3@spendwise.test",
+          "fullName": "Eva Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000004"
+        }
+      },
+      "durationMs": 118,
+      "at": "2026-10-17T18:31:44.329Z"
+    },
+    {
+      "setup": false,
+      "note": "Tablero antes",
+      "method": "GET",
+      "path": "/api/v1/dashboard/summary",
+      "role": "employee3",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "spendThisMonth": 5205.8,
+        "pendingCount": 18,
+        "autoApprovedCount": 100,
+        "autoApprovedTotal": 136,
+        "recentExpenses": [
+          {
+            "id": "909cb77d-7ff0-469c-92fd-30a6cbe332fd",
+            "expenseNumber": "EXP-2026-0422",
+            "description": "R6 future 1792261685268-cbef20",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-31",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:28:05.3902555"
+          },
+          {
+            "id": "06072a41-0d5b-4a9f-82bb-0610a8f0985e",
+            "expenseNumber": "EXP-2026-0397",
+            "description": "R6 probe 1792261424079",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-30",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+            "createdAt": "2026-10-17T18:23:44.2030882"
+          },
+          {
+            "id": "baa0b55e-b5a7-4ea2-8a0b-068045727f5b",
+            "expenseNumber": "EXP-2026-0378",
+            "description": "QA expense 1792214667289-61043203",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:24:27.4651885"
+          },
+          {
+            "id": "bdf42b23-38a2-4538-8d42-01ebb303d5a2",
+            "expenseNumber": "EXP-2026-0366",
+            "description": "MUT-EXP-10 1792214639791",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:23:59.9529433"
+          },
+          {
+            "id": "d6245b84-8636-4b7d-8118-0a21ef615175",
+            "expenseNumber": "EXP-2026-0371",
+            "description": "MUT-APR-03 controlled pending expense 1792214650352",
+            "vendor": null,
+            "amount": 60,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "Rejected",
+            "notes": null,
+            "receiptUrl": "https://example.invalid/controlled-receipt.pdf",
+            "createdAt": "2026-10-17T05:24:10.5177274"
+          },
+          {
+            "id": "d26dc538-f5a7-4a9e-8828-0c720afb7e24",
+            "expenseNumber": "EXP-2026-0350",
+            "description": "QA expense 1792214620765-a2850de0",
+            "vendor": null,
+            "amount": 1,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:23:40.9415693"
+          }
+        ],
+        "spendTrend": [
+          {
+            "date": "2026-10-03",
+            "amount": 250
+          },
+          {
+            "date": "2026-10-09",
+            "amount": 12
+          },
+          {
+            "date": "2026-10-16",
+            "amount": 2728.9
+          },
+          {
+            "date": "2026-10-17",
+            "amount": 2194.9
+          },
+          {
+            "date": "2026-10-30",
+            "amount": 10
+          },
+          {
+            "date": "2026-10-31",
+            "amount": 10
+          }
+        ]
+      },
+      "durationMs": 88,
+      "at": "2026-10-17T18:31:44.417Z"
+    },
+    {
+      "setup": false,
+      "note": "Gasto de USD 10 con fecha futura 2026-10-31",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee3",
+      "requestBody": {
+        "description": "QA evidencia 1792261904417-7eec4a",
+        "amount": 10,
+        "date": "2026-10-31"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "e73b36e2-de55-4cee-adaf-a9b2f9e87cfa",
+        "expenseNumber": "EXP-2026-0482",
+        "description": "QA evidencia 1792261904417-7eec4a",
+        "vendor": null,
+        "amount": 10,
+        "date": "2026-10-31",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T18:31:44.5384287Z"
+      },
+      "durationMs": 91,
+      "at": "2026-10-17T18:31:44.508Z"
+    },
+    {
+      "setup": false,
+      "note": "Tablero después",
+      "method": "GET",
+      "path": "/api/v1/dashboard/summary",
+      "role": "employee3",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "spendThisMonth": 5215.8,
+        "pendingCount": 18,
+        "autoApprovedCount": 101,
+        "autoApprovedTotal": 137,
+        "recentExpenses": [
+          {
+            "id": "909cb77d-7ff0-469c-92fd-30a6cbe332fd",
+            "expenseNumber": "EXP-2026-0422",
+            "description": "R6 future 1792261685268-cbef20",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-31",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:28:05.3902555"
+          },
+          {
+            "id": "e73b36e2-de55-4cee-adaf-a9b2f9e87cfa",
+            "expenseNumber": "EXP-2026-0482",
+            "description": "QA evidencia 1792261904417-7eec4a",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-31",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T18:31:44.5384287"
+          },
+          {
+            "id": "06072a41-0d5b-4a9f-82bb-0610a8f0985e",
+            "expenseNumber": "EXP-2026-0397",
+            "description": "R6 probe 1792261424079",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-30",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": "https://example.invalid/qa-receipt.pdf",
+            "createdAt": "2026-10-17T18:23:44.2030882"
+          },
+          {
+            "id": "baa0b55e-b5a7-4ea2-8a0b-068045727f5b",
+            "expenseNumber": "EXP-2026-0378",
+            "description": "QA expense 1792214667289-61043203",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:24:27.4651885"
+          },
+          {
+            "id": "bdf42b23-38a2-4538-8d42-01ebb303d5a2",
+            "expenseNumber": "EXP-2026-0366",
+            "description": "MUT-EXP-10 1792214639791",
+            "vendor": null,
+            "amount": 10,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "AutoApproved",
+            "notes": null,
+            "receiptUrl": null,
+            "createdAt": "2026-10-17T05:23:59.9529433"
+          },
+          {
+            "id": "d6245b84-8636-4b7d-8118-0a21ef615175",
+            "expenseNumber": "EXP-2026-0371",
+            "description": "MUT-APR-03 controlled pending expense 1792214650352",
+            "vendor": null,
+            "amount": 60,
+            "date": "2026-10-17",
+            "categoryId": null,
+            "categoryName": null,
+            "status": "Rejected",
+            "notes": null,
+            "receiptUrl": "https://example.invalid/controlled-receipt.pdf",
+            "createdAt": "2026-10-17T05:24:10.5177274"
+          }
+        ],
+        "spendTrend": [
+          {
+            "date": "2026-10-03",
+            "amount": 250
+          },
+          {
+            "date": "2026-10-09",
+            "amount": 12
+          },
+          {
+            "date": "2026-10-16",
+            "amount": 2728.9
+          },
+          {
+            "date": "2026-10-17",
+            "amount": 2194.9
+          },
+          {
+            "date": "2026-10-30",
+            "amount": 10
+          },
+          {
+            "date": "2026-10-31",
+            "amount": 20
+          }
+        ]
+      },
+      "durationMs": 228,
+      "at": "2026-10-17T18:31:44.736Z"
+    }
+  ]
+}

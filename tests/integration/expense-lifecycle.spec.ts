@@ -35,7 +35,11 @@ test.describe('Expense lifecycle integration', () => {
     const create = await expenses.create(employee.accessToken, new ExpenseBuilder().withAmount(10).build());
     expect(create.status()).toBe(201);
     const created = await create.json();
-    expect((await expenses.remove(employee.accessToken, created.id)).status()).toBeGreaterThanOrEqual(400);
-    expect((await expenses.get(employee.accessToken, created.id)).status()).toBe(200);
+    const removal = await expenses.remove(employee.accessToken, created.id);
+    expect(removal.status()).toBeGreaterThanOrEqual(400);
+    expect(removal.status()).toBeLessThan(500);
+    const persisted = await expenses.get(employee.accessToken, created.id);
+    expect(persisted.status()).toBe(200);
+    expect((await persisted.json()).status).toBe(created.status);
   });
 });

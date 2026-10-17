@@ -69,11 +69,20 @@ test.describe('Adversarial authorization round 1', () => {
 
   test('R2-AUTH-08 Manager cannot create or modify policies', async ({ auth, policies }) => {
     const manager = await auth.loginAs('manager1');
+    const admin = await auth.loginAs('admin');
+    const existingResponse = await policies.list(admin.accessToken);
+    expect(existingResponse.status()).toBe(200);
+    const existingBody = await existingResponse.json();
+    const existing = existingBody.items?.[0] ?? existingBody[0];
+    expect(existing?.id).toBeTruthy();
     const response = await policies.create(manager.accessToken, {
       name: `R2 forbidden ${Date.now()}`, action: 'AutoApprove', maxAmount: 1,
       requiresReceipt: false, isActive: false,
     });
     expect(response.status()).toBe(403);
+    const { id, ...unchangedPolicy } = existing;
+    expect((await policies.update(manager.accessToken, id, unchangedPolicy)).status()).toBe(403);
+    expect((await policies.remove(manager.accessToken, id)).status()).toBe(403);
   });
 
   test('R2-AUTH-09 Finance inherits Employee capability and creates only its own expense', async ({ auth, expenses }) => {

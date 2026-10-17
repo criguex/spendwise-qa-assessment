@@ -1,0 +1,115 @@
+{
+  "id": "BUG-42",
+  "capturedAt": "2026-10-17T18:31:43.490Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": "actor Policy Engine; motivo \"Auto-approved by policy\"",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee1",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee1",
+      "requestBody": {
+        "email": "employee1@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:31:43.1022113Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000005",
+          "email": "employee1@spendwise.test",
+          "fullName": "Elena Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 213,
+      "at": "2026-10-17T18:31:43.161Z"
+    },
+    {
+      "setup": true,
+      "note": "Gasto de USD 10 → AutoApproved",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "role": "employee1",
+      "requestBody": {
+        "description": "QA evidencia 1792261903161-302e52",
+        "amount": 10,
+        "date": "2026-10-17"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseBody": {
+        "id": "5e4d2cad-83ff-4ca8-a558-8e332efba813",
+        "expenseNumber": "EXP-2026-0480",
+        "description": "QA evidencia 1792261903161-302e52",
+        "vendor": null,
+        "amount": 10,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T18:31:43.2812836Z"
+      },
+      "durationMs": 89,
+      "at": "2026-10-17T18:31:43.250Z"
+    },
+    {
+      "setup": false,
+      "note": "Historial de la decisión automática",
+      "method": "GET",
+      "path": "/api/v1/expenses/5e4d2cad-83ff-4ca8-a558-8e332efba813/history",
+      "role": "employee1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": [
+        {
+          "id": "8c1528c1-763d-4a28-8285-de988c385c6b",
+          "fromStatus": null,
+          "toStatus": "AutoApproved",
+          "performedBy": "Policy Engine",
+          "notes": "Auto-approved by policy",
+          "changedAt": "2026-10-17T18:31:43.2813439"
+        }
+      ],
+      "durationMs": 85,
+      "at": "2026-10-17T18:31:43.335Z"
+    },
+    {
+      "setup": false,
+      "note": "Detalle del gasto: no hay campo de regla",
+      "method": "GET",
+      "path": "/api/v1/expenses/5e4d2cad-83ff-4ca8-a558-8e332efba813",
+      "role": "employee1",
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "id": "5e4d2cad-83ff-4ca8-a558-8e332efba813",
+        "expenseNumber": "EXP-2026-0480",
+        "description": "QA evidencia 1792261903161-302e52",
+        "vendor": null,
+        "amount": 10,
+        "date": "2026-10-17",
+        "categoryId": null,
+        "categoryName": null,
+        "status": "AutoApproved",
+        "notes": null,
+        "receiptUrl": null,
+        "createdAt": "2026-10-17T18:31:43.2812836"
+      },
+      "durationMs": 155,
+      "at": "2026-10-17T18:31:43.490Z"
+    }
+  ]
+}

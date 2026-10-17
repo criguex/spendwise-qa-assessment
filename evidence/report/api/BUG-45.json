@@ -1,0 +1,95 @@
+{
+  "id": "BUG-45",
+  "capturedAt": "2026-10-17T18:31:46.309Z",
+  "environment": "spendwise-igs.eastus2.cloudapp.azure.com:4506",
+  "reproduced": true,
+  "observed": ".txt → 400 {\"error\":\"File type '.txt' is not allowed. Use JPG, PNG, PDF.\"}; GIF → 200; vacío → 400 {\"error\":\"No file was uploaded.\"}",
+  "exchanges": [
+    {
+      "setup": true,
+      "note": "Inicio de sesión employee2",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "role": "employee2",
+      "requestBody": {
+        "email": "employee2@spendwise.test",
+        "password": "[REDACTED]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "accessToken": "<TOKEN>",
+        "expiresAt": "2026-10-17T19:31:44.8924577Z",
+        "user": {
+          "id": "33333333-0000-0000-0000-000000000006",
+          "email": "employee2@spendwise.test",
+          "fullName": "Ernesto Employee",
+          "roles": [
+            "Employee"
+          ],
+          "managerId": "33333333-0000-0000-0000-000000000003"
+        }
+      },
+      "durationMs": 119,
+      "at": "2026-10-17T18:31:44.856Z"
+    },
+    {
+      "setup": false,
+      "note": "Archivo .txt: el mensaje lista los tipos aceptados",
+      "method": "POST",
+      "path": "/api/v1/receipts/extract",
+      "role": "employee2",
+      "requestBody": {
+        "file": "<archivo notes.txt · text/plain · 13 bytes>"
+      },
+      "status": 400,
+      "statusText": "Bad Request",
+      "responseBody": {
+        "error": "File type '.txt' is not allowed. Use JPG, PNG, PDF."
+      },
+      "durationMs": 84,
+      "at": "2026-10-17T18:31:44.940Z"
+    },
+    {
+      "setup": false,
+      "note": "Imagen GIF de 1×1 px: se acepta aunque el mensaje no la menciona",
+      "method": "POST",
+      "path": "/api/v1/receipts/extract",
+      "role": "employee2",
+      "requestBody": {
+        "file": "<archivo pixel.gif · image/gif · 42 bytes>"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseBody": {
+        "vendor": "Springhill Suites",
+        "amount": 405.49,
+        "date": "2023-05-13",
+        "categoryName": "Travel — Hotel",
+        "description": "Hotel stay",
+        "notes": null,
+        "receiptUrl": "https://spendwise-igs.eastus2.cloudapp.azure.com:4506/uploads/042b87c0-2608-45a5-a5d3-b5f44ccc7595_pixel.gif",
+        "receiptId": "0b3379d7-484f-4856-ada3-c297ee0fbd77"
+      },
+      "durationMs": 1211,
+      "at": "2026-10-17T18:31:46.151Z"
+    },
+    {
+      "setup": false,
+      "note": "Archivo PDF vacío",
+      "method": "POST",
+      "path": "/api/v1/receipts/extract",
+      "role": "employee2",
+      "requestBody": {
+        "file": "<archivo empty.pdf · application/pdf · 0 bytes>"
+      },
+      "status": 400,
+      "statusText": "Bad Request",
+      "responseBody": {
+        "error": "No file was uploaded."
+      },
+      "durationMs": 158,
+      "at": "2026-10-17T18:31:46.309Z"
+    }
+  ]
+}

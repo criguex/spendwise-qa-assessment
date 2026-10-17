@@ -4,7 +4,7 @@ import { ExpenseBuilder } from '../../src/data/expense-builder.js';
 import { environment } from '../../src/config/environment.js';
 import { LoginPage } from '../../src/pages/login.page.js';
 
-test.use({ trace: 'on', video: 'on', screenshot: 'on' });
+test.use({ video: 'on', screenshot: 'on' });
 
 async function showCursor(page: Page) {
   await page.addInitScript(() => addEventListener('DOMContentLoaded', () => {
@@ -35,28 +35,42 @@ async function loginManager(page: Page) {
   await expect(page.getByTestId('user-menu')).toBeVisible();
 }
 
-test('R2-FLOW-01-EVIDENCE repeated approval returns success', async ({ page, auth, expenses, approvals }, testInfo) => {
+test('R2-FLOW-01-EVIDENCE repeated approval is rejected', async ({ page, auth, expenses, approvals }, testInfo) => {
   const employee = await auth.loginAs('employee1');
   const created = await (await expenses.create(employee.accessToken, new ExpenseBuilder().withAmount(125).build())).json();
   const manager = await auth.loginAs('manager1');
   await approvals.approve(manager.accessToken, created.id);
+  const detailBefore = await (await expenses.get(manager.accessToken, created.id)).json();
+  const historyBefore = await (await expenses.history(manager.accessToken, created.id)).json();
   const second = await approvals.approve(manager.accessToken, created.id);
+  const detailAfter = await (await expenses.get(manager.accessToken, created.id)).json();
+  const historyAfter = await (await expenses.history(manager.accessToken, created.id)).json();
   await loginManager(page);
   await page.goto('/approvals');
   await evidencePanel(page, 'R2-FLOW-01 · Aprobación repetida aceptada', `segunda aprobación respondió HTTP ${second.status()}.`);
   await page.screenshot({ path: testInfo.outputPath('R2-FLOW-01.png'), fullPage: true });
   expect(second.status()).toBeGreaterThanOrEqual(400);
+  expect(second.status()).toBeLessThan(500);
+  expect(detailAfter.status).toBe(detailBefore.status);
+  expect(historyAfter).toHaveLength(historyBefore.length);
 });
 
-test('R2-FLOW-02-EVIDENCE rejected expense can become approved', async ({ page, auth, expenses, approvals }, testInfo) => {
+test('R2-FLOW-02-EVIDENCE rejected expense cannot become approved', async ({ page, auth, expenses, approvals }, testInfo) => {
   const employee = await auth.loginAs('employee1');
   const created = await (await expenses.create(employee.accessToken, new ExpenseBuilder().withAmount(125).build())).json();
   const manager = await auth.loginAs('manager1');
   await approvals.reject(manager.accessToken, created.id, 'R2 evidence rejection');
+  const detailBefore = await (await expenses.get(manager.accessToken, created.id)).json();
+  const historyBefore = await (await expenses.history(manager.accessToken, created.id)).json();
   const approve = await approvals.approve(manager.accessToken, created.id);
+  const detailAfter = await (await expenses.get(manager.accessToken, created.id)).json();
+  const historyAfter = await (await expenses.history(manager.accessToken, created.id)).json();
   await loginManager(page);
   await page.goto('/approvals');
   await evidencePanel(page, 'R2-FLOW-02 · Rechazado vuelve a Approved', `aprobación posterior respondió HTTP ${approve.status()}.`);
   await page.screenshot({ path: testInfo.outputPath('R2-FLOW-02.png'), fullPage: true });
   expect(approve.status()).toBeGreaterThanOrEqual(400);
+  expect(approve.status()).toBeLessThan(500);
+  expect(detailAfter.status).toBe(detailBefore.status);
+  expect(historyAfter).toHaveLength(historyBefore.length);
 });

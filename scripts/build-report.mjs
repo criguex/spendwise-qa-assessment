@@ -3,7 +3,8 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { defects, discarded, conformingControls, severityCriteria, priorityCriteria, modules } from './report/defects.mjs';
+import { defects, discarded, conformingControls, severityCriteria, priorityCriteria, modules, improvements, observations } from './report/defects.mjs';
+import { ruleText } from './report/rules.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const docs = path.join(root, 'docs');
@@ -90,7 +91,9 @@ function httpSection(api) {
   const table = rows => `<div class="tw"><table class="http"><thead><tr><th>Petición</th><th>Estado</th><th>Respuesta (recortada)</th></tr></thead><tbody>${rows.map(row).join('')}</tbody></table></div>`;
   const analysis = api.analysis ? `<div class="tw"><table class="kv">${Object.entries(api.analysis).map(([k, v]) => `<tr><td>${esc(k.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase())}</td><td><code>${esc(typeof v === 'object' ? JSON.stringify(v) : v)}</code></td></tr>`).join('')}</table></div>` : '';
   const curls = key.filter(e => e.method !== 'GET' || e.path.includes('?') || key.length === 1).map(curlFor);
-  return `<h3>Evidencia HTTP <span class="mut">· ${esc(cot(api.capturedAt))} (hora Colombia)</span></h3>${table(key)}${analysis}
+  const card = path.join(evidence, 'api', `${api.id}.png`);
+  const shot = fs.existsSync(card) ? `<figure class="card-shot"><img loading="lazy" src="${dataUri(jpeg(card, 1236, 70), 'image/jpeg')}" alt="Evidencia HTTP ${esc(api.id)}"><figcaption><b>Captura de la evidencia HTTP</b> · petición y respuesta reales, saneadas</figcaption></figure>` : '';
+  return `<h3>Evidencia HTTP <span class="mut">· ${esc(cot(api.capturedAt))} (hora Colombia)</span></h3>${shot}<details><summary>Peticiones y respuestas en texto</summary>${table(key)}</details>${analysis}
   ${setup.length ? `<details><summary>Preparación: ${setup.length} petición${setup.length > 1 ? 'es' : ''} (inicio de sesión y datos)</summary>${table(setup)}</details>` : ''}
   ${curls.length ? `<details><summary>Reproducir con cURL</summary><pre class="code">${esc(curls.join('\n\n'))}</pre><p class="mut">Requiere el bloque de preparación de la sección <a href="#anexo-curl">Reproducción por cURL</a>. $EXPENSE_ID es un gasto creado para el caso.</p></details>` : ''}`;
 }
@@ -103,6 +106,15 @@ function uiSection(ui, media, id, actual) {
   const final = media.final ? `<figure class="wide"><img loading="lazy" src="${dataUri(jpeg(media.final, 1280, 72), 'image/jpeg')}" alt="${esc(`${id} resultado`)}"><figcaption><b>Resultado</b> · ${esc(actual)}</figcaption></figure>` : '';
   const video = media.video ? `<figure class="wide"><video controls preload="none" playsinline poster="${dataUri(poster(media.video), 'image/jpeg')}" src="${dataUri(webVideo(media.video), 'video/mp4')}"></video><figcaption><b>Video del paso a paso</b> · puntero visible, pasos numerados y resultado esperado frente al real</figcaption></figure>` : '';
   return `<h3>Evidencia visual <span class="mut">· ${esc(cot(ui.recordedAt))} (hora Colombia)</span></h3><div class="media">${video}${final}</div>${steps ? `<div class="grid">${steps}</div>` : ''}`;
+}
+
+function improvementSection(i) {
+  const dir = path.join(evidence, 'improvements');
+  const shots = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.startsWith(i.id) && /\.png$/.test(f)).sort() : [];
+  const figs = shots.map(f => `<figure class="card-shot"><img loading="lazy" src="${dataUri(jpeg(path.join(dir, f), 1236, 70), 'image/jpeg')}" alt="${esc(f)}"><figcaption>${esc(f.replace('.png', ''))}</figcaption></figure>`).join('');
+  return `<section class="defect" id="${i.id}"><h3>${i.id} — ${esc(i.title)} <span class="mut">· ${esc(i.area)}</span></h3>
+  <div class="card imp"><table class="kv"><tr><td>Observado</td><td>${esc(i.observed)}</td></tr><tr><td>Por qué es mejora y no defecto</td><td>${esc(i.whyNotDefect)}</td></tr><tr><td>Beneficio</td><td>${esc(i.benefit)}</td></tr><tr><td>Criterio de aceptación</td><td>${esc(i.acceptance)}</td></tr>${i.tests.length ? `<tr><td>Pruebas</td><td>${i.tests.map(t => `<code>${esc(t)}</code>`).join(' ')}</td></tr>` : ''}</table></div>
+  ${figs ? `<div class="evid">${figs}</div>` : '<p class="mut">Sin captura.</p>'}</section>`;
 }
 
 const sevPill = s => `<span class="pill sev-${slug(s)}">${esc(s)}</span>`;
@@ -134,6 +146,7 @@ function defectSection(d, ev) {
     </table>
   </div>
   <div class="ev2"><div class="exp"><b>Esperado</b><p>${inline(d.expected)}</p></div><div class="act"><b>Real</b><p>${inline(d.actual)}</p>${ev.api?.observed ? `<p class="mut">Última ejecución: ${esc(ev.api.observed)}</p>` : ''}</div></div>
+  <h3>Por qué es un defecto</h3><div class="card why"><ul>${d.rules.map(r => `<li><b>${esc(r)}</b>${ruleText[r] ? `: «${esc(ruleText[r])}»` : ''}</li>`).join('')}</ul><p>El sistema hace otra cosa: ${inline(d.actual)} Por eso no cumple ${d.rules.length > 1 ? 'estas reglas' : 'la regla'}.</p></div>
   <h3>Pasos para reproducir</h3><div class="card"><ol>${d.steps.map(s => `<li>${inline(s)}</li>`).join('')}</ol></div>
   <h3>Severidad y prioridad</h3><div class="card"><p>${sevPill(d.severity)} ${esc(d.severityWhy)}</p><p>${priPill(d.priority)} ${esc(d.priorityWhy)}</p>${d.note ? `<p class="mut">${esc(d.note)}</p>` : ''}</div>
   ${ev.api ? httpSection(ev.api) : ''}
@@ -147,7 +160,7 @@ function registerTable(list, evs) {
   const rows = list.map(d => {
     const ev = evs.get(d.id);
     const rv = reverification(ev);
-    const kinds = [ev.api ? 'HTTP' : null, ev.media?.video ? 'Video' : null, ev.media?.steps?.length || ev.media?.final ? 'Capturas' : null].filter(Boolean);
+    const kinds = [ev.api ? 'HTTP' : null, ev.media?.video ? 'Video' : null, ev.media?.steps?.length || ev.media?.final || (ev.api && fs.existsSync(path.join(evidence, 'api', `${d.id}.png`))) ? 'Capturas' : null].filter(Boolean);
     return `<tr data-sev="${slug(d.severity)}" data-mod="${esc(d.module)}"><td><a href="#${d.id}"><b>${d.id}</b></a></td><td>${esc(d.module)}</td><td>${esc(d.title)}</td><td>${esc(d.severityWhy)}</td><td>${esc(d.priority)}</td><td><span class="st ${rv.ok ? 'bad' : 'neutral'}">${rv.ok ? 'Reproduce' : esc(rv.text)}</span></td><td>${kinds.map(k => `<span class="tag">${k}</span>`).join(' ')}</td></tr>`;
   }).join('');
   return `<div class="tw"><table class="register"><thead><tr><th>ID</th><th>Módulo</th><th>Defecto</th><th>Por qué esta severidad</th><th>Prioridad</th><th>17-oct</th><th>Evidencia</th></tr></thead><tbody>${rows}</tbody></table></div>`;
@@ -179,7 +192,7 @@ a{color:var(--blue)}.mut{color:var(--mut);font-size:13px}code{background:var(--s
 pre{margin:6px 0 0;font:11.5px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-word}pre.code{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px}
 .tw{overflow-x:auto}table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);font-size:13.5px;margin:6px 0}th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.02em}
 table.kv td:first-child{color:var(--mut);width:200px;white-space:nowrap}table.http td:nth-child(1){width:38%}table.http td:nth-child(2){width:70px;text-align:center}
-td.num{text-align:center;width:70px}table.register td:first-child{white-space:nowrap}.h-alta{background:var(--redbg);color:var(--red);font-weight:700}.h-media{background:var(--amberbg);color:var(--amber);font-weight:700}.h-baja{background:var(--bluebg);color:var(--blue);font-weight:700}tr.tot td{background:var(--soft)}
+td.num{text-align:center;width:70px}table.register td:first-child,table:not(.http):not(.kv) td:first-child{white-space:nowrap}.h-alta{background:var(--redbg);color:var(--red);font-weight:700}.h-media{background:var(--amberbg);color:var(--amber);font-weight:700}.h-baja{background:var(--bluebg);color:var(--blue);font-weight:700}tr.tot td{background:var(--soft)}
 .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;margin:0 4px 4px 0}.sev-alta{background:var(--redbg);color:var(--red)}.sev-media{background:var(--amberbg);color:var(--amber)}.sev-baja{background:var(--bluebg);color:var(--blue)}.pri{background:var(--soft);color:var(--ink)}.pill.bad{background:var(--redbg);color:var(--red)}.pill.neutral{background:var(--soft);color:var(--mut)}
 .st{font-weight:700}.st.ok{color:var(--green)}.st.warn{color:var(--amber)}.st.bad{color:var(--red)}.st.neutral{color:var(--mut)}
 .tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:5px;background:var(--soft);color:var(--mut);margin:1px}
@@ -187,7 +200,7 @@ td.num{text-align:center;width:70px}table.register td:first-child{white-space:no
 details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:8px 0;padding:0 12px}details summary{cursor:pointer;padding:9px 0;font-weight:600}details[open]{padding-bottom:10px}
 .media{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:10px}
 figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}figure img{width:100%;display:block;cursor:zoom-in;background:#fff}figure video{width:100%;display:block;background:#000}figcaption{padding:7px 10px;color:var(--mut);font-size:12.5px}
-.defect{scroll-margin-top:10px}.defect h2{border-color:var(--line)}.top{text-align:right;font-size:13px;margin:8px 0 0}
+.why{border-left:5px solid var(--red)}.why ul{margin-left:16px}figure.card-shot{max-width:900px;margin:6px 0 8px}.imp{border-left:5px solid var(--amber)}.defect{scroll-margin-top:10px}.defect h2{border-color:var(--line)}.top{text-align:right;font-size:13px;margin:8px 0 0}
 .filters{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.filters button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}.filters button.on{border-color:var(--blue);color:var(--blue);font-weight:700}
 ul,ol{margin:6px 0 6px 20px;padding:0}li{margin:4px 0}
 #lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:20;align-items:center;justify-content:center;cursor:zoom-out}#lb img{max-width:96vw;max-height:94vh}
@@ -208,7 +221,7 @@ function buildReport(inv, evs) {
   const lastRun = [...evs.values()].flatMap(e => [e.api?.capturedAt, e.ui?.recordedAt]).filter(Boolean).sort().at(-1);
   const highs = defects.filter(d => d.severity === 'Alta');
   const ref = ids => ids.map(id => `<a href="#${id}">${id}</a>`).join(', ');
-  const toc = [['resumen', '1. Resumen ejecutivo'], ['lectura', '2. Cómo leer este informe'], ['modulos', '3. Defectos por módulo'], ['registro', '4. Registro de defectos'], ['fichas', '5. Fichas de defecto'], ['descartados', '6. Hallazgos descartados y controles conformes'], ['cobertura', '7. Cobertura y ejecución'], ['salida', '8. Recomendación y criterios de salida'], ['anexos', '9. Anexos']];
+  const toc = [['resumen', '1. Resumen ejecutivo'], ['lectura', '2. Cómo leer este informe'], ['modulos', '3. Defectos por módulo'], ['registro', '4. Registro de defectos'], ['fichas', '5. Fichas de defecto'], ['mejoras', '6. Oportunidades de mejora'], ['descartados', '7. Descartados, observaciones y controles conformes'], ['cobertura', '8. Cobertura y ejecución'], ['salida', '9. Recomendación y criterios de salida'], ['anexos', '10. Anexos']];
   const body = `
 <header class="hero"><h1>SpendWise · Informe de QA de la versión candidata</h1>
 <p>Prueba de aceptación de caja negra sobre la aplicación web y la API · Cristian Guerra, QA Analyst</p>
@@ -224,11 +237,11 @@ function buildReport(inv, evs) {
 <p>SpendWise funciona en lo básico: se inicia sesión, se registran gastos, se aprueban y se consultan reportes, y el control de acceso por rol de la API resiste los intentos de saltarlo. El problema está en las reglas que protegen el dinero: hoy el sistema aprueba solo gastos que deberían revisarse, acepta gastos sin comprobante, permite revertir o tomar decisiones sin justificación y muestra totales inflados. Con esos riesgos abiertos, una salida a producción expondría a la empresa a gastos aprobados sin control y a reportes financieros que no se pueden creer.</p>
 <p>La versión se puede reconsiderar cuando se corrijan y re-verifiquen los ${count('Alta')} defectos de severidad alta y pase la regresión automatizada. Los ${count('Media') + count('Baja')} defectos medios y bajos pueden corregirse después si negocio acepta el riesgo por escrito.</p></div>
 <div class="card"><b>Principales riesgos</b><ul>
-<li><b>Dinero aprobado sin el control previsto.</b> Un gasto de exactamente USD 50 se aprueba solo, los gastos de USD 25 o más se aceptan sin recibo y cualquier texto vale como "recibo" (${ref(['BUG-18', 'BUG-39', 'BUG-15'])}).</li>
-<li><b>Decisiones que no son definitivas ni justificadas.</b> Un gasto rechazado se puede aprobar después, se puede rechazar sin motivo, una segunda aprobación ensucia la auditoría y un gasto ya aprobado se puede borrar (${ref(['BUG-36', 'BUG-29', 'BUG-35', 'BUG-08'])}).</li>
-<li><b>Cifras que no son confiables.</b> Los reportes suman los gastos rechazados en los totales (${ref(['BUG-12'])}).</li>
+<li><b>Gastos aprobados o rechazados por las razones equivocadas.</b> Un gasto de exactamente USD 50 se aprueba solo, los gastos de USD 25 o más se aceptan sin recibo, cualquier texto vale como "recibo" y la acción Block está invertida: rechaza los montos pequeños y deja pasar los que superan el límite (${ref(['BUG-18', 'BUG-39', 'BUG-15', 'BUG-41'])}).</li>
+<li><b>Decisiones que no son definitivas ni justificadas.</b> Un gasto Approved, Rejected o AutoApproved puede cambiar de decisión o borrarse, se puede rechazar sin motivo, una segunda aprobación ensucia la auditoría y las decisiones automáticas no dicen qué regla las tomó (${ref(['BUG-36', 'BUG-08', 'BUG-29', 'BUG-35', 'BUG-42'])}).</li>
+<li><b>Cifras que no son confiables.</b> Reportes y tablero suman gastos rechazados y fechas futuras, algunos indicadores son textos fijos y, si una carga falla, las pantallas muestran listas vacías en lugar de un error (${ref(['BUG-12', 'BUG-44', 'BUG-48', 'BUG-50', 'BUG-40'])}).</li>
 <li><b>Datos inválidos y errores internos.</b> Se guardan montos en cero, negativos o con tres decimales y gastos sin datos obligatorios; varios datos mal escritos producen errores del servidor en lugar de un mensaje claro (${ref(['BUG-01', 'BUG-02', 'BUG-14', 'BUG-03', 'BUG-11', 'BUG-28'])}).</li>
-<li><b>Seguridad y trazabilidad.</b> El CSV exportado permite inyectar fórmulas que se ejecutan al abrirlo en una hoja de cálculo, y el aprobador no ve quién envió el gasto (${ref(['BUG-13', 'BUG-19'])}).</li></ul></div>
+<li><b>Seguridad y trazabilidad.</b> El CSV exportado permite inyectar fórmulas y el aprobador no ve quién envió el gasto (${ref(['BUG-13', 'BUG-19'])}).</li></ul></div>
 
 <h2 id="lectura">2. Cómo leer este informe</h2>
 <div class="card"><ul>
@@ -249,13 +262,17 @@ ${registerTable([...highs, ...defects.filter(d => d.severity === 'Media'), ...de
 <p class="mut">Cada ficha incluye regla, rol y usuario, pasos, esperado frente a real, severidad y prioridad justificadas, evidencia y una sugerencia de corrección.</p>
 ${defects.map(d => defectSection(d, evs.get(d.id))).join('\n')}
 
-<h2 id="descartados">6. Hallazgos descartados y controles conformes</h2>
+<h2 id="mejoras">6. Oportunidades de mejora</h2>
+<p>No se cuentan como defectos ni cambian la recomendación: el anexo no define un resultado obligatorio para ellas, pero endurecen el producto, el contrato o la suite.</p>
+${improvements.map(i => improvementSection(i)).join('\n')}
+<h2 id="descartados">7. Hallazgos descartados, observaciones y controles conformes</h2>
 <p>Un fallo automatizado no se convierte en defecto sin revisar el requisito, la sincronización y los datos. Estos candidatos se descartaron:</p>
 <div class="tw"><table><thead><tr><th>ID</th><th>Candidato</th><th>Por qué se descartó</th><th>Prueba</th></tr></thead><tbody>${discarded.map(x => `<tr><td><b>${esc(x.id)}</b></td><td>${esc(x.title)}</td><td>${esc(x.reason)}</td><td><code>${esc(x.test)}</code></td></tr>`).join('')}</tbody></table></div>
-${(() => { const dir = path.join(root, 'evidence/selected/E2E-06-ACCESS-DENIED-PASS'); const png = path.join(dir, 'E2E-06-access-denied.png'); return fs.existsSync(png) ? `<div class="grid"><figure><img loading="lazy" src="${dataUri(jpeg(png, 900, 65), 'image/jpeg')}" alt="E2E-06"><figcaption><b>E2E-06</b> · la pantalla de acceso denegado sí aparece</figcaption></figure></div>` : ''; })()}
+${(() => { const figs = discarded.filter(x => x.image && fs.existsSync(path.join(root, x.image))).map(x => `<figure><img loading="lazy" src="${dataUri(jpeg(path.join(root, x.image), 900, 65), 'image/jpeg')}" alt="${esc(x.id)}"><figcaption><b>${esc(x.id)}</b> · ${esc(x.title)}: evidencia de por qué se descartó</figcaption></figure>`).join(''); return figs ? `<div class="grid">${figs}</div>` : ''; })()}
+<h3>Observaciones que no se reportan como defecto</h3><div class="tw"><table><thead><tr><th>ID</th><th>Observación</th><th>Detalle y decisión</th></tr></thead><tbody>${observations.map(o => `<tr><td><b>${esc(o.id)}</b></td><td>${esc(o.title)}</td><td>${esc(o.detail)}</td></tr>`).join('')}</tbody></table></div>
 <h3>Controles que funcionan como se espera</h3><div class="card"><ul>${conformingControls.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>
 
-<h2 id="cobertura">7. Cobertura y ejecución</h2>
+<h2 id="cobertura">8. Cobertura y ejecución</h2>
 <div class="tw"><table><thead><tr><th>Nivel</th><th>Pruebas</th><th>Qué cubre</th></tr></thead><tbody>
 <tr><td>Componentes</td><td class="num">${inv.byProject.component ?? 0}</td><td>Builders de datos, esquemas de consumidor y catálogo de mutantes, sin red.</td></tr>
 <tr><td>Contrato</td><td class="num">${inv.byProject.contract ?? 0}</td><td>OpenAPI publicado frente al runtime: operaciones, respuestas, seguridad, esquemas.</td></tr>
@@ -271,7 +288,7 @@ ${(() => {
   const open = run.unmapped.filter(u => u.rerun !== 'passed');
   const fixed = run.unmapped.filter(u => u.rerun === 'passed');
   const mapped = run.failed - run.unmapped.length;
-  const orphan = `<p>${mapped} de los ${run.failed} fallos corresponden a un defecto reportado.${fixed.map(u => ` <b>${esc(u.id)}</b> falló por la prueba y no por el producto: ${esc(u.cause)}`).join('')}${open.length ? ` <span class="st bad">Sin explicar: ${open.map(u => esc(u.id ?? u.title)).join(', ')}</span>` : ''}</p>`;
+  const orphan = `<p>${mapped === run.failed ? `Los ${run.failed} fallos corresponden` : `${mapped} de los ${run.failed} fallos corresponden`} a defectos reportados; cada uno de los ${defects.length} defectos tiene al menos una prueba que falla.${(run.notes ?? []).map(n => ` ${esc(n)}`).join('')}${fixed.map(u => ` <b>${esc(u.id)}</b> falló por la prueba y no por el producto: ${esc(u.cause)}`).join('')}${open.length ? ` <span class="st bad">Sin explicar: ${open.map(u => esc(u.id ?? u.title)).join(', ')}</span>` : ''}</p>`;
   return `<h3>Corrida completa · ${esc(cot(run.startedAt))}</h3><div class="kpis"><div class="kpi"><b>${run.total}</b>pruebas ejecutadas</div><div class="kpi g"><b>${run.passed}</b>pasan</div><div class="kpi r"><b>${run.failed}</b>fallan</div><div class="kpi"><b>${mins} min</b>duración</div></div>${orphan}<details><summary>Pruebas que fallan, agrupadas por defecto</summary><div class="tw"><table><thead><tr><th>Defecto</th><th>Pruebas</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
 })()}
 <h3>Ejecuciones registradas</h3>
@@ -281,18 +298,20 @@ ${(() => {
 <tr><td>Mutación de peticiones (16 mutantes)</td><td>6 rechazados · 10 sobreviven · puntaje 37,5 %</td><td><code>docs/07-pruebas-mutantes.md</code></td></tr>
 <tr><td>Rondas adversariales 1 y 2 (23 escenarios)</td><td>19 pasan · 4 fallan (BUG-35, BUG-36)</td><td><code>evidence/test-run-adversarial-rounds-2026-10-16.txt</code></td></tr>
 <tr><td>Ronda 4 de contrato y datos (22 casos)</td><td>21 pasan · 1 falla (BUG-37)</td><td><code>evidence/contract-data-r4-2026-10-16.txt</code></td></tr>
-<tr><td>Postman / Newman (25 aserciones)</td><td>20 pasan · 5 fallan por defectos</td><td><code>evidence/test-run-newman-2026-10-16.txt</code></td></tr>
-<tr><td>Verificación final (17-oct)</td><td>${reverified}/${defects.length} defectos se reproducen; se agregaron 6 pruebas (reglas del motor y pestaña Pending): 2 pasan y 4 fallan por BUG-18, BUG-39 y BUG-40</td><td><code>evidence/report/</code></td></tr></tbody></table></div>
+<tr><td>Postman / Newman (25 aserciones), re-ejecutado el 17-oct</td><td>20 pasan · 5 fallan por BUG-01, 02, 03, 04 y 07</td><td><code>evidence/test-run-newman-2026-10-17.txt</code></td></tr>
+<tr><td>Auditoría de oráculos (17-oct)</td><td>Revisión de las 36 especificaciones en busca de pruebas que pudieran pasar con el producto defectuoso: EXPA-06/07 aceptaban el comportamiento de BUG-26/27 y se corrigieron; 11 oráculos más se endurecieron (estado e historial tras decisiones, datos propios en lugar de datos semilla, esperas por respuesta en lugar de tiempos fijos, CSV analizado por celdas)</td><td><code>tests/</code></td></tr>
+<tr><td>Ronda 6: reglas del anexo sin cobertura (17-oct)</td><td>36 escenarios nuevos de API (14), integración (2) e interfaz (20). Los que fallan corresponden a 8 defectos nuevos (BUG-41 a BUG-45, BUG-47, BUG-48 y BUG-50) y a variantes nuevas de BUG-03, 08, 12 y 36. Cuatro sospechas de la ronda (R6-UI-15, R6-UI-18, BUG-46 y BUG-49) se descartaron como falsos positivos tras verificarlas</td><td><code>tests/api/round6-api.spec.ts</code>, <code>tests/integration/policy-engine-block.spec.ts</code>, <code>tests/e2e/round6-ui.spec.ts</code></td></tr>
+<tr><td>Verificación final (17-oct)</td><td>${reverified}/${defects.length} defectos se reproducen con evidencia nueva (HTTP o video)</td><td><code>evidence/report/</code></td></tr></tbody></table></div>
 <p class="mut">Rendimiento y carga están fuera del alcance del enunciado; solo se registró una observación serial de tiempos (docs/06). Las pruebas que crean datos usan descripciones únicas y las reglas de prueba se crean inactivas y se eliminan al terminar.</p>
 
-<h2 id="salida">8. Recomendación y criterios de salida</h2>
+<h2 id="salida">9. Recomendación y criterios de salida</h2>
 <div class="card"><ol>
 <li>Corregir los ${count('Alta')} defectos de severidad alta: ${highs.map(d => `<a href="#${d.id}">${d.id.replace('BUG-', '')}</a>`).join(', ')}.</li>
 <li>Re-verificar cada uno con su prueba automatizada (columna "Pruebas automatizadas" de cada ficha) y ejecutar la regresión completa con <code>npm test</code> y <code>npm run test:postman</code>.</li>
 <li>Documentar en el OpenAPI los códigos reales y las respuestas de error para que el contrato se pueda validar en CI.</li>
 <li>Para los defectos medios y bajos que no se corrijan antes de la salida, registrar la aceptación del riesgo por parte de negocio.</li></ol></div>
 
-<h2 id="anexos">9. Anexos</h2>
+<h2 id="anexos">10. Anexos</h2>
 <h3 id="anexo-curl">Reproducción por cURL</h3>
 <pre class="code">export API="https://&lt;host asignado&gt;:4506"
 export GATE_USER="&lt;usuario de la puerta del entorno&gt;" GATE_PASS="&lt;contraseña de la puerta&gt;" SEED_PASS="&lt;contraseña de las cuentas&gt;"
@@ -385,5 +404,6 @@ fs.writeFileSync(path.join(docs, '01-reporte-defectos.md'), buildMarkdown(evs));
 for (const [name, title] of sections) fs.writeFileSync(path.join(docs, `${name}.html`), buildSection(name, title));
 fs.writeFileSync(path.join(root, '00-INDICE.html'), buildIndex(inv));
 const size = fs.statSync(path.join(docs, 'INFORME-QA-SpendWise.html')).size;
-const missing = defects.filter(d => !evs.get(d.id).api && !evs.get(d.id).ui).map(d => d.id);
-console.log(`Informe: docs/INFORME-QA-SpendWise.html (${(size / 1048576).toFixed(1)} MB) · ${inv.tests} pruebas en ${inv.files} archivos · sin evidencia nueva: ${missing.join(', ') || 'ninguno'}`);
+const missing = defects.filter(d => !fs.existsSync(path.join(evidence, 'api', `${d.id}.png`)) && !evs.get(d.id).media?.final).map(d => d.id);
+const impMissing = improvements.filter(i => !fs.existsSync(path.join(evidence, 'improvements')) || !fs.readdirSync(path.join(evidence, 'improvements')).some(f => f.startsWith(i.id))).map(i => i.id);
+console.log(`Informe: docs/INFORME-QA-SpendWise.html (${(size / 1048576).toFixed(1)} MB) · ${inv.tests} pruebas en ${inv.files} archivos · defectos sin captura: ${missing.join(', ') || 'ninguno'} · mejoras sin captura: ${impMissing.join(', ') || 'ninguna'}`);

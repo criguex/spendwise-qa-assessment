@@ -6,16 +6,16 @@
 |---|---|---|---|---|---|---|
 | BUG-01 | La API registra gastos con monto cero | Registro de gastos | RN-02, RN-06 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
 | BUG-02 | La API acepta montos negativos y con más de dos decimales | Registro de gastos | RN-02 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
-| BUG-03 | Textos que superan su longitud máxima producen error 500 | Registro de gastos | RN-04, RN-06 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
+| BUG-03 | Textos que superan su longitud máxima producen error 500 | Registro de gastos | RN-04, RN-06 | Alta | Alta | Reproduce · 17 de oct, 13:31 |
 | BUG-04 | El listado de gastos con página cero responde 500 | Listados y filtros | RN-06 | Media | Alta | Reproduce · 17 de oct, 00:22 |
 | BUG-05 | El motor de políticas acepta reglas con nombre vacío o límite negativo | Motor de políticas | RN-32 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
 | BUG-06 | El OpenAPI no documenta respuestas de error ni esquemas de respuesta | Contrato de la API | Anexo G §4, Criterio profesional | Media | Media | Reproduce · 17 de oct, 00:22 |
 | BUG-07 | Las categorías no devuelven su ícono | Contrato de la API | Anexo D | Baja | Media | Reproduce · 17 de oct, 00:22 |
-| BUG-08 | Se puede eliminar un gasto AutoApproved | Aprobaciones y auditoría | RN-52, RN-51, Anexo F §3 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
+| BUG-08 | Se pueden eliminar gastos ya decididos (AutoApproved, Approved y Rejected) | Aprobaciones y auditoría | RN-52, RN-51, Anexo F §3 | Alta | Alta | Reproduce · 17 de oct, 13:31 |
 | BUG-09 | Tras iniciar sesión desde una ruta protegida no se vuelve a esa ruta | Acceso y navegación | Anexo G §3.10 | Media | Media | Reproduce · 17 de oct, 00:18 |
 | BUG-10 | Administrator ve y puede abrir "New expense" aunque no puede registrar gastos | Acceso y navegación | Anexo G §2.2, Anexo G §3.14 | Media | Media | Reproduce · 17 de oct, 00:18 |
 | BUG-11 | Registrar un gasto con una categoría inexistente responde 500 | Registro de gastos | RN-05, RN-06 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
-| BUG-12 | Los reportes suman gastos rechazados en los totales | Reportes y CSV | RN-61 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
+| BUG-12 | Reportes y tablero suman los gastos rechazados en los totales | Reportes y CSV | RN-61 | Alta | Alta | Reproduce · 17 de oct, 13:31 |
 | BUG-13 | La exportación CSV no neutraliza valores que empiezan por "=" | Reportes y CSV | RN-63 | Alta | Alta | Reproduce · 17 de oct, 00:18 |
 | BUG-14 | La API acepta campos obligatorios vacíos o ausentes | Registro de gastos | RN-01, RN-06 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
 | BUG-15 | Cualquier texto se acepta como "recibo" del gasto | Recibos | RN-23 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
@@ -38,11 +38,19 @@
 | BUG-33 | La pantalla Reports consulta un rango de fechas invertido sin avisar | Reportes y CSV | RN-70 | Media | Alta | Reproduce · 17 de oct, 00:20 |
 | BUG-34 | My Expenses se desborda horizontalmente en pantallas de 320 px | Interfaz y accesibilidad | WCAG 2.1 · 1.4.10, Criterio profesional | Media | Media | Reproduce · 17 de oct, 00:20 |
 | BUG-35 | Aprobar dos veces el mismo gasto responde 200 y duplica la auditoría | Aprobaciones y auditoría | RN-40, RN-50, Anexo F §3 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
-| BUG-36 | Un gasto Rejected puede aprobarse después | Aprobaciones y auditoría | RN-40, RN-44, Anexo F §3 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
+| BUG-36 | Un gasto ya decidido puede cambiar de decisión | Aprobaciones y auditoría | RN-40, RN-44, Anexo F §3 | Alta | Alta | Reproduce · 17 de oct, 13:31 |
 | BUG-37 | La API acepta propiedades que el contrato prohíbe | Contrato de la API | OpenAPI additionalProperties: false, RN-03 | Media | Media | Reproduce · 17 de oct, 00:22 |
 | BUG-38 | Si el registro de un gasto falla, la interfaz no muestra ningún error | Interfaz y accesibilidad | RN-70, RN-71 | Media | Alta | Reproduce · 17 de oct, 00:21 |
 | BUG-39 | Se aceptan gastos de USD 25 o más sin recibo | Recibos | RN-20, Anexo E §4 | Alta | Alta | Reproduce · 17 de oct, 00:22 |
 | BUG-40 | La pestaña Pending de My Expenses siempre aparece vacía | Listados y filtros | RN-60, RN-70, Anexo F §1 | Media | Alta | Reproduce · 17 de oct, 00:22 |
+| BUG-41 | La regla Block rechaza los montos por debajo del límite y deja pasar los que lo superan | Motor de políticas | Anexo E §2, Anexo E §3 | Alta | Alta | Reproduce · 17 de oct, 13:38 |
+| BUG-42 | Las decisiones automáticas no indican qué regla las produjo | Motor de políticas | RN-31, RN-30 | Media | Media | Reproduce · 17 de oct, 13:31 |
+| BUG-43 | Aprobar no admite el comentario opcional | Aprobaciones y auditoría | RN-41, RN-50 | Media | Media | Reproduce · 17 de oct, 13:31 |
+| BUG-44 | El tablero suma gastos con fecha futura en el mes en curso | Reportes y CSV | RN-61 | Media | Alta | Reproduce · 17 de oct, 13:31 |
+| BUG-45 | El error de carga de recibos no menciona todos los tipos aceptados | Recibos | RN-22, RN-21 | Baja | Media | Reproduce · 17 de oct, 13:31 |
+| BUG-47 | El botón "Export CSV" de My Expenses no hace nada | Reportes y CSV | RN-63 | Media | Media | Reproduce · 17 de oct, 13:46 |
+| BUG-48 | La interfaz muestra indicadores fijos que simulan métricas | Reportes y CSV | RN-62 | Media | Media | Reproduce · 17 de oct, 13:46 |
+| BUG-50 | Si falla la carga, la interfaz muestra listas vacías en lugar de un error | Interfaz y accesibilidad | RN-70 | Media | Alta | Reproduce · 17 de oct, 13:48 |
 
 ## BUG-01 — La API registra gastos con monto cero
 
@@ -92,12 +100,13 @@
   2. Registrar un gasto con descripción de 501 caracteres.
   3. Repetir con proveedor de 201 caracteres.
   4. Repetir con notas de 1001 caracteres.
+  5. Repetir con un enlace de recibo de más de 500 caracteres.
 - Resultado esperado: HTTP 400 que indique el campo y su límite.
-- Resultado obtenido: HTTP 500 "An unexpected error occurred." en los tres casos.
+- Resultado obtenido: HTTP 500 "An unexpected error occurred." en los cuatro casos.
 - Severidad: **Alta**. Una entrada normal del usuario llega sin validar a la capa de datos y rompe el registro con un error interno.
 - Prioridad: **Alta**. RN-04 fija los límites; el usuario no sabe qué corregir y el error cuenta como caída del servicio.
-- Reproducibilidad: 3/3 el 16-oct; Reproduce · 17 de oct, 00:22.
-- Pruebas: VAL-04, VAL-05, VAL-06, MUT-EXP-05, Newman: descripción 501
+- Reproducibilidad: 3/3 el 16-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: VAL-04, VAL-05, VAL-06, MUT-EXP-05, R6-API-09, Newman: descripción 501
 - Evidencia: `evidence/report/api/BUG-03.json`
 - Sugerencia: Validar longitudes (500/200/1000/500) en el contrato de entrada antes de persistir.
 
@@ -178,22 +187,22 @@
 - Sugerencia: Incluir icon en el contrato de categorías.
 - Nota: Los identificadores tienen formato GUID válido (p. ej. 33333333-0000-0000-0000-000000000005) aunque no siguen la versión RFC 4122; se deja como observación y no como defecto.
 
-## BUG-08 — Se puede eliminar un gasto AutoApproved
+## BUG-08 — Se pueden eliminar gastos ya decididos (AutoApproved, Approved y Rejected)
 
 - Regla: RN-52, RN-51, Anexo F §3
 - Rol y usuario: Employee, `employee2@spendwise.test`
 - Dónde: `DELETE /api/v1/expenses/{id}`
 - Precondiciones: Sesión de employee2 y un gasto propio de USD 10 creado por la prueba.
 - Pasos:
-  1. Registrar un gasto de USD 10 (queda AutoApproved).
-  2. Eliminarlo con DELETE /api/v1/expenses/{id}.
-  3. Consultarlo de nuevo.
-- Resultado esperado: Error; el gasto y su historial se conservan.
-- Resultado obtenido: HTTP 204 y el gasto deja de existir (la consulta posterior responde 404).
+  1. Registrar un gasto de USD 10 (queda AutoApproved) y eliminarlo con DELETE /api/v1/expenses/{id}.
+  2. Repetir con un gasto aprobado por su gerente y con uno rechazado.
+  3. Consultar cada gasto de nuevo.
+- Resultado esperado: Error en los tres casos; el gasto y su historial se conservan.
+- Resultado obtenido: HTTP 204 en los tres estados finales; los gastos dejan de existir (la consulta posterior responde 404) y su historial tampoco se puede consultar.
 - Severidad: **Alta**. Desaparece un gasto ya decidido y con él su rastro; un empleado puede borrar lo que el motor aprobó.
 - Prioridad: **Alta**. Viola un estado final y la conservación de la auditoría.
-- Reproducibilidad: Confirmado por INT-03 el 16-oct; Reproduce · 17 de oct, 00:22.
-- Pruebas: INT-03
+- Reproducibilidad: Confirmado por INT-03 el 16-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: INT-03, R6-API-05a, R6-API-05b
 - Evidencia: `evidence/report/api/BUG-08.json`
 - Sugerencia: Permitir DELETE solo en PendingApproval y validar el estado en el servidor.
 
@@ -252,24 +261,24 @@
 - Evidencia: `evidence/report/api/BUG-11.json`
 - Sugerencia: Validar que la categoría exista antes de guardar.
 
-## BUG-12 — Los reportes suman gastos rechazados en los totales
+## BUG-12 — Reportes y tablero suman los gastos rechazados en los totales
 
 - Regla: RN-61
 - Rol y usuario: FinanceController, `finance@spendwise.test`
 - Dónde: `GET /api/v1/reports`
-- Precondiciones: Sesión de finance; existen gastos Rejected en el periodo.
+- Precondiciones: Existen gastos Rejected en el periodo.
 - Pasos:
-  1. Iniciar sesión como finance.
-  2. Consultar GET /api/v1/reports.
-  3. Sumar la lista expenses excluyendo los Rejected y comparar con totalAmount, totalCount y byCategory.
-- Resultado esperado: Totales y agregados calculados solo con gastos no rechazados.
-- Resultado obtenido: totalAmount, totalCount y byCategory incluyen los gastos rechazados.
+  1. Iniciar sesión como finance y consultar GET /api/v1/reports.
+  2. Sumar la lista expenses excluyendo los Rejected y comparar con totalAmount, totalCount y byCategory.
+  3. Iniciar sesión como employee1 y comparar spendThisMonth de GET /api/v1/dashboard/summary con sus gastos no rechazados del mes.
+- Resultado esperado: Totales, agregados y gasto del mes calculados solo con gastos no rechazados.
+- Resultado obtenido: totalAmount, totalCount y byCategory de Reports incluyen los rechazados, y el gasto del mes del tablero coincide exactamente con la suma que incluye los rechazados.
 - Severidad: **Alta**. Finanzas y Administración ven cifras de gasto infladas, que es justo la información que usan para decidir.
 - Prioridad: **Alta**. Error de cálculo en el producto financiero principal.
-- Reproducibilidad: 3/3 el 16-oct; Reproduce · 17 de oct, 00:22.
-- Pruebas: INT-ANA-01, INT-ANA-02, INT-ANA-03
+- Reproducibilidad: 3/3 el 16-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: INT-ANA-01, INT-ANA-02, INT-ANA-03, R6-API-11, R6-UI-02
 - Evidencia: `evidence/report/api/BUG-12.json`
-- Sugerencia: Filtrar status <> Rejected en el cálculo de totales y agregados.
+- Sugerencia: Filtrar status <> Rejected en el cálculo de totales, agregados y gasto del mes.
 
 ## BUG-13 — La exportación CSV no neutraliza valores que empiezan por "="
 
@@ -520,7 +529,7 @@
 - Severidad: **Media**. Un error de entrada se presenta como un periodo sin gastos.
 - Prioridad: **Alta**. Lleva a conclusiones financieras equivocadas; la pantalla también lo permite (BUG-33).
 - Reproducibilidad: 3/3 el 16-oct; Reproduce · 17 de oct, 00:22.
-- Pruebas: MUT-REP-01
+- Pruebas: MUT-REP-01, EXPA-06
 - Evidencia: `evidence/report/api/BUG-26.json`
 - Sugerencia: Validar dateFrom ≤ dateTo.
 
@@ -537,7 +546,7 @@
 - Severidad: **Media**. Un error de integración se ve como ausencia legítima de gastos.
 - Prioridad: **Media**. Sin efecto en datos.
 - Reproducibilidad: 3/3 el 16-oct; Reproduce · 17 de oct, 00:22.
-- Pruebas: MUT-REP-02
+- Pruebas: MUT-REP-02, EXPA-07
 - Evidencia: `evidence/report/api/BUG-27.json`
 - Sugerencia: Validar la categoría contra el catálogo.
 
@@ -670,22 +679,23 @@
 - Evidencia: `evidence/report/api/BUG-35.json`
 - Sugerencia: Validar que el gasto esté PendingApproval antes de decidir y hacerlo de forma atómica.
 
-## BUG-36 — Un gasto Rejected puede aprobarse después
+## BUG-36 — Un gasto ya decidido puede cambiar de decisión
 
 - Regla: RN-40, RN-44, Anexo F §3
 - Rol y usuario: Manager, `manager1@spendwise.test`
 - Dónde: `PUT /api/v1/approvals/{id}/approve`
-- Precondiciones: Un gasto PendingApproval de employee1 rechazado con motivo; sesión de manager1.
+- Precondiciones: Gastos de employee1 en cada estado final; sesiones de manager1 y finance.
 - Pasos:
-  1. Rechazar el gasto con motivo válido.
-  2. Aprobar el mismo gasto.
-  3. Consultar el gasto y su historial.
-- Resultado esperado: HTTP 4xx; el gasto sigue Rejected.
-- Resultado obtenido: HTTP 200; el estado pasa a Approved y la nota vigente sigue siendo "Rejected: …" (RN-44).
+  1. Rechazar un gasto pendiente con motivo y luego aprobarlo.
+  2. Aprobar un gasto pendiente y luego rechazarlo.
+  3. Registrar un gasto de USD 10 (AutoApproved) y, como finance, aprobarlo y luego rechazarlo.
+  4. Consultar el estado final y el historial de cada gasto.
+- Resultado esperado: Toda decisión sobre un gasto Approved, Rejected o AutoApproved responde 4xx y el gasto no cambia.
+- Resultado obtenido: HTTP 200 en todas las variantes: Rejected → Approved (la nota vigente sigue siendo "Rejected: …", RN-44), Approved → Rejected y AutoApproved → Approved → Rejected.
 - Severidad: **Alta**. Revierte una decisión financiera cerrada; además el gasto aprobado conserva como nota el motivo del rechazo.
 - Prioridad: **Alta**. Rompe la inmutabilidad de un estado final.
-- Reproducibilidad: 2/2 el 16-oct; Reproduce · 17 de oct, 00:22.
-- Pruebas: R2-FLOW-02, R2-FLOW-02-EVIDENCE
+- Reproducibilidad: 2/2 el 16-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: R2-FLOW-02, R2-FLOW-02-EVIDENCE, R6-API-03, R6-API-04
 - Evidencia: `evidence/report/api/BUG-36.json`
 - Sugerencia: Mismo control de estado que BUG-35; limpiar o marcar como historial la nota anterior.
 
@@ -763,9 +773,163 @@
 - Evidencia: `evidence/report/api/BUG-40.json` y `evidence/report/BUG-40/`
 - Sugerencia: Enviar status=PendingApproval desde la pestaña Pending.
 
+## BUG-41 — La regla Block rechaza los montos por debajo del límite y deja pasar los que lo superan
+
+- Regla: Anexo E §2, Anexo E §3
+- Rol y usuario: Administrator y Employee, `admin@spendwise.test, employee3@spendwise.test`
+- Dónde: `POST /api/v1/policies, POST /api/v1/expenses`
+- Precondiciones: Sesión de admin. La regla se crea activa solo durante la prueba y se elimina al terminar; las dos reglas originales quedan intactas.
+- Pasos:
+  1. Crear una regla Block activa con maxAmount 100.
+  2. Registrar como employee3 gastos de USD 150, 60 y 10 con recibo.
+  3. Eliminar la regla.
+- Resultado esperado: USD 150 (supera el límite) queda Rejected por Policy Engine; USD 60 y 10 no se bloquean.
+- Resultado obtenido: USD 150 queda PendingApproval; USD 60 y USD 10 quedan Rejected por Policy Engine. La comparación está invertida. Una regla Block sin límite sí rechaza todo, como se espera.
+- Severidad: **Alta**. La acción Block hace lo contrario de lo definido: rechaza gastos pequeños legítimos y deja pasar a aprobación los que superan el límite que se quería bloquear.
+- Prioridad: **Alta**. Block es una de las tres acciones del motor; cualquier regla de este tipo que se active produce decisiones financieras erróneas.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct (3/3 con límites 1000, 100 y 0,02); Reproduce · 17 de oct, 13:38.
+- Pruebas: R6-INT-01
+- Evidencia: `evidence/report/api/BUG-41.json`
+- Sugerencia: Aplicar Block cuando amount > maxAmount y cubrir el borde con pruebas unitarias del motor.
+
+## BUG-42 — Las decisiones automáticas no indican qué regla las produjo
+
+- Regla: RN-31, RN-30
+- Rol y usuario: Employee, `employee1@spendwise.test`
+- Dónde: `GET /api/v1/expenses/{id}/history`
+- Precondiciones: Sesión de employee1.
+- Pasos:
+  1. Registrar un gasto de USD 10 (queda AutoApproved).
+  2. Consultar su historial.
+  3. Repetir con un gasto rechazado por una regla Block temporal.
+- Resultado esperado: El historial o el detalle indica que decidió Policy Engine y el nombre de la regla ("Auto-approve under $50").
+- Resultado obtenido: El historial dice "Auto-approved by policy" sin nombrar la regla; en los rechazos por Block el motivo queda vacío (null). El detalle del gasto no tiene ningún campo de regla.
+- Severidad: **Media**. No se puede explicar por qué un gasto se aprobó o rechazó solo; la auditoría pierde trazabilidad, sin alterar importes.
+- Prioridad: **Media**. RN-31 lo exige; con varias reglas activas sería imposible saber cuál decidió.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: R6-API-02
+- Evidencia: `evidence/report/api/BUG-42.json`
+- Sugerencia: Guardar el id y el nombre de la regla aplicada en el registro de auditoría.
+
+## BUG-43 — Aprobar no admite el comentario opcional
+
+- Regla: RN-41, RN-50
+- Rol y usuario: Manager, `manager1@spendwise.test`
+- Dónde: `PUT /api/v1/approvals/{id}/approve`
+- Precondiciones: Un gasto PendingApproval de employee1; sesión de manager1.
+- Pasos:
+  1. Aprobar el gasto enviando {"comment": "R6 aprobado con comentario"}.
+  2. Consultar el historial.
+- Resultado esperado: El comentario queda registrado en el historial de la aprobación.
+- Resultado obtenido: HTTP 200, pero el comentario se descarta: el historial guarda notes null. El OpenAPI no define cuerpo para approve.
+- Severidad: **Media**. El aprobador no puede dejar constancia de por qué aprueba; la decisión queda sin contexto en la auditoría.
+- Prioridad: **Media**. Funcionalidad definida en RN-41 que no existe; no bloquea el flujo.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: R6-API-10
+- Evidencia: `evidence/report/api/BUG-43.json`
+- Sugerencia: Aceptar un comentario opcional en approve y guardarlo en la auditoría.
+
+## BUG-44 — El tablero suma gastos con fecha futura en el mes en curso
+
+- Regla: RN-61
+- Rol y usuario: Employee, `employee3@spendwise.test`
+- Dónde: `GET /api/v1/dashboard/summary`
+- Precondiciones: Sesión de employee3; quedan días por delante en el mes.
+- Pasos:
+  1. Consultar spendThisMonth.
+  2. Registrar un gasto de USD 10 con fecha del último día del mes.
+  3. Consultar spendThisMonth de nuevo.
+- Resultado esperado: El gasto del mes no cambia, porque la fecha es futura.
+- Resultado obtenido: El gasto del mes sube exactamente USD 10.
+- Severidad: **Media**. El gasto del mes incluye montos que aún no ocurrieron; la cifra principal del tablero queda inflada.
+- Prioridad: **Alta**. RN-61 lo menciona de forma explícita y afecta el indicador más visible.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: R6-API-12, R6-UI-04
+- Evidencia: `evidence/report/api/BUG-44.json`
+- Sugerencia: Limitar el cálculo del mes a fechas menores o iguales a hoy.
+
+## BUG-45 — El error de carga de recibos no menciona todos los tipos aceptados
+
+- Regla: RN-22, RN-21
+- Rol y usuario: Employee, `employee2@spendwise.test`
+- Dónde: `POST /api/v1/receipts/extract`
+- Precondiciones: Sesión de employee2. Se usan pocos archivos pequeños por el costo del servicio de extracción.
+- Pasos:
+  1. Subir un archivo .txt.
+  2. Subir una imagen GIF de 1×1 px.
+  3. Subir un archivo vacío.
+- Resultado esperado: El error del .txt lista los tipos aceptados (JPG, PNG, GIF, WEBP y PDF) y el archivo vacío se informa como vacío.
+- Resultado obtenido: El error dice "Use JPG, PNG, PDF", pero el GIF se acepta (200); la pantalla New expense repite "JPG, PNG, PDF up to 10 MB". El archivo vacío responde "No file was uploaded."
+- Severidad: **Baja**. Es un mensaje incorrecto: lleva a pensar que GIF y WEBP no se aceptan; no afecta importes ni estados.
+- Prioridad: **Media**. RN-22 exige que los tipos mencionados sean los que realmente se aceptan; la corrección es de texto.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct; Reproduce · 17 de oct, 13:31.
+- Pruebas: R6-API-13
+- Evidencia: `evidence/report/api/BUG-45.json`
+- Sugerencia: Generar el mensaje desde la misma lista de tipos permitidos y distinguir archivo vacío de archivo ausente.
+
+## BUG-47 — El botón "Export CSV" de My Expenses no hace nada
+
+- Regla: RN-63
+- Rol y usuario: Employee, `employee1@spendwise.test`
+- Dónde: `/expenses → Export CSV`
+- Precondiciones: Sesión de employee1.
+- Pasos:
+  1. Abrir My Expenses.
+  2. Pulsar Export CSV y esperar seis segundos.
+- Resultado esperado: Se descarga un CSV con los gastos del usuario.
+- Resultado obtenido: No hay descarga, ni ventana nueva, ni petición de exportación. El mismo botón en Reports sí descarga.
+- Severidad: **Media**. Se ofrece una función que no responde; el usuario puede exportar desde Reports.
+- Prioridad: **Media**. RN-63 exige que todo botón de exportar que se ofrece funcione.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct; Reproduce · 17 de oct, 13:46.
+- Pruebas: R6-UI-06
+- Evidencia: `evidence/report/BUG-47/`
+- Sugerencia: Conectar el botón al servicio de exportación o quitarlo de la pantalla.
+
+## BUG-48 — La interfaz muestra indicadores fijos que simulan métricas
+
+- Regla: RN-62
+- Rol y usuario: Employee, Manager y FinanceController, `employee1, employee3, manager1, finance`
+- Dónde: `/dashboard, /expenses/new`
+- Precondiciones: Sesiones de varios roles con datos distintos.
+- Pasos:
+  1. Abrir el tablero con employee1, employee3, manager1 y finance.
+  2. Comparar "Avg. resolution" con la tasa de autoaprobación del mes.
+  3. Abrir New expense y leer el texto de la captura asistida.
+- Resultado esperado: Cada indicador se calcula con datos reales y cambia con ellos.
+- Resultado obtenido: "Avg. resolution: 1.4 days" es idéntico para los cuatro roles (la tasa del mes varía entre 43 % y 72 %) y ninguna API lo entrega. New expense afirma "saves ~90 seconds per entry" y "OCR accuracy: 96%" como texto fijo.
+- Severidad: **Media**. Se presentan como datos cifras que no salen del sistema; quien decide con ellas se apoya en información inventada.
+- Prioridad: **Media**. RN-62 prohíbe expresamente textos fijos que simulen indicadores, tiempos medios o precisiones.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct; Reproduce · 17 de oct, 13:46.
+- Pruebas: R6-UI-01, R6-UI-03
+- Evidencia: `evidence/report/BUG-48/`
+- Sugerencia: Calcular el tiempo de resolución desde la auditoría y retirar las cifras de marketing o respaldarlas con datos.
+
+## BUG-50 — Si falla la carga, la interfaz muestra listas vacías en lugar de un error
+
+- Regla: RN-70
+- Rol y usuario: Employee y FinanceController, `employee1, finance`
+- Dónde: `/expenses, /approvals, /reports`
+- Precondiciones: Se simula una respuesta 500 del servidor interceptando la petición en el navegador.
+- Pasos:
+  1. Hacer que GET /api/v1/expenses responda 500 y abrir My Expenses.
+  2. Repetir con GET /api/v1/approvals/pending en Approvals.
+  3. Repetir con GET /api/v1/reports en Reports.
+- Resultado esperado: Cada pantalla muestra un mensaje de error que lo explica.
+- Resultado obtenido: My Expenses muestra "0 expenses · No expenses found.", Approvals "All caught up!" y Reports totales en cero; ninguna menciona el error.
+- Severidad: **Media**. Un aprobador ve "All caught up!" y cree que no tiene pendientes cuando en realidad la carga falló.
+- Prioridad: **Alta**. RN-70 lo prohíbe de forma explícita; el tablero sí lo hace bien, así que la solución ya existe en la app.
+- Reproducibilidad: Hallado en la ronda 6 del 17-oct; Reproduce · 17 de oct, 13:48.
+- Pruebas: R6-UI-07, R6-UI-08, R6-UI-09
+- Evidencia: `evidence/report/BUG-50/`
+- Sugerencia: Distinguir error de lista vacía en las tres pantallas, como ya hace el tablero.
+
 ## Hallazgos descartados
 
-- **BUG-30 — Login vacío sin error persistente.** La pantalla sí muestra "Email is required." y "Password is required." junto a cada campo, que queda marcado como inválido. La prueba buscaba el data-testid login-error, que el Anexo G reserva para credenciales inválidas. Solo queda la sugerencia de mover el foco al primer campo inválido, registrada como IMP-09.
+- **BUG-30 — Login vacío sin error persistente.** La pantalla sí muestra "Email is required." y "Password is required." junto a cada campo, que queda marcado como inválido, y el foco pasa al campo Email. La prueba buscaba el data-testid login-error, que el Anexo G reserva para credenciales inválidas.
 - **E2E-06 — Employee accede a Policy Engine por URL directa.** La revisión cuadro a cuadro mostró que la aplicación sí presenta la pantalla de acceso denegado. El fallo original venía de navegar antes de que la sesión terminara de establecerse; se corrigió la sincronización y la prueba pasa.
+- **BUG-46 — El login no informa que la cuenta está bloqueada.** Descartado tras verificarlo con un bloqueo real de nomanager: la pantalla sí muestra "Your account is locked. Try again in 15 minutes.". La sospecha venía de simular la respuesta de la API sobre la ruta del servidor web, que tiene otro formato.
+- **BUG-49 — No existe detalle del gasto con historial y recibo.** Descartado: al pulsar la fila de My Expenses se abre un panel lateral con los datos, el enlace "View receipt" y el historial de estados. Solo la URL directa /expenses/{id} no existe, y el anexo no la exige.
+- **R6-UI-15 — La cookie de sesión no es httpOnly.** Falso positivo de la ronda 6: la prueba incluía sw_session_hint (vale "1" y no es sensible). La cookie de sesión real, sw_session, sí es httpOnly y no aparece en document.cookie.
+- **R6-UI-18 — No aparece el estado de sesión expirada.** Falso positivo de la ronda 6: la prueba borraba todas las cookies, que equivale a no haber iniciado sesión. Al quitar o alterar solo sw_session, la app redirige al login con "Your session has expired".
 - **R1 — Administrator lee todos los gastos y Finance registra gastos propios.** Son capacidades permitidas por el Anexo G §2.2 (Administrator lee todo en solo lectura; FinanceController tiene además el rol Employee).
 - **R4 — categoryId null, parámetros repetidos o desconocidos y caracteres NUL.** El contrato permite categoryId null y no define el manejo de parámetros desconocidos ni restringe caracteres; se dejaron como mejoras (IMP-01, IMP-02) y no como defectos.

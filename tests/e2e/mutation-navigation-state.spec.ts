@@ -1,8 +1,9 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from '../fixtures.js';
+import type { Page } from '@playwright/test';
 import { environment, type TestRole } from '../../src/config/environment.js';
 import { LoginPage } from '../../src/pages/login.page.js';
 
-test.use({ trace: 'on', video: 'on', screenshot: 'only-on-failure' });
+test.use({ video: 'on', screenshot: 'only-on-failure' });
 
 async function visibleCursor(page: Page) {
   await page.addInitScript(() => {
@@ -45,7 +46,7 @@ async function expenseRows(page: Page) {
 }
 
 test.describe('Navigation and state mutation charters', () => {
-  test('MUT-STATE-01 browser refresh does not submit a partially completed expense', async ({ page }) => {
+  test('MUT-STATE-01 browser refresh does not submit a partially completed expense', async ({ page, auth, expenses }) => {
     await signIn(page);
     await openManualForm(page);
     const marker = `refresh-not-submitted-${Date.now()}`;
@@ -53,10 +54,16 @@ test.describe('Navigation and state mutation charters', () => {
     await page.getByLabel('Amount').fill('12.34');
     await page.reload();
     await page.goto('/expenses');
-    await expect(page.getByText(marker, { exact: true })).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'My Expenses' })).toBeVisible();
+    const employee = await auth.loginAs('employee1');
+    const response = await expenses.list(employee.accessToken, `?search=${encodeURIComponent(marker)}`);
+    expect(response.status()).toBe(200);
+    const body = await response.json();
+    expect(body.totalCount).toBe(0);
+    expect(body.items).toHaveLength(0);
   });
 
-  test('MUT-STATE-02 Back from manual entry cancels without creating a draft or expense', async ({ page }) => {
+  test('MUT-STATE-02 Back from manual entry cancels without creating a draft or expense', async ({ page, auth, expenses }) => {
     await signIn(page);
     await openManualForm(page);
     const marker = `back-not-submitted-${Date.now()}`;
@@ -65,7 +72,13 @@ test.describe('Navigation and state mutation charters', () => {
     await page.getByRole('button', { name: 'Back', exact: true }).click();
     await expect(page.getByRole('button', { name: /upload receipt/i })).toBeVisible();
     await page.goto('/expenses');
-    await expect(page.getByText(marker, { exact: true })).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'My Expenses' })).toBeVisible();
+    const employee = await auth.loginAs('employee1');
+    const response = await expenses.list(employee.accessToken, `?search=${encodeURIComponent(marker)}`);
+    expect(response.status()).toBe(200);
+    const body = await response.json();
+    expect(body.totalCount).toBe(0);
+    expect(body.items).toHaveLength(0);
   });
 
   test('MUT-STATE-03 repeated submit gesture creates exactly one expense', async ({ page }) => {
@@ -88,8 +101,12 @@ test.describe('Navigation and state mutation charters', () => {
     await signIn(page);
     await page.goto('/expenses');
     await expenseRows(page);
+    const filtered = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname.endsWith('/api/v1/expenses') && url.searchParams.get('status') === 'Approved';
+    });
     await page.getByRole('button', { name: 'Approved', exact: true }).click();
-    await page.waitForTimeout(500);
+    expect((await filtered).status()).toBe(200);
     const rows = await expenseRows(page);
     await expect(rows.first()).toBeVisible();
     const statuses = await rows.evaluateAll(items => items.map(row => row.children[6]?.textContent ?? ''));
@@ -118,8 +135,17 @@ test.describe('Navigation and state mutation charters', () => {
     await page.goto('/expenses');
     await expenseRows(page);
     await page.getByRole('button', { name: 'Next', exact: true }).click();
+    const filtered = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname.endsWith('/api/v1/expenses')
+        && url.searchParams.has('status');
+    });
     await page.getByRole('button', { name: 'Pending', exact: true }).click();
-    await page.waitForTimeout(500);
+    const filteredResponse = await filtered;
+    expect(filteredResponse.status()).toBe(200);
+    const filteredUrl = new URL(filteredResponse.url());
+    expect(filteredUrl.searchParams.get('status')).toBe('PendingApproval');
+    expect(filteredUrl.searchParams.get('page')).toBe('1');
     const rows = await expenseRows(page);
     const statuses = await rows.evaluateAll(items => items.map(row => row.children[6]?.textContent ?? ''));
     expect(statuses.length).toBeGreaterThan(0);

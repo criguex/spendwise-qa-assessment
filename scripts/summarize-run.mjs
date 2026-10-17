@@ -15,7 +15,7 @@ const redact = text => {
 
 const consolidated = { 'VAL-09': 'BUG-04', 'MUT-EXPQ-01': 'BUG-04', 'MUT-EXPQ-02': 'BUG-04', 'MUT-EXPQ-03': 'BUG-04', 'MUT-REP-03': 'BUG-16' };
 const owner = new Map(Object.entries(consolidated));
-for (const d of defects) for (const t of d.tests) if (/^[A-Z0-9]+(-[A-Z0-9]+)+$/.test(t)) owner.set(t, d.id);
+for (const d of defects) for (const t of d.tests) if (/^[A-Z0-9]+(-[A-Z0-9]+)+[a-z]?$/.test(t)) owner.set(t, d.id);
 
 const report = JSON.parse(fs.readFileSync(input, 'utf8'));
 const tests = [];
@@ -23,7 +23,7 @@ const walk = (suite, file) => {
   for (const spec of suite.specs ?? []) {
     for (const t of spec.tests ?? []) {
       const result = t.results?.at(-1) ?? {};
-      const id = spec.title.match(/^([A-Z0-9]+(?:-[A-Z0-9]+)+)\b/)?.[1] ?? null;
+      const id = spec.title.match(/^([A-Z0-9]+(?:-[A-Z0-9]+)+[a-z]?)\b/)?.[1] ?? null;
       const status = result.status === 'passed' ? 'passed' : result.status === 'skipped' ? 'skipped' : 'failed';
       const error = status === 'failed' ? redact((result.error?.message ?? '').split('\n').filter(Boolean).slice(0, 3).join(' · ')).slice(0, 220) : null;
       tests.push({ project: t.projectName, file: spec.file ?? file, title: spec.title, id, status, defect: status === 'failed' ? owner.get(id) ?? null : null, durationMs: result.duration ?? 0, error });

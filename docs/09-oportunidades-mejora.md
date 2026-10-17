@@ -13,7 +13,6 @@ un resultado obligatorio suficientemente preciso.
 | IMP-05 | UI / navegación | Añadir acciones claras en la página 404 | Mejora recuperación ante enlaces obsoletos | 404 ofrece Dashboard/Back sin datos protegidos |
 | IMP-06 | UI / formulario | Advertir antes de abandonar cambios sin enviar | Evita pérdida accidental sin implementar borradores | Back/Refresh confirman solo si hay cambios |
 | IMP-07 | QA / CI | Publicar mutation score como indicador gradual | Detecta regresiones de validación | CI publica score y sobrevivientes; umbral sube gradualmente |
-| IMP-09 | UI / accesibilidad | Mover el foco al primer campo inválido del login | Quien usa teclado o lector de pantalla llega directo al error | Al enviar vacío, el foco queda en Email y el mensaje se anuncia |
 | IMP-08 | QA / evidencia | Separar artefactos por corrida/agente | Evita colisiones durante paralelismo | Cada job usa `outputDir` único y consolida después |
 
 ## Evidencia y origen
@@ -24,5 +23,4 @@ un resultado obligatorio suficientemente preciso.
 - IMP-05: `MUT-STATE-08` confirmó un 404 seguro; la propuesta mejora recuperación.
 - IMP-06: refresh/back respetan “no hay borrador”; la confirmación sería protección de UX.
 - IMP-07: score inicial 37,5% sobre 16 mutantes.
-- IMP-09: viene de la revisión de MUT-UI-01; la pantalla sí muestra los mensajes por campo, por eso no se reporta como defecto.
 - IMP-08: una colisión `ENOENT` apareció entre corridas concurrentes; es mejora de la suite, no de SpendWise.
