@@ -3,8 +3,8 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { defects, discarded, conformingControls, severityCriteria, priorityCriteria, modules, improvements, observations } from './report/defects.mjs';
-import { ruleText } from './report/rules.mjs';
+import { defects, discarded, conformingControls, severityCriteria, priorityCriteria, modules, improvements, observations } from './report/defects.ts';
+import { ruleText } from './report/rules.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
 const docs = path.join(root, 'docs');
@@ -333,7 +333,7 @@ TOKEN=$(curl -sk -b jar.txt -u "$GATE_USER:$GATE_PASS" -H "Content-Type: applica
 }
 
 function buildMarkdown(evs) {
-  const lines = ['# E1 — Reporte de defectos', '', '> Generado desde `scripts/report/defects.mjs`. Versión visual con evidencia embebida: `docs/INFORME-QA-SpendWise.html`.', '', '| ID | Título | Módulo | Regla | Severidad | Prioridad | 17-oct |', '|---|---|---|---|---|---|---|'];
+  const lines = ['# E1 — Reporte de defectos', '', '> Generado desde `scripts/report/defects.ts`. Versión visual con evidencia embebida: `docs/INFORME-QA-SpendWise.html`.', '', '| ID | Título | Módulo | Regla | Severidad | Prioridad | 17-oct |', '|---|---|---|---|---|---|---|'];
   for (const d of defects) lines.push(`| ${d.id} | ${d.title} | ${d.module} | ${d.rules.join(', ')} | ${d.severity} | ${d.priority} | ${reverification(evs.get(d.id)).text} |`);
   for (const d of defects) {
     const ev = evs.get(d.id);

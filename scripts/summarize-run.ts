@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import 'dotenv/config';
-import { defects } from './report/defects.mjs';
+import { defects } from './report/defects.ts';
 
 const [input, output = path.join(import.meta.dirname, '..', 'evidence', 'report', 'full-run.json')] = process.argv.slice(2);
-if (!input) throw new Error('Uso: node scripts/summarize-run.mjs <playwright-json> [salida]');
+if (!input) throw new Error('Uso: npx tsx scripts/summarize-run.ts <playwright-json> [salida]');
 
 const secrets = [process.env.SPENDWISE_PROXY_PASSWORD, process.env.SPENDWISE_SEED_PASSWORD].filter(Boolean);
 const redact = text => {

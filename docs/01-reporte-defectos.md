@@ -1,6 +1,6 @@
 # E1 — Reporte de defectos
 
-> Generado desde `scripts/report/defects.mjs`. Versión visual con evidencia embebida: `docs/INFORME-QA-SpendWise.html`.
+> Generado desde `scripts/report/defects.ts`. Versión visual con evidencia embebida: `docs/INFORME-QA-SpendWise.html`.
 
 | ID | Título | Módulo | Regla | Severidad | Prioridad | 17-oct |
 |---|---|---|---|---|---|---|

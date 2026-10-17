@@ -65,6 +65,7 @@ Playwright + TypeScript + Zod, con responsabilidades separadas:
 - `src/contracts/`: esquemas de consumidor Zod.
 - `src/pages/`: Page Objects y componentes para E2E.
 - `tests/`: especificaciones por nivel; las aserciones de negocio viven en las pruebas, no en los Page Objects.
+- `scripts/`: captura de evidencia y generación del informe, en TypeScript; se ejecutan con `tsx` a través de los comandos `npm run` de la tabla anterior. `scripts/report/defects.ts` es la fuente de los defectos, mejoras y descartados del informe.
 
 ## Evidencia y seguridad
 

@@ -1,7 +1,7 @@
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
-import { defects, improvements } from './report/defects.mjs';
+import { defects, improvements } from './report/defects.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
 const apiDir = path.join(root, 'evidence', 'report', 'api');

@@ -22,22 +22,23 @@
     "test:mutation:e2e": "playwright test tests/e2e/mutation-navigation-state.spec.ts tests/e2e/mutation-ui-controls.spec.ts --workers=1",
     "test:adversarial": "playwright test tests/api/adversarial-authorization-round1.spec.ts tests/api/adversarial-workflow-round2.spec.ts tests/e2e/adversarial-workflow-round2.spec.ts --workers=1",
     "test:adversarial:extended": "playwright test tests/api/role-access-readonly.spec.ts tests/api/adversarial-data-round4.spec.ts tests/e2e/ui-functional-recovery.spec.ts --workers=1",
-    "test:postman": "node scripts/run-postman.mjs",
+    "test:postman": "tsx scripts/run-postman.ts",
     "typecheck": "tsc --noEmit",
     "report": "playwright show-report",
     "quality": "npm run typecheck && npm test",
     "test:policy": "playwright test tests/api/policy-rules.spec.ts --workers=1",
-    "evidence:api": "node scripts/capture-api-evidence.mjs",
-    "evidence:ui": "node scripts/record-report-evidence.mjs",
-    "report:qa": "node scripts/build-report.mjs",
+    "evidence:api": "tsx scripts/capture-api-evidence.ts",
+    "evidence:ui": "tsx scripts/record-report-evidence.ts",
+    "report:qa": "tsx scripts/build-report.ts",
     "test:round6": "playwright test tests/api/round6-api.spec.ts tests/integration/policy-engine-block.spec.ts tests/e2e/round6-ui.spec.ts --workers=1",
-    "evidence:cards": "node scripts/render-evidence-cards.mjs"
+    "evidence:cards": "tsx scripts/render-evidence-cards.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.7.2",
     "dotenv": "^17.2.3",
     "newman": "^6.2.1",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "zod": "^4.1.12"
   }

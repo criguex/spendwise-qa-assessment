@@ -1,7 +1,7 @@
-// scripts/record-report-evidence.mjs
+// scripts/record-report-evidence.ts
 // Re-records visual QA evidence for the 14 UI defects selected for the SpendWise
 // technical assessment package. Plain ESM, run with:
-//   node scripts/record-report-evidence.mjs [BUG-XX ...]
+//   npx tsx scripts/record-report-evidence.ts [BUG-XX ...]
 // No args = all 14 defects, in the order below, serial execution, one fresh
 // browser context per defect. Headless chromium only. No tracing, no HAR.
 
