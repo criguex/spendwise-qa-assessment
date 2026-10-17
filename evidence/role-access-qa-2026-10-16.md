@@ -28,6 +28,6 @@ npm test -- --project=api tests/api/role-access-readonly.spec.ts --workers=1 --r
 ## Falsos positivos / limitaciones
 
 - En una ejecución anterior del subset existente, 21 aserciones pasaron. Cuatro casos se reportaron como fallidos únicamente durante `dispose()` por `ENOENT` de archivos temporales de Playwright en `test-results/artifacts`; las aserciones de autorización de esos casos aparecen aprobadas antes del error. La matriz nueva, en ejecución serial y sin trazas, pasó limpiamente.
-- R2-AUTH-07 (Administrator puede leer gastos globalmente) y R2-AUTH-09 (Finance hereda capacidad Employee para crear gastos propios) están corregidos como falsos positivos en `evidence/selected/R2-AUTH-REVIEW.md`; no se consideran defectos.
+- R2-AUTH-07 (Administrator puede leer gastos globalmente) y R2-AUTH-09 (Finance hereda capacidad Employee para crear gastos propios) están documentados como falsos positivos descartados en la sección 7 del informe de QA.
 - La prueba nueva confirma acceso al recurso y matriz por rol, pero no inspecciona contenido de gastos. Los controles de propietario/alcance de filas quedan cubiertos por las pruebas existentes R2-AUTH-01..06 y R2-AUTH-10..11; esas pruebas crean datos controlados y no se ejecutaron en esta revisión no destructiva.
 

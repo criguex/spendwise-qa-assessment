@@ -29,7 +29,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - run: npm test -- --trace=off
         env:
           SPENDWISE_WEB_URL: ${{ secrets.SPENDWISE_WEB_URL }}
           SPENDWISE_API_URL: ${{ secrets.SPENDWISE_API_URL }}
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: sanitized-test-results
+          name: test-results
           path: |
             playwright-report/
             test-results/junit.xml

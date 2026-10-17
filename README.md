@@ -68,10 +68,9 @@ Playwright + TypeScript + Zod, con responsabilidades separadas:
 
 ## Evidencia y seguridad
 
-- `evidence/report/`: verificación final del 17-oct (petición y respuesta HTTP por defecto de API; video, capturas y metadatos por defecto de interfaz).
-- `evidence/selected/`: corridas del 16-oct con trazas de Playwright. Las trazas se sanearon con `npm run evidence:sanitize` (contraseñas, cabeceras Authorization, cookies y tokens reemplazados por `[REDACTED]`).
-- `evidence/*.txt`: registros de cada campaña de ejecución.
-- La entrega no contiene contraseñas ni tokens.
+- `docs/INFORME-QA-SpendWise.html` contiene toda la evidencia embebida y se abre sin el resto del repositorio.
+- `evidence/README.md` describe cada carpeta: HTTP en JSON y captura por defecto de API, video y capturas por defecto de interfaz, mejoras, descartados, la corrida completa y los registros de cada campaña.
+- La evidencia no contiene contraseñas ni tokens. Las credenciales solo se leen de `.env`, que no se versiona. En CI la suite corre sin trazas (`--trace=off`) porque las trazas de Playwright guardan cabeceras de autenticación.
 
 ## Uso de IA
 

@@ -393,8 +393,8 @@ function buildIndex(inv) {
 <tr><td><b>E3 · Casos y automatización</b></td><td><a href="docs/03-casos-prueba.html">Casos de prueba</a> · <a href="docs/07-pruebas-mutantes.html">Mutación de peticiones</a> · código en <code>tests/</code> y <code>postman/</code> · <a href="README.md">instrucciones de ejecución</a></td></tr>
 <tr><td><b>E4 · Resumen ejecutivo</b></td><td><a href="docs/04-resumen-ejecutivo.html">Resumen ejecutivo (una página)</a></td></tr>
 <tr><td>Complementos</td><td><a href="docs/09-oportunidades-mejora.html">Oportunidades de mejora</a> · <a href="docs/06-observacion-no-funcional.html">Observación no funcional</a></td></tr>
-<tr><td>Evidencia</td><td><code>evidence/report/</code> (verificación final: HTTP, videos y capturas) · <code>evidence/selected/</code> (corridas del 16-oct con trazas saneadas) · <code>evidence/*.txt</code> (registros de ejecución)</td></tr></tbody></table></div>
-<p class="mut">La evidencia no contiene contraseñas ni tokens. Las trazas de Playwright se sanearon y pueden abrirse en trace.playwright.dev.</p>`);
+<tr><td>Evidencia</td><td><code>evidence/README.md</code> describe la estructura: <code>evidence/report/</code> (verificación del 17-oct: HTTP en JSON y captura por defecto, video y capturas de interfaz, mejoras y corrida completa) y <code>evidence/*.txt</code> (registros de cada campaña)</td></tr></tbody></table></div>
+<p class="mut">La evidencia no contiene contraseñas ni tokens.</p>`);
 }
 
 const inv = testInventory();

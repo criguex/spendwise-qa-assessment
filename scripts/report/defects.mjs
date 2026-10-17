@@ -688,22 +688,22 @@ export const discarded = [
   {
     id: 'BUG-30', title: 'Login vacío sin error persistente',
     reason: 'La pantalla sí muestra "Email is required." y "Password is required." junto a cada campo, que queda marcado como inválido, y el foco pasa al campo Email. La prueba buscaba el data-testid login-error, que el Anexo G reserva para credenciales inválidas.',
-    test: 'MUT-UI-01', image: 'evidence/report/BUG-30/BUG-30-final.png',
+    test: 'MUT-UI-01', image: 'evidence/report/descartados/BUG-30/BUG-30-final.png',
   },
   {
     id: 'E2E-06', title: 'Employee accede a Policy Engine por URL directa',
     reason: 'La revisión cuadro a cuadro mostró que la aplicación sí presenta la pantalla de acceso denegado. El fallo original venía de navegar antes de que la sesión terminara de establecerse; se corrigió la sincronización y la prueba pasa.',
-    test: 'E2E-06', image: 'evidence/selected/E2E-06-ACCESS-DENIED-PASS/E2E-06-access-denied.png',
+    test: 'E2E-06', image: 'evidence/report/descartados/E2E-06/E2E-06-final.png',
   },
   {
     id: 'BUG-46', title: 'El login no informa que la cuenta está bloqueada',
     reason: 'Descartado tras verificarlo con un bloqueo real de nomanager: la pantalla sí muestra "Your account is locked. Try again in 15 minutes.". La sospecha venía de simular la respuesta de la API sobre la ruta del servidor web, que tiene otro formato.',
-    test: 'R6-UI-17', image: 'evidence/report/BUG-46/BUG-46-final.png',
+    test: 'R6-UI-17', image: 'evidence/report/descartados/BUG-46/BUG-46-final.png',
   },
   {
     id: 'BUG-49', title: 'No existe detalle del gasto con historial y recibo',
     reason: 'Descartado: al pulsar la fila de My Expenses se abre un panel lateral con los datos, el enlace "View receipt" y el historial de estados. Solo la URL directa /expenses/{id} no existe, y el anexo no la exige.',
-    test: 'R6-UI-20', image: 'evidence/report/BUG-49/BUG-49-03.png',
+    test: 'R6-UI-20', image: 'evidence/report/descartados/BUG-49/BUG-49-03.png',
   },
   {
     id: 'R6-UI-15', title: 'La cookie de sesión no es httpOnly',

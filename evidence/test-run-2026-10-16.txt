@@ -12,7 +12,7 @@ PASS SEC-01
 PASS CAT-01
 PASS RBAC-01
 PASS RBAC-02
-FAIL VAL-01 — actual 201, esperado 400 (ver BUG-01-api-response.txt)
+FAIL VAL-01 — actual 201, esperado 400 (ver evidence/report/api/BUG-01.json)
 PASS POL-01
 
 Duración reportada: 4.32 s.

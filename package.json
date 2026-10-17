@@ -29,7 +29,6 @@
     "test:policy": "playwright test tests/api/policy-rules.spec.ts --workers=1",
     "evidence:api": "node scripts/capture-api-evidence.mjs",
     "evidence:ui": "node scripts/record-report-evidence.mjs",
-    "evidence:sanitize": "python3 scripts/sanitize-traces.py",
     "report:qa": "node scripts/build-report.mjs",
     "test:round6": "playwright test tests/api/round6-api.spec.ts tests/integration/policy-engine-block.spec.ts tests/e2e/round6-ui.spec.ts --workers=1",
     "evidence:cards": "node scripts/render-evidence-cards.mjs"
