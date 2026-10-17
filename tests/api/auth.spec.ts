@@ -9,12 +9,12 @@ test.describe('Authentication', () => {
   });
 
   for (const scenario of [
-    { id: 'AUTH-02', email: `unknown-${Date.now()}@spendwise.test`, password: 'WrongPass1' },
-    { id: 'AUTH-03', email: environment.email('inactive'), password: environment.seedPassword() },
-    { id: 'AUTH-04', email: environment.email('employee1'), password: 'WrongPass1' },
+    { id: 'AUTH-02', email: `unknown-${Date.now()}@spendwise.test`, password: () => 'WrongPass1' },
+    { id: 'AUTH-03', email: environment.email('inactive'), password: () => environment.seedPassword() },
+    { id: 'AUTH-04', email: environment.email('employee1'), password: () => 'WrongPass1' },
   ]) {
     test(`${scenario.id} @negative does not disclose account state`, async ({ auth }) => {
-      const response = await auth.loginResponse(scenario.email, scenario.password);
+      const response = await auth.loginResponse(scenario.email, scenario.password());
       expect(response.status()).toBe(401);
       expect(await response.json()).toMatchObject({ code: 'invalid_credentials', message: 'Invalid email or password.' });
     });
