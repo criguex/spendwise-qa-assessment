@@ -7,8 +7,8 @@ const requireEnv = (name: string): string => {
 };
 
 export const environment = {
-  apiUrl: process.env.SPENDWISE_API_URL ?? 'https://spendwise-igs.eastus2.cloudapp.azure.com:4506',
-  webUrl: process.env.SPENDWISE_WEB_URL ?? 'https://spendwise-igs.eastus2.cloudapp.azure.com:4406',
+  get apiUrl() { return requireEnv('SPENDWISE_API_URL'); },
+  get webUrl() { return requireEnv('SPENDWISE_WEB_URL'); },
   proxyUser: () => requireEnv('SPENDWISE_PROXY_USER'),
   proxyPassword: () => requireEnv('SPENDWISE_PROXY_PASSWORD'),
   seedPassword: () => requireEnv('SPENDWISE_SEED_PASSWORD'),

@@ -7,6 +7,7 @@ import { defects, discarded, conformingControls, severityCriteria, priorityCrite
 import { ruleText } from './report/rules.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
+const repo = 'https://github.com/criguex/spendwise-qa-assessment';
 const docs = path.join(root, 'docs');
 const evidence = path.join(root, 'evidence', 'report');
 const cache = path.join(os.tmpdir(), 'spendwise-report-cache');
@@ -327,7 +328,7 @@ TOKEN=$(curl -sk -b jar.txt -u "$GATE_USER:$GATE_PASS" -H "Content-Type: applica
 <li><a href="03-casos-prueba.html">E3 · Casos de prueba y automatización</a></li>
 <li><a href="04-resumen-ejecutivo.html">E4 · Resumen ejecutivo (una página)</a></li>
 <li><a href="07-pruebas-mutantes.html">Pruebas de mutación de peticiones</a> · <a href="06-observacion-no-funcional.html">Observación no funcional</a> · <a href="09-oportunidades-mejora.html">Oportunidades de mejora</a></li>
-<li><a href="01-reporte-defectos.md">E1 en Markdown</a> · <a href="../README.md">Instrucciones de ejecución</a></li></ul></div>
+<li><a href="${repo}/blob/main/docs/01-reporte-defectos.md">E1 en Markdown</a> · <a href="${repo}#readme">Instrucciones de ejecución</a></li></ul></div>
 <footer>SpendWise · Informe de QA · Cristian Guerra · Evidencia saneada: sin contraseñas ni tokens</footer>`;
   return shell('SpendWise · Informe de QA', body);
 }
@@ -388,9 +389,9 @@ function buildIndex(inv) {
 <div class="kpis"><div class="kpi r"><b>${defects.length}</b>defectos confirmados</div><div class="kpi r"><b>${count('Alta')}</b>severidad alta</div><div class="kpi"><b>${inv.tests}</b>pruebas automatizadas</div><div class="kpi"><b>${inv.files}</b>archivos de prueba</div></div>
 <div class="card decision"><h3>Recomendación: no liberar esta versión</h3><p>Hasta corregir y re-verificar los ${count('Alta')} defectos de severidad alta. Detalle en el informe.</p></div>
 <div class="tw"><table><thead><tr><th>Entregable</th><th>Documento</th></tr></thead><tbody>
-<tr><td><b>E1 · Reporte de defectos</b></td><td><a href="docs/INFORME-QA-SpendWise.html"><b>Informe de QA con evidencia embebida</b></a> (un solo archivo HTML) · <a href="docs/01-reporte-defectos.md">versión Markdown</a></td></tr>
+<tr><td><b>E1 · Reporte de defectos</b></td><td><a href="docs/INFORME-QA-SpendWise.html"><b>Informe de QA con evidencia embebida</b></a> (un solo archivo HTML) · <a href="${repo}/blob/main/docs/01-reporte-defectos.md">versión Markdown</a></td></tr>
 <tr><td><b>E2 · Estrategia y plan</b></td><td><a href="docs/02-estrategia-plan.html">Estrategia y plan de pruebas</a></td></tr>
-<tr><td><b>E3 · Casos y automatización</b></td><td><a href="docs/03-casos-prueba.html">Casos de prueba</a> · <a href="docs/07-pruebas-mutantes.html">Mutación de peticiones</a> · código en <code>tests/</code> y <code>postman/</code> · <a href="README.md">instrucciones de ejecución</a></td></tr>
+<tr><td><b>E3 · Casos y automatización</b></td><td><a href="docs/03-casos-prueba.html">Casos de prueba</a> · <a href="docs/07-pruebas-mutantes.html">Mutación de peticiones</a> · código en <code>tests/</code> y <code>postman/</code> · <a href="${repo}#readme">instrucciones de ejecución</a></td></tr>
 <tr><td><b>E4 · Resumen ejecutivo</b></td><td><a href="docs/04-resumen-ejecutivo.html">Resumen ejecutivo (una página)</a></td></tr>
 <tr><td>Complementos</td><td><a href="docs/09-oportunidades-mejora.html">Oportunidades de mejora</a> · <a href="docs/06-observacion-no-funcional.html">Observación no funcional</a></td></tr>
 <tr><td>Evidencia</td><td><code>evidence/README.md</code> describe la estructura: <code>evidence/report/</code> (verificación del 17-oct: HTTP en JSON y captura por defecto, video y capturas de interfaz, mejoras y corrida completa) y <code>evidence/*.txt</code> (registros de cada campaña)</td></tr></tbody></table></div>

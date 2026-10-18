@@ -1,6 +1,6 @@
 # Evidencia
 
-Toda la evidencia de esta carpeta también está embebida en `docs/INFORME-QA-SpendWise.html`, que se puede abrir sin el resto del repositorio. En el paquete enviado por correo, las capturas de cada paso (`BUG-XX-01.png`…) van solo dentro de ese informe para respetar el límite de tamaño del correo; el video, la captura final y los metadatos de cada defecto sí van como archivos. Ningún archivo contiene contraseñas ni tokens: las peticiones se guardan con `[REDACTED]` y `<TOKEN>` en su lugar.
+Toda la evidencia de esta carpeta también está embebida en `docs/INFORME-QA-SpendWise.html`, que se puede abrir sin el resto del repositorio. Ningún archivo contiene contraseñas ni tokens: las peticiones se guardan con `[REDACTED]` y `<TOKEN>` en su lugar.
 
 ## Verificación final del 17-oct-2026 (`report/`)
 

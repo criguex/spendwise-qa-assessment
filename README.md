@@ -2,7 +2,14 @@
 
 Evaluación de aceptación de caja negra de SpendWise (aplicación web y API) frente a los Anexos A–H del enunciado.
 
-Empiece por `00-INDICE.html`.
+## Ver en línea
+
+- Índice de la entrega: https://criguex.github.io/spendwise-qa-assessment/
+- Informe de QA con toda la evidencia embebida (E1): https://criguex.github.io/spendwise-qa-assessment/docs/INFORME-QA-SpendWise.html
+- Resumen ejecutivo (E4): https://criguex.github.io/spendwise-qa-assessment/docs/04-resumen-ejecutivo.html
+- Evidencia en archivos (videos, capturas y peticiones HTTP): [`evidence/`](evidence/README.md)
+
+Si clona el repositorio, empiece por `00-INDICE.html`.
 
 ## Entregables
 
