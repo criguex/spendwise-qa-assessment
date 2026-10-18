@@ -11,7 +11,7 @@ Toda la evidencia de esta carpeta también está embebida en `docs/INFORME-QA-Sp
 | `report/api/IMP-0X.json` | Peticiones y respuestas de las mejoras que se observan por API (IMP-01 a IMP-03); sus capturas están en `report/improvements/`. |
 | `report/BUG-XX/` | Defectos de interfaz: video MP4 con puntero visible y pasos numerados, una captura por paso (`BUG-XX-01.png`…), la captura final con el defecto marcado (`BUG-XX-final.png`) y los metadatos (`BUG-XX.json`: rol, URL, pasos, esperado, real y hora). |
 | `report/improvements/` | Capturas de las mejoras IMP-01 a IMP-08 con lo observado y por qué es mejora y no defecto. |
-| `report/descartados/` | Evidencia de los hallazgos que se descartaron tras verificarlos (BUG-30, BUG-46, BUG-49 y E2E-06). |
+| `report/verificados/` | Evidencia de comportamientos que se probaron y cumplen el anexo: login vacío, acceso denegado por URL, cuenta bloqueada y detalle del gasto con historial. |
 | `report/full-run.json` | Resultado de la corrida completa del 17-oct: cada prueba, su estado y el defecto al que corresponde cada fallo. |
 
 ## Registros de ejecución

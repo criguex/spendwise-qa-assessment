@@ -1,6 +1,6 @@
 # Oportunidades de mejora
 
-Estas recomendaciones no se contabilizan como defectos ni modifican la decisión de liberación. Se
+Estas recomendaciones no se contabilizan como defectos. Se
 registran porque endurecen el producto, el contrato o su operabilidad aun cuando el anexo no define
 un resultado obligatorio suficientemente preciso.
 

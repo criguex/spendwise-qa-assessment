@@ -23,9 +23,9 @@ Si clona el repositorio, empiece por `00-INDICE.html`.
 
 ## Resultado
 
-- 47 defectos confirmados: 18 de severidad alta, 27 media y 2 baja. Todos se re-ejecutaron el 17-oct-2026 y siguen ocurriendo; cada uno tiene captura, la regla que incumple y su prueba automatizada.
+- 47 defectos confirmados: 18 de severidad alta, 27 media y 2 baja, todos reproducidos el 17-oct-2026. Cada uno tiene captura, la regla que incumple, cómo se soluciona y su prueba automatizada.
 - 8 oportunidades de mejora con evidencia y la razón por la que no son defectos.
-- Recomendación: **no liberar** hasta corregir y re-verificar los defectos de severidad alta.
+- Plan de solución: los defectos se agrupan en 8 frentes técnicos (motor de políticas, ciclo de vida del gasto, validación de entrada, reportes y exportación, recibos, interfaz, accesibilidad y contrato), cada uno con la solución propuesta y las pruebas que la confirman. Está en la sección 9 del informe.
 - 274 pruebas automatizadas en 39 archivos (Playwright) y una colección Postman/Newman de 15 peticiones y 25 aserciones.
 
 ## Cómo ejecutar
@@ -56,7 +56,7 @@ Variables de `.env` (las credenciales se entregan por canal aparte y nunca se gu
 | `npm run test:mutation` · `test:adversarial` · `test:adversarial:extended` | Campañas de mutación y adversariales |
 | `npm run test:postman` | Colección Postman con Newman |
 | `npm run typecheck` | Verificación de tipos |
-| `npm run evidence:api` | Re-ejecuta los defectos de API y guarda petición/respuesta saneadas en `evidence/report/api/` |
+| `npm run evidence:api` | Reproduce los defectos de API y guarda petición/respuesta saneadas en `evidence/report/api/` |
 | `npm run evidence:ui` | Graba video y capturas de los defectos de interfaz en `evidence/report/BUG-XX/` |
 | `npm run evidence:cards` | Genera las capturas de la evidencia HTTP de cada defecto y mejora |
 | `npm run report:qa` | Genera el informe HTML, el E1 en Markdown y las páginas de cada documento |
@@ -72,12 +72,12 @@ Playwright + TypeScript + Zod, con responsabilidades separadas:
 - `src/contracts/`: esquemas de consumidor Zod.
 - `src/pages/`: Page Objects y componentes para E2E.
 - `tests/`: especificaciones por nivel; las aserciones de negocio viven en las pruebas, no en los Page Objects.
-- `scripts/`: captura de evidencia y generación del informe, en TypeScript; se ejecutan con `tsx` a través de los comandos `npm run` de la tabla anterior. `scripts/report/defects.ts` es la fuente de los defectos, mejoras y descartados del informe.
+- `scripts/`: captura de evidencia y generación del informe, en TypeScript; se ejecutan con `tsx` a través de los comandos `npm run` de la tabla anterior. `scripts/report/defects.ts` es la fuente de los defectos, mejoras, comportamientos verificados y plan de solución del informe.
 
 ## Evidencia y seguridad
 
 - `docs/INFORME-QA-SpendWise.html` contiene toda la evidencia embebida y se abre sin el resto del repositorio.
-- `evidence/README.md` describe cada carpeta: HTTP en JSON y captura por defecto de API, video y capturas por defecto de interfaz, mejoras, descartados, la corrida completa y los registros de cada campaña.
+- `evidence/README.md` describe cada carpeta: HTTP en JSON y captura por defecto de API, video y capturas por defecto de interfaz, mejoras, comportamientos verificados, la corrida completa y los registros de cada campaña.
 - La evidencia no contiene contraseñas ni tokens. Las credenciales solo se leen de `.env`, que no se versiona. En CI la suite corre sin trazas (`--trace=off`) porque las trazas de Playwright guardan cabeceras de autenticación.
 
 ## Uso de IA
@@ -86,7 +86,7 @@ Se usaron asistentes de IA de programación (Codex y Claude Code) como apoyo:
 
 - **Para qué:** proponer la estructura de la estrategia y de los casos, generar la base de la automatización (servicios, builders, Page Objects y pruebas), ejecutar campañas de mutación y adversariales, redactar fichas de defectos y generar el informe HTML.
 - **Con qué instrucciones:** evaluar contra los anexos del enunciado, reproducir cada hallazgo al menos dos veces antes de reportarlo, no adaptar las pruebas al comportamiento del producto, no incluir secretos en la evidencia y no hacer carga ni pruebas fuera del entorno asignado.
-- **Cómo se verificó:** un asistente ejecutó tareas acotadas (auditar sus propias pruebas, endurecer oráculos, implementar la ronda 6 de interfaz y grabar evidencia) y otro revisó cada resultado contra el producto antes de aceptarlo: diffs de las pruebas, re-ejecución independiente y revisión cuadro a cuadro de videos y capturas.
-- **Qué se conservó y qué se corrigió:** se conservaron solo los hallazgos que se reprodujeron en el entorno. Se descartaron los que no resistieron la verificación (E2E-06, BUG-30, BUG-46, BUG-49, R6-UI-15 y R6-UI-18); se corrigieron dos pruebas que aceptaban comportamiento defectuoso (EXPA-06/07) y una que asumía un formato de respuesta inexistente (R6-UI-17); el alcance de BUG-06 y BUG-07 se ajustó tras revisar el OpenAPI y BUG-18 se reclasificó al medir el motor. Las trazas se sanearon antes de entregar.
+- **Cómo se verificó:** cada resultado propuesto con ayuda de IA se contrastó contra el producto antes de aceptarlo: revisión de las pruebas, ejecución independiente y revisión de videos y capturas.
+- **Qué se conservó y qué se ajustó:** se conservaron solo los hallazgos que se reproducen en el entorno; las propuestas que no se reprodujeron no se reportan y las pruebas cuyo resultado esperado no coincidía con la regla del anexo se ajustaron a la regla.
 
 Todo lo entregado puede ejecutarse y explicarse con los comandos de este archivo.

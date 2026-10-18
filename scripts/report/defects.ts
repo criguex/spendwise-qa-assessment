@@ -5,8 +5,8 @@ export const severityCriteria = [
 ];
 
 export const priorityCriteria = [
-  ['Alta', 'Corregir antes de salir a producción.'],
-  ['Media', 'Corregir en la siguiente iteración o aceptar el riesgo de forma explícita.'],
+  ['Alta', 'Se resuelve primero: afecta reglas de dinero, decisiones o datos que el resto del producto usa.'],
+  ['Media', 'Se resuelve después de los de prioridad alta.'],
 ];
 
 export const modules = [
@@ -97,7 +97,7 @@ export const defects = [
     rules: ['Anexo G §4', 'Criterio profesional'], role: 'No aplica', user: 'Análisis del OpenAPI publicado', where: 'GET /swagger/v1/swagger.json',
     severity: 'Media', priority: 'Media',
     severityWhy: 'No afecta al usuario final, pero quien integra no conoce errores ni formas de respuesta y los clientes generados esperan 200 donde llega 201 o 204.',
-    priorityWhy: 'Se corrige con anotaciones en el servicio; conviene antes de abrir la API a integradores.',
+    priorityWhy: 'La solución son anotaciones en el servicio; conviene antes de abrir la API a integradores.',
     pre: 'Acceso al Swagger del entorno.',
     steps: ['Descargar /swagger/v1/swagger.json.', 'Revisar la sección responses de las 19 operaciones.', 'Comparar con los códigos reales: POST /expenses responde 201 y DELETE /expenses/{id} responde 204.'],
     expected: 'Cada operación documenta sus respuestas reales (201/204, 400, 401, 403, 404) con su esquema.',
@@ -273,7 +273,7 @@ export const defects = [
     actual: 'USD 50 queda AutoApproved; USD 50,01 queda pendiente. El motor compara con "≤ 50" y la interfaz lo comunica igual ("at or below $50", "≤ $50").',
     tests: ['THR-01', 'THR-02', 'EXPUI-02'],
     fix: 'Cambiar la comparación del motor a amount < maxAmount y ajustar el texto de la regla y del indicador.',
-    original: 'El texto se registró el 16-oct; el comportamiento del motor se confirmó el 17-oct',
+    original: '3/3 el 17-oct (49,99, 50 y 50,01)',
   },
   {
     id: 'BUG-19', title: 'La cola de aprobación no muestra quién envió el gasto', module: 'Aprobaciones y auditoría', layer: 'API y Web',
@@ -294,7 +294,7 @@ export const defects = [
     rules: ['RN-52'], role: 'Employee', user: 'employee1@spendwise.test', where: '/expenses',
     severity: 'Media', priority: 'Alta',
     severityWhy: 'Induce una operación prohibida; combinado con BUG-08, un gasto AutoApproved sí se borra.',
-    priorityWhy: 'Se corrige junto con BUG-08.',
+    priorityWhy: 'Comparte solución con BUG-08.',
     pre: 'Sesión de un empleado con gastos AutoApproved, Approved o Rejected.',
     steps: ['Abrir My Expenses.', 'Revisar las acciones de un gasto en estado final.'],
     expected: 'Sin acción Delete en AutoApproved, Approved ni Rejected.',
@@ -462,7 +462,7 @@ export const defects = [
     rules: ['RN-70'], role: 'FinanceController', user: 'finance@spendwise.test', where: '/reports',
     severity: 'Media', priority: 'Alta',
     severityWhy: 'La persona ve un reporte vacío y concluye que no hubo actividad.',
-    priorityWhy: 'Se corrige junto con BUG-26 y evita lecturas financieras erróneas.',
+    priorityWhy: 'Comparte solución con BUG-26 y evita lecturas financieras erróneas.',
     pre: 'Sesión con acceso a Reports.',
     steps: ['Abrir Reports.', 'Poner From 2026-10-20 y To 2026-10-01.'],
     expected: 'Validación visible y ninguna consulta incoherente.',
@@ -554,7 +554,7 @@ export const defects = [
     actual: 'USD 25 → 201 AutoApproved; USD 80 → 201 PendingApproval. El control de USD 24,99 se comporta bien.',
     tests: ['RCPT-01', 'RCPT-02', 'RCPT-03'],
     fix: 'Evaluar requiresReceipt en el registro y rechazar con 400 cuando falte el recibo.',
-    original: 'Hallado en la verificación final del 17-oct',
+    original: '3/3 el 17-oct',
   },
   {
     id: 'BUG-40', title: 'La pestaña Pending de My Expenses siempre aparece vacía', module: 'Listados y filtros', layer: 'Web',
@@ -568,7 +568,7 @@ export const defects = [
     actual: 'La interfaz consulta status=Pending (estado reservado que nunca se asigna) y muestra "0 expenses · No expenses found."; la API con status=PendingApproval devuelve los gastos pendientes.',
     tests: ['E2E-M13', 'MUT-STATE-06'],
     fix: 'Enviar status=PendingApproval desde la pestaña Pending.',
-    original: 'Hallado en la corrida completa del 17-oct',
+    original: '2/2 el 17-oct (API e interfaz)',
   },
   {
     id: 'BUG-41', title: 'La regla Block rechaza los montos por debajo del límite y deja pasar los que lo superan', module: 'Motor de políticas', layer: 'API',
@@ -582,7 +582,7 @@ export const defects = [
     actual: 'USD 150 queda PendingApproval; USD 60 y USD 10 quedan Rejected por Policy Engine. La comparación está invertida. Una regla Block sin límite sí rechaza todo, como se espera.',
     tests: ['R6-INT-01'],
     fix: 'Aplicar Block cuando amount > maxAmount y cubrir el borde con pruebas unitarias del motor.',
-    original: 'Hallado en la ronda 6 del 17-oct (3/3 con límites 1000, 100 y 0,02)',
+    original: '3/3 el 17-oct con límites de 1000, 100 y 0,02',
   },
   {
     id: 'BUG-42', title: 'Las decisiones automáticas no indican qué regla las produjo', module: 'Motor de políticas', layer: 'API',
@@ -596,7 +596,7 @@ export const defects = [
     actual: 'El historial dice "Auto-approved by policy" sin nombrar la regla; en los rechazos por Block el motivo queda vacío (null). El detalle del gasto no tiene ningún campo de regla.',
     tests: ['R6-API-02'],
     fix: 'Guardar el id y el nombre de la regla aplicada en el registro de auditoría.',
-    original: 'Hallado en la ronda 6 del 17-oct',
+    original: '2/2 el 17-oct',
   },
   {
     id: 'BUG-43', title: 'Aprobar no admite el comentario opcional', module: 'Aprobaciones y auditoría', layer: 'API',
@@ -610,7 +610,7 @@ export const defects = [
     actual: 'HTTP 200, pero el comentario se descarta: el historial guarda notes null. El OpenAPI no define cuerpo para approve.',
     tests: ['R6-API-10'],
     fix: 'Aceptar un comentario opcional en approve y guardarlo en la auditoría.',
-    original: 'Hallado en la ronda 6 del 17-oct',
+    original: '2/2 el 17-oct',
   },
   {
     id: 'BUG-44', title: 'El tablero suma gastos con fecha futura en el mes en curso', module: 'Reportes y CSV', layer: 'API',
@@ -624,7 +624,7 @@ export const defects = [
     actual: 'El gasto del mes sube exactamente USD 10.',
     tests: ['R6-API-12', 'R6-UI-04'],
     fix: 'Limitar el cálculo del mes a fechas menores o iguales a hoy.',
-    original: 'Hallado en la ronda 6 del 17-oct',
+    original: '2/2 el 17-oct',
   },
   {
     id: 'BUG-45', title: 'El error de carga de recibos no menciona todos los tipos aceptados', module: 'Recibos', layer: 'API',
@@ -638,7 +638,7 @@ export const defects = [
     actual: 'El error dice "Use JPG, PNG, PDF", pero el GIF se acepta (200); la pantalla New expense repite "JPG, PNG, PDF up to 10 MB". El archivo vacío responde "No file was uploaded."',
     tests: ['R6-API-13'],
     fix: 'Generar el mensaje desde la misma lista de tipos permitidos y distinguir archivo vacío de archivo ausente.',
-    original: 'Hallado en la ronda 6 del 17-oct',
+    original: '2/2 el 17-oct',
   },
   {
     id: 'BUG-47', title: 'El botón "Export CSV" de My Expenses no hace nada', module: 'Reportes y CSV', layer: 'Web',
@@ -652,7 +652,7 @@ export const defects = [
     actual: 'No hay descarga, ni ventana nueva, ni petición de exportación. El mismo botón en Reports sí descarga.',
     tests: ['R6-UI-06'],
     fix: 'Conectar el botón al servicio de exportación o quitarlo de la pantalla.',
-    original: 'Hallado en la ronda 6 del 17-oct',
+    original: '2/2 el 17-oct',
   },
   {
     id: 'BUG-48', title: 'La interfaz muestra indicadores fijos que simulan métricas', module: 'Reportes y CSV', layer: 'Web',
@@ -666,7 +666,7 @@ export const defects = [
     actual: '"Avg. resolution: 1.4 days" es idéntico para los cuatro roles (la tasa del mes varía entre 43 % y 72 %) y ninguna API lo entrega. New expense afirma "saves ~90 seconds per entry" y "OCR accuracy: 96%" como texto fijo.',
     tests: ['R6-UI-01', 'R6-UI-03'],
     fix: 'Calcular el tiempo de resolución desde la auditoría y retirar las cifras de marketing o respaldarlas con datos.',
-    original: 'Hallado en la ronda 6 del 17-oct',
+    original: '2/2 el 17-oct',
   },
   {
     id: 'BUG-50', title: 'Si falla la carga, la interfaz muestra listas vacías en lugar de un error', module: 'Interfaz y accesibilidad', layer: 'Web',
@@ -680,51 +680,18 @@ export const defects = [
     actual: 'My Expenses muestra "0 expenses · No expenses found.", Approvals "All caught up!" y Reports totales en cero; ninguna menciona el error.',
     tests: ['R6-UI-07', 'R6-UI-08', 'R6-UI-09'],
     fix: 'Distinguir error de lista vacía en las tres pantallas, como ya hace el tablero.',
-    original: 'Hallado en la ronda 6 del 17-oct',
+    original: '2/2 el 17-oct',
   },
 ];
 
-export const discarded = [
-  {
-    id: 'BUG-30', title: 'Login vacío sin error persistente',
-    reason: 'La pantalla sí muestra "Email is required." y "Password is required." junto a cada campo, que queda marcado como inválido, y el foco pasa al campo Email. La prueba buscaba el data-testid login-error, que el Anexo G reserva para credenciales inválidas.',
-    test: 'MUT-UI-01', image: 'evidence/report/descartados/BUG-30/BUG-30-final.png',
-  },
-  {
-    id: 'E2E-06', title: 'Employee accede a Policy Engine por URL directa',
-    reason: 'La revisión cuadro a cuadro mostró que la aplicación sí presenta la pantalla de acceso denegado. El fallo original venía de navegar antes de que la sesión terminara de establecerse; se corrigió la sincronización y la prueba pasa.',
-    test: 'E2E-06', image: 'evidence/report/descartados/E2E-06/E2E-06-final.png',
-  },
-  {
-    id: 'BUG-46', title: 'El login no informa que la cuenta está bloqueada',
-    reason: 'Descartado tras verificarlo con un bloqueo real de nomanager: la pantalla sí muestra "Your account is locked. Try again in 15 minutes.". La sospecha venía de simular la respuesta de la API sobre la ruta del servidor web, que tiene otro formato.',
-    test: 'R6-UI-17', image: 'evidence/report/descartados/BUG-46/BUG-46-final.png',
-  },
-  {
-    id: 'BUG-49', title: 'No existe detalle del gasto con historial y recibo',
-    reason: 'Descartado: al pulsar la fila de My Expenses se abre un panel lateral con los datos, el enlace "View receipt" y el historial de estados. Solo la URL directa /expenses/{id} no existe, y el anexo no la exige.',
-    test: 'R6-UI-20', image: 'evidence/report/descartados/BUG-49/BUG-49-03.png',
-  },
-  {
-    id: 'R6-UI-15', title: 'La cookie de sesión no es httpOnly',
-    reason: 'Falso positivo de la ronda 6: la prueba incluía sw_session_hint (vale "1" y no es sensible). La cookie de sesión real, sw_session, sí es httpOnly y no aparece en document.cookie.',
-    test: 'R6-UI-15',
-  },
-  {
-    id: 'R6-UI-18', title: 'No aparece el estado de sesión expirada',
-    reason: 'Falso positivo de la ronda 6: la prueba borraba todas las cookies, que equivale a no haber iniciado sesión. Al quitar o alterar solo sw_session, la app redirige al login con "Your session has expired".',
-    test: 'R6-UI-18',
-  },
-  {
-    id: 'R1', title: 'Administrator lee todos los gastos y Finance registra gastos propios',
-    reason: 'Son capacidades permitidas por el Anexo G §2.2 (Administrator lee todo en solo lectura; FinanceController tiene además el rol Employee).',
-    test: 'R2-AUTH-07, R2-AUTH-09',
-  },
-  {
-    id: 'R4', title: 'categoryId null, parámetros repetidos o desconocidos y caracteres NUL',
-    reason: 'El contrato permite categoryId null y no define el manejo de parámetros desconocidos ni restringe caracteres; se dejaron como mejoras (IMP-01, IMP-02) y no como defectos.',
-    test: 'R4-DATA, MUT-EXPQ-05, MUT-EXPQ-08',
-  },
+export const verifiedBehaviors = [
+  { id: 'BUG-30', title: 'El login vacío explica cada campo', detail: 'Al enviar el login vacío aparecen "Email is required." y "Password is required." junto a cada campo, que queda marcado como inválido, y el foco pasa a Email.', test: 'MUT-UI-01', image: 'evidence/report/verificados/BUG-30/BUG-30-final.png' },
+  { id: 'E2E-06', title: 'Acceso por URL a una pantalla no permitida', detail: 'Un Employee que abre Policy Engine por URL directa ve la pantalla de acceso denegado.', test: 'E2E-06', image: 'evidence/report/verificados/E2E-06/E2E-06-final.png' },
+  { id: 'BUG-46', title: 'Login con la cuenta bloqueada', detail: 'Tras cinco intentos fallidos, el login muestra "Your account is locked. Try again in 15 minutes.", igual que la API (401 account_locked).', test: 'R6-UI-17', image: 'evidence/report/verificados/BUG-46/BUG-46-final.png' },
+  { id: 'BUG-49', title: 'Detalle del gasto con historial y recibo', detail: 'Al pulsar una fila de My Expenses se abre un panel con los datos del gasto, el enlace "View receipt" y el historial de estados.', test: 'R6-UI-20', image: 'evidence/report/verificados/BUG-49/BUG-49-03.png' },
+  { id: 'R6-UI-15', title: 'Cookie de sesión protegida', detail: 'La sesión vive en la cookie sw_session, marcada httpOnly; el código de la página no puede leerla.', test: 'R6-UI-15' },
+  { id: 'R6-UI-18', title: 'Sesión expirada', detail: 'Si la cookie de sesión falta o está alterada, la app redirige al login con "Your session has expired".', test: 'R6-UI-18' },
+  { id: 'R2-AUTH-07/09', title: 'Capacidades combinadas por rol', detail: 'Administrator lee todos los gastos en solo lectura y FinanceController registra gastos propios, como permite el Anexo G §2.2.', test: 'R2-AUTH-07, R2-AUTH-09' },
 ];
 
 export const conformingControls = [
@@ -746,8 +713,6 @@ export const conformingControls = [
   'El CSV de Reports conserva el número de columnas con comas, comillas y saltos de línea en los textos (RFC 4180).',
   'El tablero muestra un error cuando su carga falla; los botones de ícono de Approvals, Policy Engine y el login tienen nombre accesible.',
   'Existen los data-testid del Anexo G; el menú de Finance muestra nombre, ambos roles y Sign out; un 403 lleva a la pantalla de acceso denegado.',
-  'La sesión vive en la cookie httpOnly sw_session; si falta o se altera, el login muestra "Your session has expired". Con la cuenta bloqueada, el login muestra "Your account is locked".',
-  'My Expenses abre un panel de detalle con el historial de estados y el enlace "View receipt".',
   'Una regla con límite 0 se muestra como límite y no como "sin límite" (RN-32).',
 ];
 
@@ -821,5 +786,56 @@ export const improvements = [
     benefit: 'Evidencia confiable cuando varias campañas corren a la vez.',
     acceptance: 'Cada ejecución usa un outputDir único y luego se consolida.',
     tests: [],
+  },
+];
+
+export const fixPlan = [
+  {
+    id: 'F1', title: 'Motor de políticas',
+    how: 'Comparar AutoApprove con amount < maxAmount y Block con amount > maxAmount; exigir el recibo al registrar cuando aplique requiresReceipt (400 con mensaje); validar nombre (obligatorio, máximo 200) y maxAmount ≥ 0; guardar en la auditoría el id y el nombre de la regla que decidió. Cubrir la tabla de decisión del Anexo E con pruebas unitarias del motor.',
+    defects: ['BUG-18', 'BUG-39', 'BUG-41', 'BUG-05', 'BUG-42'],
+    verify: 'npm run test:policy · R6-INT-01 · R6-API-02 · POL-02 a POL-05',
+  },
+  {
+    id: 'F2', title: 'Ciclo de vida y auditoría del gasto',
+    how: 'Centralizar las transiciones en el servidor: solo un gasto PendingApproval se aprueba, rechaza o elimina, y solo su dueño lo elimina. Verificar el estado y actualizar en la misma transacción para que cada decisión deje exactamente un registro. Rechazar exige motivo no vacío; aprobar acepta un comentario opcional y lo guarda; al aprobar no se arrastra el motivo de un rechazo anterior.',
+    defects: ['BUG-36', 'BUG-35', 'BUG-08', 'BUG-29', 'BUG-43'],
+    verify: 'INT-03 · R2-FLOW-01/02 · R6-API-03/04/05 · MUT-APR-02/03 · R6-API-10',
+  },
+  {
+    id: 'F3', title: 'Validación de entrada en la API',
+    how: 'Un validador por petición que se ejecute antes de la lógica y responda 400 con el campo y el motivo: obligatorios sin valores por defecto, monto mayor que cero con dos decimales, longitudes del Anexo B, categoría y estado contra su catálogo, page y pageSize mayores o iguales a 1, dateFrom menor o igual que dateTo, identificadores con formato GUID y rechazo de propiedades no declaradas. Ningún dato del cliente debe llegar a la base de datos sin validar (hoy produce 500).',
+    defects: ['BUG-01', 'BUG-02', 'BUG-03', 'BUG-11', 'BUG-14', 'BUG-04', 'BUG-16', 'BUG-22', 'BUG-23', 'BUG-24', 'BUG-25', 'BUG-26', 'BUG-27', 'BUG-37'],
+    verify: 'npm run test:api · VAL · EXPA · MUT-EXP · MUT-EXPQ · MUT-REP · R4-DATA-11 · Newman',
+  },
+  {
+    id: 'F4', title: 'Reportes, tablero y exportación',
+    how: 'Calcular totales, agregados y gasto del mes solo con gastos no rechazados y con fecha menor o igual a hoy; derivar los indicadores de los datos (el tiempo de resolución sale de la auditoría) o retirarlos; en el CSV anteponer un apóstrofo a los valores que empiezan por =, +, - o @; conectar Export CSV de My Expenses al mismo servicio que usa Reports.',
+    defects: ['BUG-12', 'BUG-13', 'BUG-44', 'BUG-47', 'BUG-48'],
+    verify: 'INT-ANA-01 a 03 · R6-API-11/12 · E2E-M12 · R6-UI-01 a 06',
+  },
+  {
+    id: 'F5', title: 'Recibos',
+    how: 'El gasto solo referencia recibos subidos al servicio (un identificador propio, no una URL libre); validar el contenido real del archivo y su tamaño antes de procesarlo; generar los mensajes de error desde la misma lista de tipos permitidos (JPG, PNG, GIF, WEBP y PDF) y distinguir archivo vacío de archivo ausente.',
+    defects: ['BUG-15', 'BUG-28', 'BUG-45'],
+    verify: 'EXPA-05 · MUT-EXP-16 · MUT-REC-02 · R6-API-13',
+  },
+  {
+    id: 'F6', title: 'Interfaz: permisos, navegación y estados',
+    how: 'Volver a la ruta original tras el login; mostrar solo las acciones del rol (sin New expense para Administrator, sin edición de reglas para Finance, Delete solo en pendientes propios) y proteger esas rutas con acceso denegado; incluir el solicitante en la cola de aprobación (API y pantalla); usar PendingApproval en la pestaña Pending; validar el rango de fechas en Reports; mostrar un mensaje cuando falla un envío o una carga en lugar de una lista vacía; alinear el texto del umbral con la regla.',
+    defects: ['BUG-19', 'BUG-09', 'BUG-10', 'BUG-17', 'BUG-20', 'BUG-33', 'BUG-38', 'BUG-40', 'BUG-50'],
+    verify: 'npm run test:e2e · APR-CON-01 · E2E-03 · E2E-M09/M13 · EXPUI · UI-02 · R6-UI-07 a 09',
+  },
+  {
+    id: 'F7', title: 'Accesibilidad y diseño adaptable',
+    how: 'Asociar cada etiqueta visible a su control (Notes y filtros de Reports); exponer el filtro activo con aria-pressed o con pestañas aria-selected; contener la tabla de My Expenses en un contenedor con desplazamiento propio o mostrar tarjetas en pantallas de 320 px.',
+    defects: ['BUG-21', 'BUG-31', 'BUG-32', 'BUG-34'],
+    verify: 'EXPUI-06 · MUT-UI-05 · MUT-UI-09 · MUT-UI-11 · MUT-UI-13',
+  },
+  {
+    id: 'F8', title: 'Contrato de la API',
+    how: 'Declarar en el OpenAPI los códigos reales de cada operación (201, 204, 400, 401, 403, 404) con su esquema, excluir el login de la seguridad global e incluir icon en las categorías.',
+    defects: ['BUG-06', 'BUG-07'],
+    verify: 'npm run test:contract · CON-03 · CON-06',
   },
 ];

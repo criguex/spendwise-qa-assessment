@@ -94,7 +94,7 @@ Un fallo automatizado no se convierte automáticamente en defecto. Se revisa el 
 
 - Riesgos críticos cubiertos y al menos 15 casos diseñados / 8 automatizados ejecutados.
 - Hallazgos reproducidos, sin duplicados y con evidencia sanitizada.
-- Sin defectos críticos abiertos para recomendar liberación; todo bloqueo o cobertura pendiente queda declarado.
+- Todo defecto crítico tiene una solución propuesta y una prueba que la confirma; todo bloqueo o cobertura pendiente queda declarado.
 
 ## Fuera de alcance
 

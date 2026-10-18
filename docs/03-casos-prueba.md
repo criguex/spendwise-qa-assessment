@@ -8,7 +8,7 @@ Los 26 casos base se diseñaron antes de ejecutar, priorizados por riesgo (P0 = 
 | AUTH-02 | P0 | Partición inválida | Usuario inexistente devuelve 401 indistinguible de contraseña incorrecta | `AUTH-02` | Pasa |
 | AUTH-03 | P0 | Partición / seguridad | Usuario inactivo devuelve el mismo 401 `invalid_credentials` | `AUTH-03` | Pasa |
 | AUTH-04 | P1 | Campos obligatorios | Login con campos vacíos devuelve 400 | `AUTH-04` | Pasa |
-| AUTH-05 | P1 | Transición / seguridad | Quinto intento fallido bloquea la cuenta 15 min; un acierto antes del quinto reinicia el contador | Manual con una sola cuenta (nomanager), fuera de la suite para no bloquear cuentas compartidas | Pasa en API; la web no muestra el estado bloqueado: BUG-46 |
+| AUTH-05 | P1 | Transición / seguridad | Quinto intento fallido bloquea la cuenta 15 min; un acierto antes del quinto reinicia el contador | Manual con una sola cuenta (nomanager), fuera de la suite para no bloquear cuentas compartidas | Pasa en API y en la web |
 | SEC-01 | P0 | Autorización negativa | Endpoint protegido sin sesión devuelve 401 | `SEC-01`, `AUTHX` | Pasa |
 | CAT-01 | P2 | Catálogo / orden | Nueve categorías ordenadas por nombre, con ícono | `CAT-01`, `CON-06` | Falla: BUG-07 |
 | RBAC-A | P0 | Matriz de permisos | Employee y Manager no leen políticas: 403 | `RBAC-01`, `RBAC-02` | Pasa |

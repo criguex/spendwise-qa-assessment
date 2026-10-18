@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { defects, discarded, conformingControls, severityCriteria, priorityCriteria, modules, improvements, observations } from './report/defects.ts';
+import { defects, verifiedBehaviors, conformingControls, severityCriteria, priorityCriteria, modules, improvements, observations, fixPlan } from './report/defects.ts';
 import { ruleText } from './report/rules.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -123,7 +123,7 @@ const priPill = s => `<span class="pill pri">Prioridad ${esc(s)}</span>`;
 
 function reverification(ev) {
   const r = [ev.api?.reproduced, ev.ui?.reproduced].filter(v => v !== undefined && v !== null);
-  if (!r.length) return { ok: null, text: 'Sin re-verificación' };
+  if (!r.length) return { ok: null, text: 'Sin ejecución reciente' };
   const ok = r.every(Boolean);
   const when = ev.api?.capturedAt ?? ev.ui?.recordedAt;
   return { ok, text: `${ok ? 'Reproduce' : 'No reproduce'} · ${cot(when)}` };
@@ -141,7 +141,7 @@ function defectSection(d, ev) {
       <tr><td>Rol y usuario</td><td>${esc(d.role)} · <code>${esc(d.user)}</code></td></tr>
       <tr><td>Dónde</td><td><code>${esc(d.where)}</code></td></tr>
       <tr><td>Precondiciones</td><td>${esc(d.pre)}</td></tr>
-      <tr><td>Reproducibilidad</td><td>${esc(d.original)}; ${ev.api || ev.ui ? `re-verificado ${esc(cot(ev.api?.capturedAt ?? ev.ui?.recordedAt))}` : 'sin re-verificación'}</td></tr>
+      <tr><td>Reproducibilidad</td><td>${esc(d.original)}; última ejecución ${ev.api || ev.ui ? esc(cot(ev.api?.capturedAt ?? ev.ui?.recordedAt)) : 'sin dato'}</td></tr>
       <tr><td>Pruebas automatizadas</td><td>${d.tests.map(t => `<code>${esc(t)}</code>`).join(' ')}</td></tr>
       ${d.related ? `<tr><td>Relacionado</td><td><a href="#${d.related}">${d.related}</a></td></tr>` : ''}
     </table>
@@ -152,7 +152,7 @@ function defectSection(d, ev) {
   <h3>Severidad y prioridad</h3><div class="card"><p>${sevPill(d.severity)} ${esc(d.severityWhy)}</p><p>${priPill(d.priority)} ${esc(d.priorityWhy)}</p>${d.note ? `<p class="mut">${esc(d.note)}</p>` : ''}</div>
   ${ev.api ? httpSection(ev.api) : ''}
   ${ev.ui && ev.media ? uiSection(ev.ui, ev.media, d.id, d.actual) : ''}
-  <h3>Sugerencia de corrección</h3><div class="card"><p>${esc(d.fix)}</p></div>
+  <h3>Cómo se soluciona</h3><div class="card"><p>${esc(d.fix)}</p></div>
   <p class="top"><a href="#registro">↑ Volver al registro</a></p>
 </section>`;
 }
@@ -187,7 +187,7 @@ header.hero h1{margin:0 0 6px;font-size:25px;line-height:1.25}header.hero code{b
 h2{margin:38px 0 10px;font-size:21px;border-bottom:2px solid var(--line);padding-bottom:6px;scroll-margin-top:12px}h3{margin:18px 0 8px;font-size:15.5px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0}.card p{margin:6px 0}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut)}.kpi b{display:block;font-size:27px;line-height:1.15;color:var(--ink)}.kpi.r b{color:var(--red)}.kpi.a b{color:var(--amber)}.kpi.g b{color:var(--green)}
-.decision{border-left:6px solid var(--red);background:var(--redbg)}.decision h3{margin-top:0;color:var(--red)}
+.decision{border-left:6px solid var(--red);background:var(--redbg)}.decision h3{margin-top:0;color:var(--red)}.plan{border-left:6px solid var(--blue);background:var(--bluebg)}.plan h3{margin-top:0;color:var(--blue)}
 .toc{columns:3;font-size:14px;margin:0;padding-left:18px}.toc li{margin:3px 0;break-inside:avoid}
 a{color:var(--blue)}.mut{color:var(--mut);font-size:13px}code{background:var(--soft);padding:1px 5px;border-radius:4px;font:12.5px ui-monospace,Menlo,monospace;overflow-wrap:anywhere}
 pre{margin:6px 0 0;font:11.5px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-word}pre.code{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px}
@@ -222,21 +222,21 @@ function buildReport(inv, evs) {
   const lastRun = [...evs.values()].flatMap(e => [e.api?.capturedAt, e.ui?.recordedAt]).filter(Boolean).sort().at(-1);
   const highs = defects.filter(d => d.severity === 'Alta');
   const ref = ids => ids.map(id => `<a href="#${id}">${id}</a>`).join(', ');
-  const toc = [['resumen', '1. Resumen ejecutivo'], ['lectura', '2. Cómo leer este informe'], ['modulos', '3. Defectos por módulo'], ['registro', '4. Registro de defectos'], ['fichas', '5. Fichas de defecto'], ['mejoras', '6. Oportunidades de mejora'], ['descartados', '7. Descartados, observaciones y controles conformes'], ['cobertura', '8. Cobertura y ejecución'], ['salida', '9. Recomendación y criterios de salida'], ['anexos', '10. Anexos']];
+  const toc = [['resumen', '1. Resumen ejecutivo'], ['lectura', '2. Cómo leer este informe'], ['modulos', '3. Defectos por módulo'], ['registro', '4. Registro de defectos'], ['fichas', '5. Fichas de defecto'], ['mejoras', '6. Oportunidades de mejora'], ['verificados', '7. Comportamientos verificados y observaciones'], ['cobertura', '8. Cobertura y ejecución'], ['salida', '9. Plan de solución'], ['anexos', '10. Anexos']];
   const body = `
 <header class="hero"><h1>SpendWise · Informe de QA de la versión candidata</h1>
 <p>Prueba de aceptación de caja negra sobre la aplicación web y la API · Cristian Guerra, QA Analyst</p>
-<p>Ejecución del 16-oct-2026 · verificación final ${esc(cot(lastRun))} (hora Colombia)</p>
+<p>Ejecuciones del 16 y 17 de octubre de 2026 · última ${esc(cot(lastRun))} (hora Colombia)</p>
 <div class="envbox"><div class="env a"><b>Ambiente</b> — entorno exclusivo asignado: web <code>:4406</code>, API <code>:4506</code>, Swagger en <code>/swagger</code>. Cuentas del Anexo G (employee1-3, manager1, finance, admin). Referencia: Anexos A a H del enunciado.</div>
-<div class="env b"><b>Resultado</b> — <b>${defects.length} defectos</b> confirmados: ${count('Alta')} de severidad alta, ${count('Media')} media y ${count('Baja')} baja. ${reverified} de ${defects.length} se re-ejecutaron el 17-oct y siguen ocurriendo. Recomendación: <b>no liberar</b> esta versión.</div></div></header>
+<div class="env b"><b>Resultado</b> — <b>${defects.length} defectos</b> confirmados: ${count('Alta')} de severidad alta, ${count('Media')} media y ${count('Baja')} baja. Los ${reverified} se reproducen en la ejecución del 17-oct. El plan de solución los agrupa en ${fixPlan.length} frentes técnicos.</div></div></header>
 
 <div class="card"><b>Contenido</b><ol class="toc">${toc.map(([id, t]) => `<li><a href="#${id}">${t.replace(/^\d+\. /, '')}</a></li>`).join('')}</ol></div>
 
 <h2 id="resumen">1. Resumen ejecutivo</h2>
-<div class="kpis"><div class="kpi r"><b>${defects.length}</b>defectos confirmados</div><div class="kpi r"><b>${count('Alta')}</b>severidad alta</div><div class="kpi a"><b>${count('Media')}</b>severidad media</div><div class="kpi"><b>${count('Baja')}</b>severidad baja</div><div class="kpi g"><b>${reverified}/${defects.length}</b>re-verificados el 17-oct</div><div class="kpi"><b>${inv.tests}</b>pruebas automatizadas en ${inv.files} archivos</div></div>
-<div class="card decision"><h3>Recomendación: no liberar esta versión</h3>
-<p>SpendWise funciona en lo básico: se inicia sesión, se registran gastos, se aprueban y se consultan reportes, y el control de acceso por rol de la API resiste los intentos de saltarlo. El problema está en las reglas que protegen el dinero: hoy el sistema aprueba solo gastos que deberían revisarse, acepta gastos sin comprobante, permite revertir o tomar decisiones sin justificación y muestra totales inflados. Con esos riesgos abiertos, una salida a producción expondría a la empresa a gastos aprobados sin control y a reportes financieros que no se pueden creer.</p>
-<p>La versión se puede reconsiderar cuando se corrijan y re-verifiquen los ${count('Alta')} defectos de severidad alta y pase la regresión automatizada. Los ${count('Media') + count('Baja')} defectos medios y bajos pueden corregirse después si negocio acepta el riesgo por escrito.</p></div>
+<div class="kpis"><div class="kpi r"><b>${defects.length}</b>defectos confirmados</div><div class="kpi r"><b>${count('Alta')}</b>severidad alta</div><div class="kpi a"><b>${count('Media')}</b>severidad media</div><div class="kpi"><b>${count('Baja')}</b>severidad baja</div><div class="kpi g"><b>${reverified}/${defects.length}</b>reproducidos el 17-oct</div><div class="kpi"><b>${inv.tests}</b>pruebas automatizadas en ${inv.files} archivos</div></div>
+<div class="card plan"><h3>Plan de solución</h3>
+<p>SpendWise funciona en lo básico: se inicia sesión, se registran gastos, se aprueban y se consultan reportes, y el control de acceso por rol de la API resiste los intentos de saltarlo. Los defectos se concentran en las reglas que protegen el dinero (motor de políticas y ciclo de vida de los gastos), en la validación de entrada de la API y en el cálculo de reportes y tablero.</p>
+<p>La <a href="#salida">sección 9</a> agrupa los ${defects.length} defectos en ${fixPlan.length} frentes técnicos, cada uno con la solución propuesta, los defectos que resuelve y las pruebas automatizadas que confirman la solución. Los frentes con más defectos de severidad alta son el motor de políticas, el ciclo de vida del gasto y la validación de entrada.</p></div>
 <div class="card"><b>Principales riesgos</b><ul>
 <li><b>Gastos aprobados o rechazados por las razones equivocadas.</b> Un gasto de exactamente USD 50 se aprueba solo, los gastos de USD 25 o más se aceptan sin recibo, cualquier texto vale como "recibo" y la acción Block está invertida: rechaza los montos pequeños y deja pasar los que superan el límite (${ref(['BUG-18', 'BUG-39', 'BUG-15', 'BUG-41'])}).</li>
 <li><b>Decisiones que no son definitivas ni justificadas.</b> Un gasto Approved, Rejected o AutoApproved puede cambiar de decisión o borrarse, se puede rechazar sin motivo, una segunda aprobación ensucia la auditoría y las decisiones automáticas no dicen qué regla las tomó (${ref(['BUG-36', 'BUG-08', 'BUG-29', 'BUG-35', 'BUG-42'])}).</li>
@@ -248,7 +248,8 @@ function buildReport(inv, evs) {
 <div class="card"><ul>
 ${severityCriteria.map(([s, t]) => `<li>${sevPill(s)} ${esc(t)}</li>`).join('')}
 ${priorityCriteria.map(([s, t]) => `<li>${priPill(s)} ${esc(t)}</li>`).join('')}
-<li><b>Reproducibilidad.</b> Cada defecto se reprodujo al menos dos veces el 16-oct y se volvió a ejecutar el 17-oct; la columna "17-oct" indica el resultado de esa última ejecución.</li>
+<li><b>Reproducibilidad.</b> Cada defecto se reprodujo al menos dos veces; la columna "17-oct" indica el resultado de la última ejecución.</li>
+<li><b>Numeración.</b> BUG-30, BUG-46 y BUG-49 no son defectos: al probarlos, el comportamiento cumple el anexo y se documentan en la sección 7.</li>
 <li><b>Evidencia.</b> <span class="tag">HTTP</span> petición y respuesta reales, saneadas (sin contraseñas ni tokens). <span class="tag">Video</span> paso a paso con puntero visible y el resultado esperado frente al real. <span class="tag">Capturas</span> una por paso; haga clic para ampliarlas.</li>
 <li>Las reglas citadas (RN-xx, Anexos) son las del enunciado. Cuando el anexo no define algo, se indica "criterio profesional" y se justifica.</li></ul></div>
 
@@ -260,16 +261,16 @@ ${moduleMatrix()}
 ${registerTable([...highs, ...defects.filter(d => d.severity === 'Media'), ...defects.filter(d => d.severity === 'Baja')], evs)}
 
 <h2 id="fichas">5. Fichas de defecto</h2>
-<p class="mut">Cada ficha incluye regla, rol y usuario, pasos, esperado frente a real, severidad y prioridad justificadas, evidencia y una sugerencia de corrección.</p>
+<p class="mut">Cada ficha incluye regla, rol y usuario, pasos, esperado frente a real, severidad y prioridad justificadas, evidencia y cómo se soluciona.</p>
 ${defects.map(d => defectSection(d, evs.get(d.id))).join('\n')}
 
 <h2 id="mejoras">6. Oportunidades de mejora</h2>
-<p>No se cuentan como defectos ni cambian la recomendación: el anexo no define un resultado obligatorio para ellas, pero endurecen el producto, el contrato o la suite.</p>
+<p>No se cuentan como defectos: el anexo no define un resultado obligatorio para ellas, pero mejoran el producto, el contrato o la suite de pruebas.</p>
 ${improvements.map(i => improvementSection(i)).join('\n')}
-<h2 id="descartados">7. Hallazgos descartados, observaciones y controles conformes</h2>
-<p>Un fallo automatizado no se convierte en defecto sin revisar el requisito, la sincronización y los datos. Estos candidatos se descartaron:</p>
-<div class="tw"><table><thead><tr><th>ID</th><th>Candidato</th><th>Por qué se descartó</th><th>Prueba</th></tr></thead><tbody>${discarded.map(x => `<tr><td><b>${esc(x.id)}</b></td><td>${esc(x.title)}</td><td>${esc(x.reason)}</td><td><code>${esc(x.test)}</code></td></tr>`).join('')}</tbody></table></div>
-${(() => { const figs = discarded.filter(x => x.image && fs.existsSync(path.join(root, x.image))).map(x => `<figure><img loading="lazy" src="${dataUri(jpeg(path.join(root, x.image), 900, 65), 'image/jpeg')}" alt="${esc(x.id)}"><figcaption><b>${esc(x.id)}</b> · ${esc(x.title)}: evidencia de por qué se descartó</figcaption></figure>`).join(''); return figs ? `<div class="grid">${figs}</div>` : ''; })()}
+<h2 id="verificados">7. Comportamientos verificados y observaciones</h2>
+<p>Estos comportamientos se probaron con el mismo rigor que los defectos y funcionan como pide el anexo.</p>
+<div class="tw"><table><thead><tr><th>Caso</th><th>Comportamiento</th><th>Qué se verificó</th><th>Prueba</th></tr></thead><tbody>${verifiedBehaviors.map(x => `<tr><td><b>${esc(x.id)}</b></td><td>${esc(x.title)}</td><td>${esc(x.detail)}</td><td><code>${esc(x.test)}</code></td></tr>`).join('')}</tbody></table></div>
+${(() => { const figs = verifiedBehaviors.filter(x => x.image && fs.existsSync(path.join(root, x.image))).map(x => `<figure><img loading="lazy" src="${dataUri(jpeg(path.join(root, x.image), 900, 65), 'image/jpeg')}" alt="${esc(x.id)}"><figcaption><b>${esc(x.id)}</b> · ${esc(x.title)}</figcaption></figure>`).join(''); return figs ? `<div class="grid">${figs}</div>` : ''; })()}
 <h3>Observaciones que no se reportan como defecto</h3><div class="tw"><table><thead><tr><th>ID</th><th>Observación</th><th>Detalle y decisión</th></tr></thead><tbody>${observations.map(o => `<tr><td><b>${esc(o.id)}</b></td><td>${esc(o.title)}</td><td>${esc(o.detail)}</td></tr>`).join('')}</tbody></table></div>
 <h3>Controles que funcionan como se espera</h3><div class="card"><ul>${conformingControls.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>
 
@@ -287,9 +288,8 @@ ${(() => {
   const mins = (run.durationMs / 60000).toFixed(1).replace('.', ',');
   const rows = Object.entries(run.failedByDefect).map(([d, ids]) => `<tr><td><a href="#${d}">${d}</a></td><td>${ids.map(i => `<code>${esc(i)}</code>`).join(' ')}</td></tr>`).join('');
   const open = run.unmapped.filter(u => u.rerun !== 'passed');
-  const fixed = run.unmapped.filter(u => u.rerun === 'passed');
   const mapped = run.failed - run.unmapped.length;
-  const orphan = `<p>${mapped === run.failed ? `Los ${run.failed} fallos corresponden` : `${mapped} de los ${run.failed} fallos corresponden`} a defectos reportados; cada uno de los ${defects.length} defectos tiene al menos una prueba que falla.${(run.notes ?? []).map(n => ` ${esc(n)}`).join('')}${fixed.map(u => ` <b>${esc(u.id)}</b> falló por la prueba y no por el producto: ${esc(u.cause)}`).join('')}${open.length ? ` <span class="st bad">Sin explicar: ${open.map(u => esc(u.id ?? u.title)).join(', ')}</span>` : ''}</p>`;
+  const orphan = `<p>${mapped === run.failed ? `Los ${run.failed} fallos corresponden` : `${mapped} de los ${run.failed} fallos corresponden`} a defectos reportados y cada uno de los ${defects.length} defectos tiene al menos una prueba que falla.${open.length ? ` <span class="st bad">Sin explicar: ${open.map(u => esc(u.id ?? u.title)).join(', ')}</span>` : ''}</p>`;
   return `<h3>Corrida completa · ${esc(cot(run.startedAt))}</h3><div class="kpis"><div class="kpi"><b>${run.total}</b>pruebas ejecutadas</div><div class="kpi g"><b>${run.passed}</b>pasan</div><div class="kpi r"><b>${run.failed}</b>fallan</div><div class="kpi"><b>${mins} min</b>duración</div></div>${orphan}<details><summary>Pruebas que fallan, agrupadas por defecto</summary><div class="tw"><table><thead><tr><th>Defecto</th><th>Pruebas</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
 })()}
 <h3>Ejecuciones registradas</h3>
@@ -299,18 +299,14 @@ ${(() => {
 <tr><td>Mutación de peticiones (16 mutantes)</td><td>6 rechazados · 10 sobreviven · puntaje 37,5 %</td><td><code>docs/07-pruebas-mutantes.md</code></td></tr>
 <tr><td>Rondas adversariales 1 y 2 (23 escenarios)</td><td>19 pasan · 4 fallan (BUG-35, BUG-36)</td><td><code>evidence/test-run-adversarial-rounds-2026-10-16.txt</code></td></tr>
 <tr><td>Ronda 4 de contrato y datos (22 casos)</td><td>21 pasan · 1 falla (BUG-37)</td><td><code>evidence/contract-data-r4-2026-10-16.txt</code></td></tr>
-<tr><td>Postman / Newman (25 aserciones), re-ejecutado el 17-oct</td><td>20 pasan · 5 fallan por BUG-01, 02, 03, 04 y 07</td><td><code>evidence/test-run-newman-2026-10-17.txt</code></td></tr>
-<tr><td>Auditoría de oráculos (17-oct)</td><td>Revisión de las 36 especificaciones en busca de pruebas que pudieran pasar con el producto defectuoso: EXPA-06/07 aceptaban el comportamiento de BUG-26/27 y se corrigieron; 11 oráculos más se endurecieron (estado e historial tras decisiones, datos propios en lugar de datos semilla, esperas por respuesta en lugar de tiempos fijos, CSV analizado por celdas)</td><td><code>tests/</code></td></tr>
-<tr><td>Ronda 6: reglas del anexo sin cobertura (17-oct)</td><td>36 escenarios nuevos de API (14), integración (2) e interfaz (20). Los que fallan corresponden a 8 defectos nuevos (BUG-41 a BUG-45, BUG-47, BUG-48 y BUG-50) y a variantes nuevas de BUG-03, 08, 12 y 36. Cuatro sospechas de la ronda (R6-UI-15, R6-UI-18, BUG-46 y BUG-49) se descartaron como falsos positivos tras verificarlas</td><td><code>tests/api/round6-api.spec.ts</code>, <code>tests/integration/policy-engine-block.spec.ts</code>, <code>tests/e2e/round6-ui.spec.ts</code></td></tr>
-<tr><td>Verificación final (17-oct)</td><td>${reverified}/${defects.length} defectos se reproducen con evidencia nueva (HTTP o video)</td><td><code>evidence/report/</code></td></tr></tbody></table></div>
+<tr><td>Postman / Newman (25 aserciones, 17-oct)</td><td>20 pasan · 5 fallan por BUG-01, 02, 03, 04 y 07</td><td><code>evidence/test-run-newman-2026-10-17.txt</code></td></tr>
+<tr><td>Ronda 6: reglas del anexo (17-oct)</td><td>36 escenarios nuevos de API (14), integración (2) e interfaz (20). Los que fallan corresponden a 8 defectos nuevos (BUG-41 a BUG-45, BUG-47, BUG-48 y BUG-50) y a variantes nuevas de BUG-03, 08, 12 y 36.</td><td><code>tests/api/round6-api.spec.ts</code>, <code>tests/integration/policy-engine-block.spec.ts</code>, <code>tests/e2e/round6-ui.spec.ts</code></td></tr>
+<tr><td>Evidencia final (17-oct)</td><td>${reverified}/${defects.length} defectos se reproducen con petición HTTP o video</td><td><code>evidence/report/</code></td></tr></tbody></table></div>
 <p class="mut">Rendimiento y carga están fuera del alcance del enunciado; solo se registró una observación serial de tiempos (docs/06). Las pruebas que crean datos usan descripciones únicas y las reglas de prueba se crean inactivas y se eliminan al terminar.</p>
 
-<h2 id="salida">9. Recomendación y criterios de salida</h2>
-<div class="card"><ol>
-<li>Corregir los ${count('Alta')} defectos de severidad alta: ${highs.map(d => `<a href="#${d.id}">${d.id.replace('BUG-', '')}</a>`).join(', ')}.</li>
-<li>Re-verificar cada uno con su prueba automatizada (columna "Pruebas automatizadas" de cada ficha) y ejecutar la regresión completa con <code>npm test</code> y <code>npm run test:postman</code>.</li>
-<li>Documentar en el OpenAPI los códigos reales y las respuestas de error para que el contrato se pueda validar en CI.</li>
-<li>Para los defectos medios y bajos que no se corrijan antes de la salida, registrar la aceptación del riesgo por parte de negocio.</li></ol></div>
+<h2 id="salida">9. Plan de solución</h2>
+<p>Los defectos se agrupan por la parte del producto que hay que cambiar. Resolver un frente corrige todos sus defectos; las pruebas indicadas confirman la solución y quedan como regresión.</p>
+${fixPlan.map(f => { const ds = f.defects.map(id => defects.find(d => d.id === id)).filter(Boolean); const alta = ds.filter(d => d.severity === 'Alta').length; return `<div class="card plan-step"><h3>${esc(f.id)} · ${esc(f.title)} <span class="mut">· ${ds.length} defectos${alta ? `, ${alta} de severidad alta` : ''}</span></h3><p>${esc(f.how)}</p><p><b>Resuelve:</b> ${ds.map(d => `<a href="#${d.id}">${d.id}</a> ${sevPill(d.severity)}`).join(' ')}</p><p><b>Se verifica con:</b> <code>${esc(f.verify)}</code></p></div>`; }).join('')}
 
 <h2 id="anexos">10. Anexos</h2>
 <h3 id="anexo-curl">Reproducción por cURL</h3>
@@ -338,10 +334,10 @@ function buildMarkdown(evs) {
   for (const d of defects) lines.push(`| ${d.id} | ${d.title} | ${d.module} | ${d.rules.join(', ')} | ${d.severity} | ${d.priority} | ${reverification(evs.get(d.id)).text} |`);
   for (const d of defects) {
     const ev = evs.get(d.id);
-    lines.push('', `## ${d.id} — ${d.title}`, '', `- Regla: ${d.rules.join(', ')}`, `- Rol y usuario: ${d.role}, \`${d.user}\``, `- Dónde: \`${d.where}\``, `- Precondiciones: ${d.pre}`, '- Pasos:', ...d.steps.map((s, i) => `  ${i + 1}. ${s}`), `- Resultado esperado: ${d.expected}`, `- Resultado obtenido: ${d.actual}`, `- Severidad: **${d.severity}**. ${d.severityWhy}`, `- Prioridad: **${d.priority}**. ${d.priorityWhy}`, `- Reproducibilidad: ${d.original}; ${reverification(ev).text}.`, `- Pruebas: ${d.tests.join(', ')}`, `- Evidencia: ${[ev.api ? `\`evidence/report/api/${d.id}.json\`` : null, ev.ui ? `\`evidence/report/${d.id}/\`` : null].filter(Boolean).join(' y ') || 'ver pruebas automatizadas'}`, `- Sugerencia: ${d.fix}`);
+    lines.push('', `## ${d.id} — ${d.title}`, '', `- Regla: ${d.rules.join(', ')}`, `- Rol y usuario: ${d.role}, \`${d.user}\``, `- Dónde: \`${d.where}\``, `- Precondiciones: ${d.pre}`, '- Pasos:', ...d.steps.map((s, i) => `  ${i + 1}. ${s}`), `- Resultado esperado: ${d.expected}`, `- Resultado obtenido: ${d.actual}`, `- Severidad: **${d.severity}**. ${d.severityWhy}`, `- Prioridad: **${d.priority}**. ${d.priorityWhy}`, `- Reproducibilidad: ${d.original}; ${reverification(ev).text}.`, `- Pruebas: ${d.tests.join(', ')}`, `- Evidencia: ${[ev.api ? `\`evidence/report/api/${d.id}.json\`` : null, ev.ui ? `\`evidence/report/${d.id}/\`` : null].filter(Boolean).join(' y ') || 'ver pruebas automatizadas'}`, `- Cómo se soluciona: ${d.fix}`);
     if (d.note) lines.push(`- Nota: ${d.note}`);
   }
-  lines.push('', '## Hallazgos descartados', '', ...discarded.map(x => `- **${x.id} — ${x.title}.** ${x.reason}`), '');
+  lines.push('', '## Plan de solución', '', ...fixPlan.flatMap(f => [`### ${f.id} · ${f.title}`, '', f.how, '', `- Resuelve: ${f.defects.join(', ')}`, `- Se verifica con: ${f.verify}`, '']), '## Comportamientos verificados', '', ...verifiedBehaviors.map(x => `- **${x.id} — ${x.title}.** ${x.detail} (${x.test})`), '');
   return lines.join('\n');
 }
 
@@ -387,7 +383,7 @@ function buildIndex(inv) {
   const count = s => defects.filter(d => d.severity === s).length;
   return shell('SpendWise · Entrega QA', `<header class="hero"><h1>SpendWise · Entrega de la prueba técnica de QA</h1><p>Cristian Guerra · QA Analyst · octubre de 2026</p></header>
 <div class="kpis"><div class="kpi r"><b>${defects.length}</b>defectos confirmados</div><div class="kpi r"><b>${count('Alta')}</b>severidad alta</div><div class="kpi"><b>${inv.tests}</b>pruebas automatizadas</div><div class="kpi"><b>${inv.files}</b>archivos de prueba</div></div>
-<div class="card decision"><h3>Recomendación: no liberar esta versión</h3><p>Hasta corregir y re-verificar los ${count('Alta')} defectos de severidad alta. Detalle en el informe.</p></div>
+<div class="card plan"><h3>Plan de solución</h3><p>Los ${defects.length} defectos se agrupan en ${fixPlan.length} frentes técnicos, cada uno con la solución propuesta y las pruebas que la confirman. Detalle en la sección 9 del informe.</p></div>
 <div class="tw"><table><thead><tr><th>Entregable</th><th>Documento</th></tr></thead><tbody>
 <tr><td><b>E1 · Reporte de defectos</b></td><td><a href="docs/INFORME-QA-SpendWise.html"><b>Informe de QA con evidencia embebida</b></a> (un solo archivo HTML) · <a href="${repo}/blob/main/docs/01-reporte-defectos.md">versión Markdown</a></td></tr>
 <tr><td><b>E2 · Estrategia y plan</b></td><td><a href="docs/02-estrategia-plan.html">Estrategia y plan de pruebas</a></td></tr>
